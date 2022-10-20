@@ -1,0 +1,1 @@
+source ./ssh/bashrc.sh
