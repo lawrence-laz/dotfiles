@@ -1,0 +1,9 @@
+- [ ] Review Sentry reported errors: https://workshop-of-photonics.sentry.io/issues/searches/5567680/?project=6184190&referrer=issue-list&sort=date&statsPeriod=14d
+    - If a reported error is not an error, but a warning or a validation error -> lower severity.
+    - Otherwise create a bug ticket describing what needs to be fixed/investigated and bring the ticket to grooming.
+        - If a reported issue does not seem to have high impact, it should be registered under "low" severity bug ticket, otherwise use your own judgement.
+- [ ] Facilitate tech decisions meetings: https://dev.azure.com/wophotonics/SCA/_wiki/wikis/SCA.wiki/69/Technical-Decisions
+- [ ] Review "Groomed" and "Planned" columns in the board:
+    - If "Planned" column lacks tasks, initiate planning/grooming.
+    - If "Groomed" column contains high severity tasks, initiate planning.
+- [ ] Organise and facilitate retro after release

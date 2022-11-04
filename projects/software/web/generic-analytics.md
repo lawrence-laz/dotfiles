@@ -1,0 +1,11 @@
+- Generic analytics
+    - would be nice to host a generic service that could be patched up with whatever
+    - store guid & generate a new one on each request, then swap on the server in memory
+        - also keep counter on serber and timestamps for sessions
+        - this is minimal anonymous analytics
+        - generate a graph based on data?
+        - try do this in zig?
+        - use sqlite db?
+        - would need to host multiple servers on VM, nginx?
+        - also would need to deal with ssl certs...
+        - OOOOOOOOOOOOOOOOOOOR see if hosting lambda wouldn't be cheaper than current vultrh rates?

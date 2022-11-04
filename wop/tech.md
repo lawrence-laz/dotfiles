@@ -1,0 +1,14 @@
+- Escalate blocked development due to missing Hardware
+- Shake away from non-technical responsibilities
+- Plan for long-term support
+- Plan design sessions
+- Propose technical improvement/automation tasks
+- Ensure design and architecture are correct and provide value
+- Push away from doing/designing unknown tasks
+- Monitor tech decisions and architecture is adhered to
+- Monitor development for waste and hindrances
+- Monitor effort focus
+- Monitor for areas with reocurring problems/bugs
+-
+-
+-

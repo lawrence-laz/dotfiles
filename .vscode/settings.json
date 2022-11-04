@@ -4,7 +4,11 @@
   "editor.overviewRulerBorder": false,
   "editor.lineHeight": 24,
   "[markdown]": {
-    "editor.quickSuggestions": true
+    "editor.quickSuggestions": {
+      "comments": "on",
+      "strings": "on",
+      "other": "on"
+    }
   },
   "files.defaultLanguage": "markdown",
   "files.exclude": {
@@ -25,4 +29,25 @@
   "spellright.notificationClass": "warning",
   "vscodeMarkdownNotes.noteCompletionConvention": "noExtension",
   "vscodeMarkdownNotes.slugifyMethod": "github-slugger",
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#11136c",
+    "activityBar.activeBorder": "#a51a1d",
+    "activityBar.background": "#11136c",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#a51a1d",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "sash.hoverBorder": "#11136c",
+    "statusBar.background": "#0a0b40",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#11136c",
+    "statusBarItem.remoteBackground": "#0a0b40",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#0a0b40",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#0a0b4099",
+    "titleBar.inactiveForeground": "#e7e7e799",
+    "commandCenter.border": "#e7e7e799"
+  },
+  "peacock.color": "#0a0b40",
 }

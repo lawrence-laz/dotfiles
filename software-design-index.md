@@ -1,0 +1,23 @@
+# Design patterns
+ - [[specification pattern]]
+ - [[command design pattern]]
+ - [[bridge design pattern]]
+ - [[memento design pattern]]
+ - [[composites design pattern]]
+ - [[builder design pattern]]
+ - [[adapter design pattern]]
+ - [[null object design pattern]]
+ - [[facade design pattern]]
+ - [[flyweight design pattern]]
+ - [[prototype design pattern]]
+ - [[visitor design pattern]]
+
+# Design principles
+ - [[separation of concerns]]
+ - [[encapsulation]]
+ - [[dependency inversion]]
+ - [[explicit dependencies]]
+ - [[single responsibility]]
+ - [[dont repeat yourself]]
+ - [[persistence ignorance]]
+ - [[bounded contexts]]

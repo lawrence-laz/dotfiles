@@ -1,0 +1,12 @@
+
+- Po pakuotės
+	- migrate po pakuotes to wordpress (keep name?)
+		- or rename to something like "smart shop" in a sence that good for environment, easy to use, easy to store, no waste transporting water filled bottles.
+		- Arina thinks about new name as well
+	- implement subscriptions
+	- create short videos (tiktok, youtube shorts like?) on how to use products, how they look like
+		- washing strip: supurvint drabužį, temperatures, show result, does it smell nice? easy, no plastic.
+	- Explain values in home page (made in lt, no plastic, no use of animals - vegan)
+	- write blog posts in same page about environment, explain issues link to products that try to tackle these issues
+	- VEGFEST Tomos dirbtuvėlės
+	- NO PLASTIC JULY challenge for us each month

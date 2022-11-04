@@ -1,0 +1,12 @@
+
+- Audio drop - Location Based Voice Messages
+    - basic users, leave messages, fun games, museums, city tours
+    - https://github.com/hectahertz/react-native-typography
+    - https://github.com/dohooo/react-native-reanimated-carousel
+    - https://github.com/react-native-maps/react-native-maps
+    - https://github.com/bartgryszko/react-native-circular-progress
+    - https://github.com/transistorsoft/react-native-background-geolocation
+    - ? https://github.com/styled-components/styled-components
+    - https://github.com/doublesymmetry/react-native-track-player
+    - https://github.com/kevinresol/react-native-sound-recorder
+    - https://github.com/react-native-elements/react-native-elements

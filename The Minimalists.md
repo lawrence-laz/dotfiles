@@ -1,0 +1,3 @@
+# The Minimalists
+
+If your short term actions don't align with your long term [[values]] then you will experience [[disconent]]. On the other hand, if you short term actions do align with your [[values]] you will experience [[happiness]]. In other words, don't act on [[impulses]], be intentional. Values usually don't change, or change little. The things that lead to our values are [[beliefs]] and these sometimes change.
