@@ -14,16 +14,33 @@
 # =====================
 # Commands
 # =====================
-# `nmcli dev wifi`    Show available wifi
-# `br`                File navigation tree by Canop/broot
+# `nmcli dev wifi`        Show available wifi
+# `br`                    File navigation tree by Canop/broot
+# `lsof -p 8080`          Show process using this port
+# `locate *.desktop`      Search all files with given pattern from index
+# `sudo updatedb`         Update search index
+# `rg <phrase> <path>`    Search for phrase in file contents
+# `entr`                  Run command when fiven files have changes (see man entr for examples)
 
 # =====================
 # Keyboard shortcuts
 # =====================
 # <C-r> History lookup by dvorka/hstr
 
+
+
+# Load tool specific configuration
+for f in ~/git/dotfiles/**/config.sh; do 
+    ls $f
+    source $f
+done
+
+
+
 # Include dotfiles in commands like `mv`
 shopt -s dotglob
+
+# source ~/.screenlayout/laptop.sh
 
 if ! pgrep -x "ssh-agent" > /dev/null
 then
@@ -31,7 +48,7 @@ then
     ssh-add -q ~/.ssh/github_key_old
 fi
 
-setxkbmap -layout us,lt -model pc104 -option 'grp:win_space_toggle'
+# setxkbmap -layout us,lt -model pc104 -option 'grp:win_space_toggle'
 
 # Personal aliases
 alias loadssh='eval "$(ssh-agent)" > /dev/null && ssh-add -q ~/.ssh/github_key_old'
@@ -41,7 +58,10 @@ alias lg='loadssh && lazygit'
 alias lsf='ls | fzf'
 alias lazygitconf='vim /home/llaz/.config/jesseduffield/lazygit/config.yml'
 alias qr='zbarimg'
-alias vim='nvim'
+alias vim='nvim --listen ~/tmp/nvim-server.pipe'
+alias bim='nvim --listen ~/tmp/nvim-server.pipe' # eh, I do this often enough to justify this alias
+alias vim.='nvim --listen ~/tmp/nvim-server.pipe .' # eh, I do this often enough to justify this alias
+alias vim,='nvim --listen ~/tmp/nvim-server.pipe .' # eh, I do this often enough to justify this alias
 alias bell='paplay ~/.config/bell.wav'
 alias sneeze='paplay ~/.config/sneeze.wav'
 alias vimrc='vim ~/.config/nvim/init.vim'
@@ -69,7 +89,14 @@ alias :q='exit'
 alias kpass='keepassxc-cli'
 alias ff='broot'
 alias cd!='cd_mkdir'
-# tlp = power battery manager
+#tlp = power battery manager
+
+function restartbluetooth() {
+    rfkill block bluetooth
+    rfkill unblock bluetooth
+    systemctl stop bluetooth.service
+    systemctl start bluetooth.service
+}
 
 export MGFXC_WINE_PATH=/home/llaz/.winemonogame
 
@@ -77,7 +104,14 @@ export MGFXC_WINE_PATH=/home/llaz/.winemonogame
 xset r rate 200 30
 
 alias findfcd='cd `findf | xargs dirname`'
-alias cdf='cd `find . -maxdepth 3 -type d 2>/dev/null | fzf`'
+
+function cdf() {
+    if [[ -z "$1" ]]; then
+        cd `find . -maxdepth 3 -type d 2>/dev/null | fzf`
+    else
+        cd `find . -maxdepth 3 -type d 2>/dev/null | fzf -q $1`
+    fi
+}
 
 # mvout - moves source directory contents to parent and destroys source directory
 # mvout [SOURCE]
@@ -116,6 +150,19 @@ function cd_mkdir() {
 
     mkdir -p "$DEST"
     cd "$DEST"
+}
+
+# sizeof - prints file size in easy to understand format
+# sizeof FILE_PATH
+function sizeof() {
+    if [[ -z "$1" ]]; then
+        echo 'Missing FILE_PATH argument'
+        return 1
+    else
+        FILE_PATH=$1
+    fi
+
+    stat -c %s "$FILE_PATH" | numfmt --to=iec
 }
 
 function findf() {
@@ -177,8 +224,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=20000
-HISTFILESIZE=40000
+HISTSIZE=-1
+HISTFILESIZE=-1
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -231,7 +278,7 @@ esac
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto -a'
+    # alias ls='ls --color=auto -a'
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
@@ -239,6 +286,7 @@ fi
 
 alias ll='ls -alF'
 alias la='ls -A'
+alias ls='ls -a'
 alias l='ls -CF'
 alias lstree='exa --long --tree --level=3 --icons'
 
@@ -285,7 +333,8 @@ export HISTFILESIZE=10000        # increase history file size (default is 500)
 export HISTSIZE=${HISTFILESIZE}  # increase history size (default is 500)
 # ensure synchronization between bash memory and history file
 export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"
-export EDITOR=vim
+export EDITOR="nvim --server ~/tmp/nvim-server.pipe"
+export SUDO_EDITOR="nvim"
 # if this is interactive shell, then bind hstr to Ctrl-r (for Vi mode check doc)
 if [[ $- =~ .*i.* ]]; then bind '"\C-r": "\C-a hstr -- \C-j"'; fi
 # if this is interactive shell, then bind 'kill last command' to Ctrl-x k
@@ -294,3 +343,17 @@ if [[ $- =~ .*i.* ]]; then bind '"\C-xk": "\C-a hstr -k \C-j"'; fi
 # Configures `br` - a file tree explorer
 # https://github.com/Canop/broot
 source /home/llaz/.config/broot/launcher/bash/br
+. "$HOME/.cargo/env"
+
+# Autocomplete for dotnet
+function _dotnet_bash_complete()
+{
+  local cur="${COMP_WORDS[COMP_CWORD]}" IFS=$'\n'
+  local candidates
+
+  read -d '' -ra candidates < <(dotnet complete --position "${COMP_POINT}" "${COMP_LINE}" 2>/dev/null)
+
+  read -d '' -ra COMPREPLY < <(compgen -W "${candidates[*]:-}" -- "$cur")
+}
+
+complete -f -F _dotnet_bash_complete dotnet

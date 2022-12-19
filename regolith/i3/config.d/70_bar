@@ -1,0 +1,43 @@
+###############################################################################
+# i3 Bar
+###############################################################################
+
+# Toggle bar visibility
+## Modify // Toggle Bar // <> i ##
+set_from_resource $i3-wm.binding.bar_toggle i3-wm.binding.bar_toggle i
+bindsym $mod+$i3-wm.binding.bar_toggle bar mode toggle
+
+set_from_resource $i3-wm.bar.position i3-wm.bar.position bottom
+set_from_resource $i3-wm.bar.font i3-wm.bar.font monospace
+set_from_resource $i3-wm.bar.separatorchar i3-wm.bar.separatorchar " "
+set_from_resource $i3-wm.bar.trayoutput i3-wm.bar.trayoutput primary
+set_from_resource $i3-wm.bar.stripworkspacenumbers i3-wm.bar.stripworkspacenumbers yes
+set_from_resource $i3-wm.bar.mode i3-wm.bar.mode dock
+set_from_resource $i3-wm.bar.workspace_min_width i3-wm.bar.workspace_min_width 36
+
+# i3xrocks config file. Override this for a custom status bar generator.
+set_from_resource $i3-wm.bar.status_command i3-wm.bar.status_command i3xrocks -u ~/.config/regolith2/i3xrocks/conf.d -d /usr/share/i3xrocks/conf.d
+
+# The bar configuration
+bar {
+  position $i3-wm.bar.position
+  mode $i3-wm.bar.mode
+  font pango:$i3-wm.bar.font
+  separator_symbol $i3-wm.bar.separatorchar
+  status_command $i3-wm.bar.status_command
+  tray_output $i3-wm.bar.trayoutput
+  strip_workspace_numbers $i3-wm.bar.stripworkspacenumbers
+  workspace_min_width $i3-wm.bar.workspace_min_width
+
+  colors {
+      separator #FF0000 
+      background #000000
+      statusline #FF0000
+      focused_workspace #000000 #333333 #000000
+      active_workspace #000000 #333333 #222222
+      inactive_workspace #000000 #222222 #666666
+      urgent_workspace #d33682 #d33682 #fdf6e3
+  }
+}
+
+

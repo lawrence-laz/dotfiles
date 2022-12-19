@@ -1,0 +1,8 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Laurynas Lazauskas",
+  "classifications": [ "Common", "Console" ],
+  "identity": "MyDotnetTemplates.Playground.CSharp",
+  "name": "My dotnet console playground",
+  "shortName": "playground"
+}
