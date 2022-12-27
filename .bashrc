@@ -28,6 +28,9 @@
 # <C-r> History lookup by dvorka/hstr
 
 
+# Append to lbrary path for libdl.so
+# LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/snap/gnome-3-38-2004/119/usr/lib/x86_64-linux-gnul"
+
 
 # Load tool specific configuration
 for f in ~/git/dotfiles/**/config.sh; do 
@@ -61,10 +64,12 @@ alias qr='zbarimg'
 alias vim='nvim --listen ~/tmp/nvim-server.pipe'
 alias bim='nvim --listen ~/tmp/nvim-server.pipe' # eh, I do this often enough to justify this alias
 alias vim.='nvim --listen ~/tmp/nvim-server.pipe .' # eh, I do this often enough to justify this alias
+alias vim,.='nvim --listen ~/tmp/nvim-server.pipe .' # eh, I do this often enough to justify this alias
+alias vim.,='nvim --listen ~/tmp/nvim-server.pipe .' # eh, I do this often enough to justify this alias
 alias vim,='nvim --listen ~/tmp/nvim-server.pipe .' # eh, I do this often enough to justify this alias
 alias bell='paplay ~/.config/bell.wav'
 alias sneeze='paplay ~/.config/sneeze.wav'
-alias vimrc='vim ~/.config/nvim/init.vim'
+alias vimrc='vim ~/git/dotfiles/nvim/'
 alias vimconf='vim ~/.config/nvim'
 alias vimf='vim `findf'
 alias vimplug='vim ~/.config/nvim/lua/plugins.lua'

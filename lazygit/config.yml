@@ -1,0 +1,21 @@
+# Lazy git bolded highlight doesn't seem to work in Kitty?
+# This adds background color instead.
+gui:
+  theme:
+    lightTheme: false
+    activeBorderColor:
+      - white
+      - bold
+    inactiveBorderColor:
+      - white
+    selectedLineBgColor:
+      - reverse
+      - blue
+keybinding:
+  commits:
+    moveDownCommit: '<c-s>' # move commit down one
+    moveUpCommit: '<c-w>' # move commit up one
+os:
+  editCommand: 'nvim'
+  # Connect to existing nvim instance if possible
+  editCommandTemplate: '{{editor}} --server ~/tmp/nvim-server.pipe --remote-tab "$(pwd)/{{filename}}"'

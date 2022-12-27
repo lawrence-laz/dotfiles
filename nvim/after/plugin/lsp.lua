@@ -39,8 +39,8 @@ lsp.defaults.cmp_mappings({
 lsp.setup_nvim_cmp({
     sources = {
         { name = 'path' },
-        { name = 'nvim_lsp', keyword_length = 3 },
-        { name = 'buffer', keyword_length = 3 },
+        { name = 'nvim_lsp', keyword_length = 1 },
+        { name = 'buffer', keyword_length = 1 },
     }
 })
 
@@ -49,7 +49,6 @@ lsp.configure('sumneko_lua', {
         Lua = { diagnostics = { globals = { 'vim' } } } -- Stop undefined 'vim' warnings
     }
 })
-
 
 
 lsp.on_attach(function(client, bufnr)
@@ -67,25 +66,35 @@ lsp.on_attach(function(client, bufnr)
     -------------------------- "Show" mappings
     vim.keymap.set("n", "<leader>se", vim.diagnostic.open_float) -- [s]how [e]rror
     vim.keymap.set("n", "<leader>sE", vim.diagnostic.setloclist) -- [s]how all [E]rrors in file  alternative is telescope_builtin.diagnostics
-    vim.keymap.set("n", "<leader>sr", require'telescope.builtin'.lsp_references) -- [s]how [r]eferences
-    vim.keymap.set("n", "<S-F12>", require'telescope.builtin'.lsp_references) -- [s]how [r]eferences (VS like)
-    vim.keymap.set("n", "<leader>st", "<cmd>NvimTreeToggle<CR>") -- [s]how [t]ree
-    vim.keymap.set("n", "<C-A-l>", "<cmd>NvimTreeToggle<CR>") -- [s]how [t]ree (VS like)
-    vim.keymap.set("n", "<leader>ss", require'telescope.builtin'.lsp_document_symbols) -- [s]how [s]ymbols
-    vim.keymap.set("n", "<leader>sc", "<cmd>Telescope command_palette<cr>") -- [s]how [c]ommand palette
-    vim.keymap.set("n", "<C-S-p>", "<cmd>Telescope command_palette<cr>") -- [s]how [c]ommand palette (VS like)
     vim.keymap.set("n", "<leader>sm", vim.lsp.buf.signature_help) -- [s]how [m]ethod signature (VS like)
-    vim.keymap.set("n", "<C-S-Space>", vim.lsp.buf.signature_help) -- [s]how [m]ethod signature (VS like)
+    vim.keymap.set("n", "<C-S-Space>", vim.lsp.buf.hover) -- [s]how [m]ethod signature (VS like)
 
     -------------------------- "Go to" mappings
     vim.keymap.set("n", "<leader>ge", vim.diagnostic.goto_next) -- [g]o to next [e]rror
-    vim.keymap.set("n", "<C-S-F12>", vim.diagnostic.goto_next) -- [g]o to next [e]rror (VS like)
-    vim.keymap.set("n", "<leader>gE", vim.diagnostic.goto_prev) -- [g]o to previous [E]rror
-    vim.keymap.set("n", "<leader>gd", require'telescope.builtin'.lsp_definitions) -- [g]o to [d]efinition
-    vim.keymap.set("n", "<F12>", require'telescope.builtin'.lsp_definitions) -- [g]o to [d]efinition (VS like)
-    vim.keymap.set("n", "<leader>gi", require'telescope.builtin'.lsp_implementations) -- [g]o to [i]mplementation
-    vim.keymap.set("n", "<C-F12>", require'telescope.builtin'.lsp_implementations) -- [g]o to [i]mplementation (VS like)
+    vim.keymap.set("n", "<C-S-F12>", function() -- Go to next error/warning/info/hint
+        if vim.diagnostic.get_next { severity = vim.diagnostic.severity.ERROR } then
+            vim.diagnostic.goto_next { severity = vim.diagnostic.severity.ERROR }
+        elseif vim.diagnostic.get_next { severity = vim.diagnostic.severity.WARN } then
+            vim.diagnostic.goto_next { severity = vim.diagnostic.severity.WARN }
+        elseif vim.diagnostic.get_next { severity = vim.diagnostic.severity.INFO } then
+            vim.diagnostic.goto_next { severity = vim.diagnostic.severity.INFO }
+        elseif vim.diagnostic.get_next { severity = vim.diagnostic.severity.HINT } then
+            vim.diagnostic.goto_next { severity = vim.diagnostic.severity.HINT }
+        end
+    end)
 end)
+
+vim.keymap.set("n", "<C-.>", vim.lsp.buf.code_action)
+vim.keymap.set("v", "<C-.>", vim.lsp.buf.code_action)
+vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename) -- [c]ode [r]ename (VS like)
+vim.keymap.set("n", "<leader>kd", vim.lsp.buf.format) -- [c]ode [f]ormat (VS like)
+--vim.keymap.set("n", "<leader>kc", function() require'Comment.api'.toggle.linewise() end) -- Comment toggle (VS like)
+--vim.keymap.set('x', '<leader>kc', function() -- Comment toggle (VS like)
+--vim.api.nvim_feedkeys('<ESC>', 'nx', false)
+--require'Comment.api'.toggle.linewise(vim.fn.visualmode())
+--end)
+--vim.keymap.set('v', '<leader>kc', "<Plug>(comment_toggle_linewise)")
+
 
 vim.opt.signcolumn = 'yes' -- Keep sign column always visible
 
