@@ -134,6 +134,15 @@ require("command_center").add({
         desc = 'Sort ascending',
         cmd = "<CMD>lua vim.cmd[[Sort]]<CR>",
     },
+    { desc = 'Run the nearest test', cmd = '<CMD>lua require("neotest").run.run()<CR>', },
+    { desc = 'Run current file tests', cmd = '<CMD>lua require("neotest").run.run(vim.fn.expand("%"))<CR>', },
+    { desc = 'Debug the nearest test', cmd = '<CMD>lua require("neotest").run.run({strategy = "dap"})<CR>', },
+    { desc = 'Stop the nearest test', cmd = '<CMD>lua require("neotest").run.stop()<CR>', },
+    { desc = 'Attach to the nearest test', cmd = '<CMD>lua require("neotest").run.attach()<CR>', },
+    { desc = 'Show test output', cmd = '<CMD>lua require("neotest").output.open()<CR>', },
+    { desc = 'Toggle output pannel', cmd = '<CMD>lua require("neotest").output_panel.toggle()<CR>', },
+    { desc = 'Toggle tests explorer (summary)', cmd = '<CMD>lua require"neotest".summary.toggle()<CR>', },
+
     -- {
     --     desc = "Sort descending",
     --     cmd = "<CMD>lua vim.cmd[[Sort!]<CR>]",

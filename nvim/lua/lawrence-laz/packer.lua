@@ -178,6 +178,19 @@ return require('packer').startup(function(use)
     use 'rlane/pounce.nvim'
     use 'numToStr/Comment.nvim'
 
+    use 'windwp/nvim-autopairs'
+    use 'renerocksai/telekasten.nvim'
+
+    use {
+        "nvim-neotest/neotest",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+            "antoinemadec/FixCursorHold.nvim",
+            "Issafalcon/neotest-dotnet",
+        }
+    }
+
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
     if packer_bootstrap then

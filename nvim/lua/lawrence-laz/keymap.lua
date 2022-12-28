@@ -10,11 +10,8 @@
 -- PRESENT TO DEVS, this could be amazing
 
 
--- TODO: neotest test runner
+-- TODO:
 -- dap debugger
--- zetellkasten
--- autopair?
-
 
 vim.g.mapleader = ' ' -- Key for <leader>
 
