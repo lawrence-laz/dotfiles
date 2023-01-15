@@ -1,6 +1,7 @@
 local lsp = require('lsp-zero')
 
-lsp.preset('recommended')
+lsp.preset('lsp-compe') -- Setting up nvim-cmp manually
+-- lsp.preset('recommended')
 lsp.set_preferences({
 })
 
@@ -27,14 +28,27 @@ lsp.ensure_installed({
     'html',
 })
 
-local cmp = require 'cmp'
-local cmp_select = { behavior = cmp.SelectBehavior.Select }
-lsp.defaults.cmp_mappings({
-    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-    ['<C-Space>'] = cmp.mapping.complete(),
-})
+-- local cmp = require 'cmp'
+-- local cmp_select = { behavior = cmp.SelectBehavior.Select }
+-- lsp.defaults.cmp_mappings({
+--     ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+--     ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+--     ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+--     ['<Tab>'] = cmp.mapping.select_next_item(),
+--     ['<CR>'] = cmp.mapping.confirm({
+--         -- behavior = cmp.ConfirmBehavior.Replace,
+--         select = true,
+--     }),
+--     -- ['<C-Space>'] = cmp.mapping.complete(),
+--     -- toggle completion
+--     ['<C-Space>'] = cmp.mapping(function(fallback)
+--         if cmp.visible() then
+--             cmp.abort()
+--         else
+--             cmp.complete()
+--         end
+--     end, { 'i', 's' }),
+-- })
 
 lsp.setup_nvim_cmp({
     sources = {
@@ -50,11 +64,99 @@ lsp.configure('sumneko_lua', {
     }
 })
 
+lsp.configure('tailwindcss', {
+    settings = {
+        tailwindCSS = {
+            experimental = {
+                classRegex = {
+                    "tailwind\\('([^)]*)\\')", "'([^']*)'"
+                },
+            },
+        },
+    },
+})
+
+-- https://github.com/neovim/nvim-lspconfig/blob/6b43ce561d97412cc512b569db6938e44529293e/doc/server_configurations.md#omnisharp
+lsp.configure('omnisharp', {
+    -- Enables support for reading code style, naming convention and analyzer
+    -- settings from .editorconfig.
+    enable_editorconfig_support = true,
+
+    -- If true, MSBuild project system will only load projects for files that
+    -- were opened in the editor. This setting is useful for big C# codebases
+    -- and allows for faster initialization of code navigation features only
+    -- for projects that are relevant to code that is being edited. With this
+    -- setting enabled OmniSharp may load fewer projects and may thus display
+    -- incomplete reference lists for symbols.
+    enable_ms_build_load_projects_on_demand = false,
+
+    -- Enables support for roslyn analyzers, code fixes and rulesets.
+    enable_roslyn_analyzers = false,
+
+    -- Specifies whether 'using' directives should be grouped and sorted during
+    -- document formatting.
+    organize_imports_on_format = true,
+
+    -- Enables support for showing unimported types and unimported extension
+    -- methods in completion lists. When committed, the appropriate using
+    -- directive will be added at the top of the current file. This option can
+    -- have a negative impact on initial completion responsiveness,
+    -- particularly for the first few completion sessions after opening a
+    -- solution.
+    enable_import_completion = false,
+
+    -- Specifies whether to include preview versions of the .NET SDK when
+    -- determining which version to use for project loading.
+    sdk_include_prereleases = true,
+
+    -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
+    -- true
+    analyze_open_documents_only = false,
+
+    -- https://github.com/neovim/nvim-lspconfig/blob/dcb7ebb36f0d2aafcc640f520bb1fc8a9cc1f7c8/lua/lspconfig/server_configurations/omnisharp.lua
+    on_new_config = function(new_config, new_root_dir)
+        table.insert(new_config.cmd, '-z') -- https://github.com/OmniSharp/omnisharp-vscode/pull/4300
+        vim.list_extend(new_config.cmd, { '-s', new_root_dir })
+        vim.list_extend(new_config.cmd, { '--hostPID', tostring(vim.fn.getpid()) })
+        table.insert(new_config.cmd, 'DotNet:enablePackageRestore=true')
+        vim.list_extend(new_config.cmd, { '--encoding', 'utf-8' })
+        table.insert(new_config.cmd, '--languageserver')
+
+        if new_config.enable_editorconfig_support then
+            table.insert(new_config.cmd, 'FormattingOptions:EnableEditorConfigSupport=true')
+        end
+
+        if new_config.organize_imports_on_format then
+            table.insert(new_config.cmd, 'FormattingOptions:OrganizeImports=true')
+        end
+
+        if new_config.enable_ms_build_load_projects_on_demand then
+            table.insert(new_config.cmd, 'MsBuild:LoadProjectsOnDemand=true')
+        end
+
+        if new_config.enable_roslyn_analyzers then
+            table.insert(new_config.cmd, 'RoslynExtensionsOptions:EnableAnalyzersSupport=true')
+        end
+
+        if new_config.enable_import_completion then
+            table.insert(new_config.cmd, 'RoslynExtensionsOptions:EnableImportCompletion=true')
+        end
+
+        if new_config.sdk_include_prereleases then
+            table.insert(new_config.cmd, 'Sdk:IncludePrereleases=true')
+        end
+
+        if new_config.analyze_open_documents_only then
+            table.insert(new_config.cmd, 'RoslynExtensionsOptions:AnalyzeOpenDocumentsOnly=true')
+        end
+    end,
+})
+
 
 lsp.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "<F12>", vim.lsp.buf.definition, opts)
+    -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    -- vim.keymap.set("n", "<F12>", vim.lsp.buf.definition, opts)lsp
     -- vim.lsp.buf.hover
     -- vim.lsp.buf.workspace_symbol
     -- vim.diagnostic.open_float
@@ -82,6 +184,7 @@ lsp.on_attach(function(client, bufnr)
             vim.diagnostic.goto_next { severity = vim.diagnostic.severity.HINT }
         end
     end)
+    print('Language server started')
 end)
 
 vim.keymap.set("n", "<C-.>", vim.lsp.buf.code_action)
@@ -100,6 +203,35 @@ vim.opt.signcolumn = 'yes' -- Keep sign column always visible
 
 lsp.setup()
 
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
+local cmp = require('cmp')
+local cmp_config = lsp.defaults.cmp_config({
+    window = {
+        completion = cmp.config.window.bordered()
+    },
+    mapping = {
+        ['<Tab>'] = cmp.mapping.select_next_item(),
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm({
+            -- behavior = cmp.ConfirmBehavior.Replace,
+            select = true,
+        }),
+        -- ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-Space>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.abort()
+            else
+                cmp.complete()
+            end
+        end),
+    },
+})
+
+cmp.setup(cmp_config)
+
 vim.diagnostic.config({
     virtual_text = true,
     signs = true,
@@ -107,4 +239,15 @@ vim.diagnostic.config({
     underline = true,
     severity_sort = true,
     float = true,
+})
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+-- Javascript / Typescript
+-- use 'jose-elias-alvarez/null-ls.nvim' -- Use eslint and prettier
+-- use 'jose-elias-alvarez/nvim-lsp-ts-utils' -- Provides some VSCode like features with import, etc.?
+lsp.configure('tsserver', {
+    -- on_attach = require'lsp.servers.tsserver'.on_attach,
+    capabilities = capabilities
 })

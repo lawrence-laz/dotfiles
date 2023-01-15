@@ -27,8 +27,13 @@ require("command_center").add({
         cmd = "<CMD>OpenGithubProject<CR>",
     },
     {
+        desc = "Close all tabs",
+        cmd = "<CMD>lua CloseAllBuffers()<CR>",
+    },
+
+    {
         desc = "Close all tabs but current",
-        cmd = "<CMD>BufferCloseAllButCurrent<CR>",
+        cmd = "<CMD>lua CloseAllButCurrent()<CR>",
     },
     {
         desc = "Close all tabs but pinned",
@@ -63,8 +68,8 @@ require("command_center").add({
     --     cmd = require 'lsp_lines'.toggle
     -- },
     {
-        desc = "Reset debugger",
-        cmd = "<CMD>VimspectorReset<CR>"
+        desc = "Debugger: Terminate",
+        cmd = "<CMD>DapTerminate<CR>"
     },
     {
         desc = "Go to next error",
@@ -142,9 +147,44 @@ require("command_center").add({
     { desc = 'Show test output', cmd = '<CMD>lua require("neotest").output.open()<CR>', },
     { desc = 'Toggle output pannel', cmd = '<CMD>lua require("neotest").output_panel.toggle()<CR>', },
     { desc = 'Toggle tests explorer (summary)', cmd = '<CMD>lua require"neotest".summary.toggle()<CR>', },
-
+    { desc = 'Markdown: Paste image and link', cmd = '<CMD>lua require("telekasten").paste_img_and_link()<CR>', },
+    { desc = 'Markdown: Toggle todo', cmd = '<CMD>lua require("telekasten").toggle_todo()<CR>', },
+    { desc = 'Markdown: Preview image', cmd = '<CMD>lua require("telekasten").preview_img()<CR>', },
+    { desc = 'Show key mappings', cmd = '<CMD>lua ShowMappingsInBuffer()<CR>', },
+    { desc = 'File: Copy full path', cmd = "<CMD>redir @* | ech expand('%:p') | redir END<CR>", },
+    { desc = 'File: Show unsaved changes', cmd = "<CMD>:w !diff % -<CR>", },
+    { desc = 'File: Reveal in file explorer', cmd = "<CMD>:!nautilus '%:p:h'<CR>", },
+    { desc = 'Language Server: Restart', cmd = "<CMD>:LspRestart<CR>", },
+    { desc = 'Language Server: Info', cmd = "<CMD>:LspInfo<CR>", },
     -- {
     --     desc = "Sort descending",
     --     cmd = "<CMD>lua vim.cmd[[Sort!]<CR>]",
     -- },
 })
+
+function ShowMappingsInBuffer()
+    vim.cmd [[redir @a | silent map | redir END | enew | put a]]
+end
+
+function CloseAllBuffers()
+    for _, e in ipairs(require 'bufferline'.get_elements().elements) do
+        if e ~= nil
+        then
+            vim.schedule(function()
+                vim.cmd("bd " .. e.id)
+            end)
+        end
+    end
+end
+
+function CloseAllButCurrent()
+    for _, e in ipairs(require("bufferline").get_elements().elements) do
+        vim.schedule(function()
+            if e.id == vim.api.nvim_get_current_buf() then
+                return
+            else
+                vim.cmd("bd " .. e.id)
+            end
+        end)
+    end
+end

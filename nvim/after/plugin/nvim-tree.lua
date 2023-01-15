@@ -26,6 +26,12 @@ require("nvim-tree").setup({
         dotfiles = false, -- Show hidden files
     },
 })
+vim.api.nvim_create_autocmd({ "FileType" }, {
+    pattern = { 'NvimTree' },
+    callback = function()
+        vim.keymap.set('n', '?', function() vim.cmd [[help nvim-tree-default-mappings]] end, { buffer = true })
+    end
+})
 
 vim.keymap.set("n", "<C-A-l>", function() -- Toggle file explorer
     if string.match(vim.api.nvim_buf_get_name(0), 'NvimTree') then

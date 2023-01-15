@@ -143,6 +143,10 @@ require('telekasten').setup({
 vim.api.nvim_create_autocmd({ "FileType" }, {
     pattern = { "telekasten" },
     callback = function()
+
+        vim.opt.wrap = true -- Wrap long lines
+        vim.opt.linebreak = true -- Don't break inside word
+
         vim.keymap.set("n", "<leader>zf", require('telekasten').find_notes)
         vim.keymap.set("n", "<leader>zd", require('telekasten').find_daily_notes)
         vim.keymap.set("n", "<leader>zg", require('telekasten').search_notes)
@@ -170,7 +174,5 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
         vim.keymap.set("n", "<leader>z", require('telekasten').panel)
 
         vim.keymap.set("i", "[[[", function() require('telekasten').insert_link({ i = true }) end)
-        vim.keymap.set("i", "<leader>zt", function() require('telekasten').toggle_todo({ i = true }) end)
-        vim.keymap.set("i", "<leader>#", function() require('telekasten').show_tags({ i = true }) end)
     end,
 })

@@ -1,6 +1,6 @@
-require'lspsaga'.init_lsp_saga()
+require 'lspsaga'.setup {}
 
 -- ok?
 -- Lspsaga hover_doc
--- 
+--
 --

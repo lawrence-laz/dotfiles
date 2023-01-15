@@ -1,5 +1,20 @@
 -- ============================================================================
 -- Use ':map' to see active mappings for debugging purposes.
+-- ----------------------------------------------------------------------------
+-- <C-V> j/k g<C-a> -> enumerate block with sequence of numbers
+-- <~> -> Change case
+-- VISUAL MODE: `gx` -> open selection with gnome-open/open
+-- % -> goes to next matching brace
+-- cit --> change insite tag
+-- ea --> end (word) append
+-- cip --> change inside paragraph
+-- <C-S-hjkl> navigate tmux and vim panels
+-- gv --> select last visual selection
+-- gf --> open selected path in new tab
+-- } and { --> in visual mode and other things move paragraph
+-- Smyvariable<CR> --> jump to anywhere
+-- **W --> all words around whitespaces
+-- o (visual mode) --> jumo between ends
 -- ============================================================================
 
 
@@ -11,7 +26,10 @@
 
 
 -- TODO:
--- dap debugger
+--
+-- https://github.com/tpope/vim-dadbod
+-- https://github.com/kristijanhusak/vim-dadbod-ui
+-- https://github.com/kristijanhusak/vim-dadbod-completion
 
 vim.g.mapleader = ' ' -- Key for <leader>
 
@@ -61,15 +79,22 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 --    end
 --})
 
-vim.keymap.set('n', 'J', 'gJ') -- Join lines without spaces in between
-vim.keymap.set('n', 'c', '"_c') -- Change text without modifying registers
-vim.keymap.set('n', 'C', '"_C') -- Change text without modifying registers
-vim.keymap.set('n', 'd', '"_d') -- Delete text without modifying registers
-vim.keymap.set('n', 'x', '"_x') -- Delete character without modifying registers
-vim.keymap.set('x', 'p', '\"_dP') -- Paste without modifying register
+-- Deleting motions are implemented by 'vim-cutlass'
+-- vim.keymap.set('n', 'c', '"_c') -- Change text without modifying registers
+-- vim.keymap.set('n', 'C', '"_C') -- Change text without modifying registers
+-- vim.keymap.set('n', 'd', '"_d') -- Delete text without modifying registers
+-- vim.keymap.set('n', 'x', '"_x') -- Delete character without modifying registers
+-- vim.keymap.set('x', 'p', '\"_dP') -- Paste without modifying register
 vim.keymap.set('n', '<S-Del>', '"_dd') -- Delete line without modifying registers
 vim.keymap.set('v', '<S-Del>', '"_D') -- Delete line without modifying registers
+vim.keymap.set('n', '<BS>', 'h"_x') -- Delete one character to left
+vim.keymap.set('n', '<C-BS>', '"_db') -- Delete one character to left
 
+-- Folding
+vim.keymap.set('n', '<C-S-[>', 'zc') -- Fold current
+vim.keymap.set('n', '<C-S-]>', 'zo') -- Unfold current
+
+vim.keymap.set('n', 'J', 'gJ') -- Join lines without spaces in between
 vim.keymap.set("v", "//", "y/\\V<C-R>=escape(@\",'/\\')<CR><CR>") -- Search selection in visual mode
 
 vim.keymap.set("n", "<C-l>", 'w') -- Go word forwards
@@ -81,6 +106,8 @@ vim.keymap.set("n", "<C-j>", "<C-d>") -- Go half-page down
 vim.keymap.set("n", "<C-k>", "<C-u>") -- Go half-page up
 vim.keymap.set("v", "<C-j>", "<C-d>") -- Go half-page down
 vim.keymap.set("v", "<C-k>", "<C-u>") -- Go half-page up
+
+vim.keymap.set("n", "<C-n>", ":enew<CR>") -- New file
 
 vim.keymap.set('n', 'H', '^') -- Jump to start of line
 vim.keymap.set('v', 'H', '^') -- Jump to start of line
@@ -106,3 +133,6 @@ vim.keymap.set("n", "<C-d>", "<cmd>copy .<CR>") -- Duplicate line
 vim.keymap.set("v", "<C-d>", "y'>o<Esc>pgv") -- Duplicate line
 vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<CR>") -- Split window to side
 vim.keymap.set("n", "<leader>-", "<cmd>split<CR>") -- Split window down
+
+
+vim.keymap.set("n", "<leader>is", "<cmd>Telescope symbols<CR>") -- Insert symbols

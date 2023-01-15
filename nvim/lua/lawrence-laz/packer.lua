@@ -33,6 +33,7 @@ return require('packer').startup(function(use)
 
     }
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+    use 'nvim-treesitter/nvim-treesitter-context' -- Also known as sticky scroll
     use 'mbbill/undotree'
 
     use 'hrsh7th/cmp-buffer'
@@ -138,7 +139,7 @@ return require('packer').startup(function(use)
         },
     }
 
-    -- using packer.nvim
+    -- Tabs
     use {
         'akinsho/bufferline.nvim',
         tag = "v3.*",
@@ -181,6 +182,12 @@ return require('packer').startup(function(use)
     use 'windwp/nvim-autopairs'
     use 'renerocksai/telekasten.nvim'
 
+    use 'mfussenegger/nvim-dap'
+    use 'theHamsta/nvim-dap-virtual-text'
+    use { 'rcarriga/nvim-dap-ui', requires = { 'mfussenegger/nvim-dap' } }
+    use 'nvim-telescope/telescope-dap.nvim'
+    use 'rcarriga/cmp-dap'
+
     use {
         "nvim-neotest/neotest",
         requires = {
@@ -190,6 +197,12 @@ return require('packer').startup(function(use)
             "Issafalcon/neotest-dotnet",
         }
     }
+
+    use 'Issafalcon/neotest-dotnet'
+
+    use 'gbprod/cutlass.nvim'
+    use 'nvim-pack/nvim-spectre'
+    use 'j-hui/fidget.nvim'
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
