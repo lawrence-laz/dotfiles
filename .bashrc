@@ -21,6 +21,12 @@
 # `sudo updatedb`         Update search index
 # `rg <phrase> <path>`    Search for phrase in file contents
 # `entr`                  Run command when fiven files have changes (see man entr for examples)
+# `df -h`                 Show mounted file systems and their info
+# `dd if=/dev/zero of=/media/fasthdd/swapfile.img bs=1024 count=1M`     Create swap file
+# `mkswap /media/fasthdd/swapfile.img`
+# Add this line to /etc/fstab
+# /media/fasthdd/swapfile.img swap swap sw 0 0
+# swapon /media/fasthdd/swapfile.img
 
 # =====================
 # Keyboard shortcuts
@@ -82,7 +88,8 @@ alias kittyconf='vim ~/.config/kitty/kitty.conf && killall -s SIGUSR1 kitty'
 alias kittyreload='killall -s SIGUSR1 kitty'
 alias picomconf='vim ~/.config/picom.conf'
 alias chmod-exec='chmod -R ugo=r,a+X,ug+x'
-alias todo='vim ~/todo'
+alias todo='vim ~/notes/todo.md'
+alias notes='vim ~/notes/root.md'
 alias shutdown='shutdown -h now'
 alias ubuntu-version='lsb_release -a'
 alias kernel-version='uname -r'
@@ -94,7 +101,26 @@ alias :q='exit'
 alias kpass='keepassxc-cli'
 alias ff='broot'
 alias cd!='cd_mkdir'
+alias journal='vim ~/notes/journal.md'
+alias dnbradio='mplayer -playlist https://dnbradio.com/hi.pls'
 #tlp = power battery manager
+
+
+function say2() {
+    if [[ -z "$1" ]]; then
+        :
+    else
+        tts --text "$1" --out_path /tmp/speech.wav && paplay /tmp/speech.wav
+    fi
+}
+
+function sakyk() {
+    if [[ -z "$1" ]]; then
+        :
+    else
+        tts --text "$1" --model_name "tts_models/lt/cv/vits" --out_path /tmp/speech.wav && paplay /tmp/speech.wav
+    fi
+}
 
 function restartbluetooth() {
     rfkill block bluetooth
