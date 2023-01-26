@@ -6,15 +6,22 @@
 -- VISUAL MODE: `gx` -> open selection with gnome-open/open
 -- % -> goes to next matching brace
 -- cit --> change insite tag
--- ea --> end (word) append
+-- ea --> end (word) append / bi --> back (word) insert
 -- cip --> change inside paragraph
--- <C-S-hjkl> navigate tmux and vim panels
 -- gv --> select last visual selection
 -- gf --> open selected path in new tab
 -- } and { --> in visual mode and other things move paragraph
 -- Smyvariable<CR> --> jump to anywhere
 -- **W --> all words around whitespaces
 -- o (visual mode) --> jumo between ends
+
+-- hjkl mappings
+-- Ctrl word/half page jumps
+-- Shift join line, etc.
+-- Alt move line/character
+-- Shift+Alt multiline
+-- Ctrl+Alt toggle file tree  (could be sacrificed?)
+-- Ctrl+Shift go to next usage of symbol
 -- ============================================================================
 
 
@@ -30,6 +37,14 @@
 -- https://github.com/tpope/vim-dadbod
 -- https://github.com/kristijanhusak/vim-dadbod-ui
 -- https://github.com/kristijanhusak/vim-dadbod-completion
+--
+
+
+
+
+
+
+
 
 vim.g.mapleader = ' ' -- Key for <leader>
 
@@ -135,4 +150,6 @@ vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<CR>") -- Split window to side
 vim.keymap.set("n", "<leader>-", "<cmd>split<CR>") -- Split window down
 
 
+vim.keymap.set("n", "<leader>is", "<cmd>Telescope symbols<CR>") -- Insert symbols
+vim.keymap.set("n", "<leader>is", "<cmd>Telescope symbols<CR>") -- Insert symbols
 vim.keymap.set("n", "<leader>is", "<cmd>Telescope symbols<CR>") -- Insert symbols

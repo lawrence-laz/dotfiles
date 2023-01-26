@@ -15,6 +15,7 @@
 # Commands
 # =====================
 # `nmcli dev wifi`        Show available wifi
+# `nmcli`                 Show all network stuff (including vpn)
 # `br`                    File navigation tree by Canop/broot
 # `lsof -p 8080`          Show process using this port
 # `locate *.desktop`      Search all files with given pattern from index
@@ -27,6 +28,7 @@
 # Add this line to /etc/fstab
 # /media/fasthdd/swapfile.img swap swap sw 0 0
 # swapon /media/fasthdd/swapfile.img
+# `pavucontrol`           Pulse audio settings
 
 # =====================
 # Keyboard shortcuts

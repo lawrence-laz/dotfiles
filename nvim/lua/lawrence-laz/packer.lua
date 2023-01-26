@@ -1,4 +1,11 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
+--
+-- Plugins are installed in ~/.local/share/nvim/site/pack
+--
+-- To load plugin for local development:
+-- 1. Comment out packer: use 'author/plugin'
+-- 2. Add: vim.opt.runtimepath:append("~/git/plugin")
+-- 3. :Telescope reload
 
 local ensure_packer = function()
     local fn = vim.fn
@@ -198,11 +205,15 @@ return require('packer').startup(function(use)
         }
     }
 
-    use 'Issafalcon/neotest-dotnet'
+    -- use 'Issafalcon/neotest-dotnet'
+    vim.opt.runtimepath:append("~/git/neotest-dotnet")
 
     use 'gbprod/cutlass.nvim'
     use 'nvim-pack/nvim-spectre'
     use 'j-hui/fidget.nvim'
+    use 'tyru/open-browser-github.vim'
+    use 'tyru/open-browser.vim'
+    use 'rafcamlet/nvim-luapad'
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins

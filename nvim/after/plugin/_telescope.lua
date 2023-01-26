@@ -5,4 +5,5 @@ vim.keymap.set('n', '<S-F12>', require 'telescope.builtin'.lsp_references) -- Fi
 vim.keymap.set('n', '<leader>gd', require 'telescope.builtin'.lsp_definitions) -- Find definitions of symbol under cursor
 vim.keymap.set('n', '<F12>', require 'telescope.builtin'.lsp_definitions) -- Find definitions of symbol under cursor
 vim.keymap.set('n', '<C-F12>', require 'telescope.builtin'.lsp_implementations) -- Find implementations of symbol under cursor
-vim.keymap.set('n', '<C-,>', require 'telescope.builtin'.lsp_workspace_symbols) -- Find symbols globally
+vim.keymap.set('n', '<C-,>', require 'telescope.builtin'.lsp_dynamic_workspace_symbols) -- Find symbols globally
+vim.keymap.set("n", "<C-S-t>", require 'telescope.builtin'.oldfiles) -- Closed files

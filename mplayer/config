@@ -1,0 +1,3 @@
+# Use pulse, then alsa, then SDL video with the aalib subdriver by default.
+ao=pulse,alsa,sdl:aalib
+

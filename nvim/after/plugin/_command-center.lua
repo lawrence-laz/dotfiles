@@ -23,7 +23,7 @@ require("command_center").add({
     --  cmd = open_visual_in_github,
     --},
     {
-        desc = "Open project in GitHub",
+        desc = "GitHub: Open project",
         cmd = "<CMD>OpenGithubProject<CR>",
     },
     {
