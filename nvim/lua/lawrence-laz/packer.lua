@@ -29,7 +29,7 @@ return require('packer').startup(function(use)
         'nvim-telescope/telescope.nvim',
         --tag = '0.1.0',
         branch = '0.1.x',
-        requires = { { 'nvim-lua/plenary.nvim' } }
+        requires = { 'nvim-lua/plenary.nvim' }
     }
     use 'nvim-telescope/telescope-symbols.nvim'
 
@@ -64,7 +64,7 @@ return require('packer').startup(function(use)
 
             -- Snippets
             { 'L3MON4D3/LuaSnip' },
-            { 'rafamadriz/friendly-snippets' },
+            { 'rafamadriz/friendly-snippets' }, -- Contains some strange license snippets not sure how to remove
         }
     }
 
@@ -174,10 +174,11 @@ return require('packer').startup(function(use)
     use 'mg979/vim-visual-multi'
     use 'christoomey/vim-tmux-navigator'
 
-    use {
-        "glepnir/lspsaga.nvim",
-        branch = "main",
-    }
+    -- errors out with some strange thing, not sure why I even need this
+    -- use {
+    --     "glepnir/lspsaga.nvim",
+    --     branch = "main",
+    -- }
 
     use 'ray-x/lsp_signature.nvim'
     use 'tpope/vim-repeat'
@@ -185,6 +186,7 @@ return require('packer').startup(function(use)
     use 'tpope/vim-surround'
     use 'rlane/pounce.nvim'
     use 'numToStr/Comment.nvim'
+    use 'JoosepAlviste/nvim-ts-context-commentstring'
 
     use 'windwp/nvim-autopairs'
     use 'renerocksai/telekasten.nvim'
@@ -197,16 +199,34 @@ return require('packer').startup(function(use)
 
     use {
         "nvim-neotest/neotest",
+        after = { "nvim-lspconfig", "telescope.nvim" },
         requires = {
             "nvim-lua/plenary.nvim",
             "nvim-treesitter/nvim-treesitter",
             "antoinemadec/FixCursorHold.nvim",
-            "Issafalcon/neotest-dotnet",
+            -- "Issafalcon/neotest-dotnet"
+            "~/git/neotest-dotnet",
         }
     }
 
+    use "folke/neodev.nvim"
+
+    -- use {
+    --     -- Bookmarks
+    --     "cbochs/grapple.nvim",
+    --     requires = { "nvim-lua/plenary.nvim" },
+    -- }
+
+    -- Bookmarks
+    -- ../../after/plugin/marks.lua
+    -- use 'chentoast/marks.nvim'
+    use '~/git/marks.nvim'
+
+    -- Lua formatter
+    use({ "wesleimp/stylua.nvim" })
+
     -- use 'Issafalcon/neotest-dotnet'
-    vim.opt.runtimepath:append("~/git/neotest-dotnet")
+    -- vim.opt.runtimepath:append("~/git/neotest-dotnet")
 
     use 'gbprod/cutlass.nvim'
     use 'nvim-pack/nvim-spectre'
