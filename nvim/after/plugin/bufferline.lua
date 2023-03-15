@@ -94,6 +94,15 @@ vim.keymap.set("n", "<A-7>", function() require'bufferline'.go_to_buffer(7, true
 vim.keymap.set("n", "<A-8>", function() require'bufferline'.go_to_buffer(8, true) end) -- Open 8th tab
 vim.keymap.set("n", "<A-9>", function() require'bufferline'.go_to_buffer(9, true) end) -- Open 9th tab
 
+vim.keymap.set("n", "<leader>k<S-CR>", require'bufferline'.toggle_pin) -- Toggle pin
+vim.keymap.set("n", "<leader>wl", function() 
+    for _, e in ipairs(require'bufferline'.get_elements().elements) do
+        vim.schedule(function()
+            vim.cmd("bd ".. e.id)
+        end)
+    end
+end) -- Close all tabs
+
 vim.keymap.set("n", "<C-tab>", "<cmd>BufferLineCycleNext<CR>") -- Open next tab
 vim.keymap.set("n", "<C-S-tab>", "<cmd>BufferLineCyclePrev<CR>") -- Open previous tab
 vim.keymap.set("n", "<C-t>", "<cmd>tabnew<CR>") -- New tab
