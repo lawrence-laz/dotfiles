@@ -29,6 +29,8 @@
 # /media/fasthdd/swapfile.img swap swap sw 0 0
 # swapon /media/fasthdd/swapfile.img
 # `pavucontrol`           Pulse audio settings
+# `ffmpeg -ss <start_seconds> -t <duration_seconds> -i "input.mp3" -c:a copy "output.mp3"`   Slice media file
+# `ffmpeg -i input.flac -ab 320k -map_metadata 0 -id3v2_version 3 output.mp3`                Convert .flac to .mp3
 
 # =====================
 # Keyboard shortcuts
@@ -39,6 +41,16 @@
 # Append to lbrary path for libdl.so
 # LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/snap/gnome-3-38-2004/119/usr/lib/x86_64-linux-gnul"
 
+# Path variable configured in:
+# ~/.bash_profile
+
+# =====================
+# Packages
+# =====================
+# go install github.com/open-pomodoro/openpomodoro-cli/cmd/pomodoro@latest
+
+
+echo "'pomodoro start' to start a work session"
 
 # Load tool specific configuration
 for f in ~/git/dotfiles/**/config.sh; do 
@@ -71,12 +83,14 @@ alias lazygitconf='vim /home/llaz/.config/jesseduffield/lazygit/config.yml'
 alias qr='zbarimg'
 alias vim='nvim --listen ~/tmp/nvim-server.pipe'
 alias bim='nvim --listen ~/tmp/nvim-server.pipe' # eh, I do this often enough to justify this alias
+alias v.='nvim --listen ~/tmp/nvim-server.pipe .' # eh, I do this often enough to justify this alias
 alias vim.='nvim --listen ~/tmp/nvim-server.pipe .' # eh, I do this often enough to justify this alias
 alias vim,.='nvim --listen ~/tmp/nvim-server.pipe .' # eh, I do this often enough to justify this alias
 alias vim.,='nvim --listen ~/tmp/nvim-server.pipe .' # eh, I do this often enough to justify this alias
 alias vim,='nvim --listen ~/tmp/nvim-server.pipe .' # eh, I do this often enough to justify this alias
 alias bell='paplay ~/.config/bell.wav'
 alias sneeze='paplay ~/.config/sneeze.wav'
+alias inspire='mpg123 `ls -dA ~/inspire/* | shuf -n 1`'
 alias vimrc='vim ~/git/dotfiles/nvim/'
 alias vimconf='vim ~/.config/nvim'
 alias vimf='vim `findf'
@@ -93,7 +107,7 @@ alias chmod-exec='chmod -R ugo=r,a+X,ug+x'
 alias todo='vim ~/notes/todo.md'
 alias notes='vim ~/notes/root.md'
 alias shutdown='shutdown -h now'
-alias ubuntu-version='lsb_release -a'
+alias ubuntu-version='lsb_release -a && cat /etc/regolith/version'
 alias kernel-version='uname -r'
 alias historyfzf='history -w /dev/stdout | sort --unique | fzf'
 alias where='type -a'
@@ -105,6 +119,7 @@ alias ff='broot'
 alias cd!='cd_mkdir'
 alias journal='vim ~/notes/journal.md'
 alias dnbradio='mplayer -playlist https://dnbradio.com/hi.pls'
+alias pomo='pomodoro'
 #tlp = power battery manager
 
 
