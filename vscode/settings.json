@@ -1,0 +1,161 @@
+{
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1,
+        "vscodevim.vim": 1,
+    },
+    "editor.fontFamily": "Fira Code",
+    "editor.fontLigatures": true,
+    "workbench.iconTheme": "material-icon-theme",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "telemetry.telemetryLevel": "off",
+    "dotnet-test-explorer.enableTelemetry": false,
+    "editor.minimap.renderCharacters": false,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "diffEditor.renderSideBySide": false,
+    "editor.renderWhitespace": "none",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.semanticHighlighting.enabled": true,
+    "csharp.semanticHighlighting.enabled": true,
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "files.insertFinalNewline": true,
+    "editor.linkedEditing": true,
+    "gitlens.defaultDateFormat": "YYYY-MM-DD HH:mm:ss",
+    "gitlens.defaultDateShortFormat": "YYYY-MM-DD",
+    "gitlens.defaultTimeFormat": "HH:mm",
+    "omnisharp.path": "",
+    "omnisharp.useGlobalMono": "always",
+    "omnisharp.enableRoslynAnalyzers": true,
+    "[csharp]": {
+        "editor.defaultFormatter": "ms-dotnettools.csharp"
+    },
+    "workbench.colorTheme": "Pitch Black",
+    "editor.accessibilitySupport": "off",
+    "editor.codeLens": false,
+    "editor.copyWithSyntaxHighlighting": false,
+    "vsicons.dontShowNewVersionMessage": true,
+    "window.zoomLevel": 1,
+    "workbench.activityBar.visible": false,
+    "editor.minimap.enabled": false,
+    "editor.inlineSuggest.enabled": true,
+    "json.format.keepLines": true,
+    "vim.easymotion": true,
+    "vim.incsearch": true,
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": true,
+    "vim.hlsearch": true,
+    "vim.visualstar": true,
+    "vim.highlightedyank.enable": true,
+    "vim.insertModeKeyBindingsNonRecursive": [
+        // { "before": [ "j", "j" ], "after": [ "<Esc>" ] }
+        { "before": [ "<S-CR>" ], "after": [ "<ESC>", "o" ] },
+        { "before": [ "<C-CR>" ], "after": [ "<ESC>", "O" ] },
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+
+        // Delete and change text without modifying the clipboard
+        { "before": [ "D" ], "after": [ "\"", "_", "D" ] },
+        { "before": [ "d" ], "after": [ "\"", "_", "d" ] },
+        { "before": [ "d", "d" ], "after": [ "\"", "_", "d", "d" ] },
+        { "before": [ "c" ], "after": [ "\"", "_", "c" ] },
+        { "before": [ "C" ], "after": [ "\"", "_", "C" ] },
+        { "before": [ "c", "c" ], "after": [ "\"", "_", "c", "c" ] },
+        { "before": [ "x" ], "after": [ "\"", "_", "x" ] },
+        { "before": [ "X" ], "after": [ "\"", "_", "X" ] },
+
+        // Move with regular vim delete that works as a cut
+        { "before": [ "m" ], "after": [ "d" ] },
+        { "before": [ "M" ], "after": [ "D" ] },
+        { "before": [ "M" ], "after": [ "D" ] },
+        { "before": [ "m", "m" ], "after": [ "d", "d" ] },
+
+        // Insert new line on enter
+        { "before": [ "<CR>" ], "after": [ "i", "<CR>", "<ESC>" ] },
+
+        // Jump to all easy motion
+        { "before": [ "s" ], "after": [ "<leader>", "<leader>", "<leader>", "j" ] },
+
+        { "before": [ "<C-n>" ], "commands": [ ":enew" ] },
+        { "before": [ "<S-CR>" ], "after": [ "o" ] },
+        { "before": [ "<C-CR>" ], "after": [ "O" ] },
+        
+        // vim.keymap.set("n", "<S-CR>", "o") -- Break line on next line vim.keymap.set("n", "<C-CR>", "O") -- Break line on previous line
+        { "before": [ "K" ], "commands": [ "lineBreakInsert" ], "silent": true },
+        { "before": [ "<leader>", "k", "k" ], "commands": [ "bookmarks.toggle" ] },
+        { "before": [ "<leader>", "k", "k" ], "commands": [ "bookmarks.toggle" ] },
+        { "before": [ "<leader>", "k", "p" ], "commands": [ "bookmarks.jumpToNext" ] },
+        { "before": [ "<leader>", "k", "n" ], "commands": [ "bookmarks.jumpToPrevious" ] },
+        { "before": [ "<leader>", "k", "l" ], "commands": [ "bookmarks.clearFromAllFiles" ] },
+        { "before": [ "<leader>", "k", "d" ], "commands": [ "editor.action.formatDocument" ] },
+        { "before": [ "<leader>", "r", "r" ], "commands": [ "editor.action.rename" ] },
+        { "before": [ "<leader>", "k", "c" ], "commands": [ "editor.action.commentLine" ] },
+        { "before": [ "<leader>", "g", "e" ], "commands": [ "go-to-next-error.nextInFiles.warning" ] },
+        { "before": [ "<leader>", "g", "u" ], "commands": [ "editor.action.goToReferences" ] },
+        { "before": [ "<leader>", "g", "d" ], "commands": [ "editor.action.revealDefinition" ] },
+        { "before": [ "<leader>", "g", "i" ], "commands": [ "editor.action.goToImplementation" ] },
+        { "before": [ "<leader>", "s", "e" ], "after": [ "g", "h" ] },
+        { "before": [ "<Tab>" ], "commands": [ "editor.action.indentLines" ] },
+        { "before": [ "<S-Tab>" ], "commands": [ "editor.action.outdentLines" ] },
+
+        // Split window to right
+        { "before": [ "<leader>", "-" ], "commands": [ ":split" ] },
+        // Split window to bottom
+        { "before": [ "<leader>", "\\" ], "commands": [ ":vsplit" ] },
+
+        // Select all document
+        { "before": [ "<C-a>" ], "after": [ "g", "g", "^", "v", "G", "$", ] },
+
+        // Simulate mouse hover under cursor
+        // { "before": [ "<C-S-Space>" ], "commands": [ "editor.action.showHover" ] },
+        // see other kmap from nvim
+        // gd jumo to definition
+        // gh hover
+        // vim.keymap.set("v", "<A-h>", '"hd2h"hp`[v`]') -- Move character to left
+        // vim.keymap.set("v", "<A-l>", '"hd"hp`[v`]') -- Move character to right
+        // VisualLine comment out using line comments
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+
+        // Delete and change text without modifying the clipboard
+        { "before": [ "d" ], "after": [ "\"", "_", "d" ] },
+        { "before": [ "c" ], "after": [ "\"", "_", "c" ] },
+        { "before": [ "x" ], "after": [ "\"", "_", "x" ] },
+
+        // Move with regular vim delete that works as a cut
+        { "before": [ "m" ], "after": [ "d" ] },
+
+        // Don't move cursor after yank
+        { "before": [ "y" ], "after": [ "y", "g", "v", "<ESC>" ] },
+
+        // Paste without modifying the clipboard
+        { "before": [ "p", ], "after": [ "p", "g", "v", "y" ] },
+        { "before": [ "<Tab>" ], "commands": [ "editor.action.indentLines" ] },
+        { "before": [ "<S-Tab>" ], "commands": [ "editor.action.outdentLines" ] },
+        { "before": [ "<leader>", "k", "c" ], "commands": [ "editor.action.blockComment" ] },
+    ],
+    "vim.operatorPendingModeKeyBindings": [
+        { "before": [ "L" ], "after": [ "$" ] },
+        { "before": [ "H" ], "after": [ "^" ] }
+    ],
+    "vim.leader": "<space>",
+    "vim.handleKeys": {
+        "<C-a>": true,
+        "<C-f>": true,
+        "<C-d>": true,
+        "<C-w>": false, // Using VSCode's smart expand instead
+    },
+    "vim.disableExtension": false,
+    "editor.cursorSurroundingLines": 100,
+    "workbench.editor.showTabs": false,
+    "window.menuBarVisibility": "toggle",
+    "git.openRepositoryInParentFolders": "never",
+    "terminal.integrated.sendKeybindingsToShell": true,
+    "terminal.integrated.allowChords": false
+}
