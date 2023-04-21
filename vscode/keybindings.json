@@ -249,4 +249,14 @@
         "command": "go-to-next-error.nextInFiles.error",
         "when": "editorFocus"
     },
+    {
+        "key": "ctrl+shift+k",
+        "command": "editor.action.wordHighlight.prev",
+        "when": "editorTextFocus && hasWordHighlights"
+    },
+    {
+        "key": "ctrl+shift+j",
+        "command": "editor.action.wordHighlight.next",
+        "when": "editorTextFocus && hasWordHighlights"
+    },
 ]
