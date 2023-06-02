@@ -49,8 +49,15 @@
 # =====================
 # go install github.com/open-pomodoro/openpomodoro-cli/cmd/pomodoro@latest
 
+# Enable dotnet sdk location trace
+# export COREHOST_TRACE=1
 
+unset PROMPT_COMMAND
+
+echo "------------------------"
 echo "'pomodoro start' to start a work session"
+echo "'notes' to open your notes"
+echo "------------------------"
 
 # Load tool specific configuration
 for f in ~/git/dotfiles/**/config.sh; do 
@@ -106,6 +113,7 @@ alias picomconf='vim ~/.config/picom.conf'
 alias chmod-exec='chmod -R ugo=r,a+X,ug+x'
 alias todo='vim ~/notes/todo.md'
 alias notes='vim ~/notes/root.md'
+alias htop='htop -d 1'
 alias shutdown='shutdown -h now'
 alias ubuntu-version='lsb_release -a && cat /etc/regolith/version'
 alias kernel-version='uname -r'
@@ -120,8 +128,8 @@ alias cd!='cd_mkdir'
 alias journal='vim ~/notes/journal.md'
 alias dnbradio='mplayer -playlist https://dnbradio.com/hi.pls'
 alias pomo='pomodoro'
+alias cs='csharprepl'
 #tlp = power battery manager
-
 
 function say2() {
     if [[ -z "$1" ]]; then
