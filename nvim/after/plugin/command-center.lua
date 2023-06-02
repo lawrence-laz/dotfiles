@@ -117,7 +117,9 @@ require("command_center").add({
 	},
 	{
 		desc = "Diagnostics: Search Errors",
-		cmd = "<CMD>Telescope diagnostics<CR>",
+		cmd = function()
+			require("telescope.builtin").diagnostics({ severity_limit = "warn" })
+		end,
 	},
 	{
 		desc = "Diagnostics: Show details",
@@ -171,6 +173,7 @@ require("command_center").add({
 	{ desc = "Language Server: Restart", cmd = "<CMD>:LspRestart<CR>" },
 	{ desc = "Language Server: Info", cmd = "<CMD>:LspInfo<CR>" },
 	{ desc = "Lua: Reload module", cmd = "<CMD>:Telescope reloader<CR>" },
+	{ desc = "GitHub: Open in Browser", cmd = "<CMD>!gh browse<CR>" },
 	{ desc = "Diff: Current split", cmd = "<CMD>:windo diffthis<CR>" },
 	{
 		desc = "Diff: New split",
@@ -213,3 +216,4 @@ function CloseAllButCurrent()
 		end)
 	end
 end
+

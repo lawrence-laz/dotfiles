@@ -72,3 +72,5 @@ vim.cmd([[autocmd FileType * set formatoptions-=ro]])
 
 -- Highlight yanked text
 vim.cmd([[au TextYankPost * silent! lua vim.highlight.on_yank()]])
+
+vim.o.cursorline = true -- Show current cursor line

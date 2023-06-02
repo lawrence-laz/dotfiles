@@ -197,6 +197,8 @@ return require('packer').startup(function(use)
     use 'nvim-telescope/telescope-dap.nvim'
     use 'rcarriga/cmp-dap'
 
+    -- use 'github/copilot.vim'
+
     use {
         "nvim-neotest/neotest",
         after = { "nvim-lspconfig", "telescope.nvim" },

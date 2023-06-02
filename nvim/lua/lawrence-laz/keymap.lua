@@ -21,6 +21,8 @@
 -- , --> go back find
 -- <C-k> to view method signature and current param
 -- <C-S-Space> to view docs for element under carret
+-- <C-^> jump between two last files
+-- * search word or visual selection
 
 -- \\A\\Cc - convert to camel case, P PascalCale, S SNAKE_UPPERCASE, <space>, -, U, u
 -- multiline + \\N - number row
@@ -45,6 +47,9 @@
 -- Oh how I wish <meta+hjkl> would work to jump between i3 windows, tmux panes and vim splits
 -- TODO: add broot config 3 panes for files|staging|<C-p> with target
 
+
+-- TODO: auto complete in command line with paths doesn't work??
+
 -- TODO:
 -- TRY OUT IMGUI.NET
 -- DO A PROOF OF CONCEPT WITH SCA LIKE WINDOWS
@@ -64,7 +69,41 @@
 
 -- Diff clibpard to visual selection, extend Diff: New split
 
+
+-- TODO: nvim-tree show diagnostic errors, etc.
+
+
+
+
+-- TODO!!!!!!!!!!!!!!!!!!!!!!!
+-- <C-k><C-S> or just <leader>ks -> surround with snippets, would be nice
+
 vim.g.mapleader = " " -- Key for <leader>
+
+
+-- Diff clipboard with visual selection
+vim.keymap.set("x", "<Leader>dd", function()
+	local ftype = vim.api.nvim_eval("&filetype")
+	vim.cmd(string.format(
+		[[
+    execute "normal! \"xy"
+    vsplit
+    enew
+    normal! P
+    setlocal buftype=nowrite
+    set filetype=%s
+    diffthis
+    execute "normal! \<C-w>\<C-w>"
+    enew
+    set filetype=%s
+    normal! "xP
+    diffthis
+  ]],
+		ftype,
+		ftype
+	))
+end)
+
 
 vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv") -- Move selection down
 vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv") -- Move selection up

@@ -171,7 +171,7 @@ lsp.configure("omnisharp", {
 	enable_ms_build_load_projects_on_demand = false,
 
 	-- Enables support for roslyn analyzers, code fixes and rulesets.
-	enable_roslyn_analyzers = false,
+	enable_roslyn_analyzers = true,
 
 	-- Specifies whether 'using' directives should be grouped and sorted during
 	-- document formatting.

@@ -12,6 +12,7 @@ vim.keymap.set("v", "<C-f>", function()
 	require("telescope.builtin").current_buffer_fuzzy_find({default_text = selection})
 end) -- Find in current file's content
 vim.keymap.set("n", "<S-F12>", require("telescope.builtin").lsp_references) -- Find references of symbol under cursor
+vim.keymap.set("n", "<leader>gu", require("telescope.builtin").lsp_references) -- Find references of symbol under cursor
 vim.keymap.set("n", "<leader>gd", require("telescope.builtin").lsp_definitions) -- Find definitions of symbol under cursor
 vim.keymap.set("n", "<F12>", require("telescope.builtin").lsp_definitions) -- Find definitions of symbol under cursor
 vim.keymap.set("n", "<C-F12>", require("telescope.builtin").lsp_implementations) -- Find implementations of symbol under cursor
