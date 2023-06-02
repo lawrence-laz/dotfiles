@@ -196,11 +196,24 @@
         "key": "alt+k",
         "command": "editor.action.moveLinesUpAction"
     },
-    { "key": "ctrl+tab", "command": "workbench.action.nextEditor" },
+    {
+        "key": "ctrl+tab",
+        "command": "vim.remap",
+        "args": {
+            "command": "workbench.action.nextEditor",
+            "after": [ "<Esc>", ":", "v", "s", "c", " ", "w", "o", "r", "k", "b", "e", "n", "c", "h", ".", "a", "c", "t", "i", "o", "n", ".", "n", "e", "x", "t", "E", "d", "i", "t", "o", "r", "<CR>" ]
+        }
+    },
+    {
+        "key": "ctrl+shift+tab",
+        "command": "vim.remap",
+        "args": {
+            "command": "workbench.action.previousEditor",
+            "after": [ "<Esc>", ":", "v", "s", "c", " ", "w", "o", "r", "k", "b", "e", "n", "c", "h", ".", "a", "c", "t", "i", "o", "n", ".", "p", "r", "e", "v", "i", "o", "u", "s", "E", "d", "i", "t", "o", "r", "<CR>" ]
+        }
+    },
     { "key": "ctrl+pagedown", "command": "-workbench.action.nextEditor" },
-    { "key": "ctrl+shift+tab", "command": "workbench.action.previousEditor" },
     { "key": "ctrl+pageup", "command": "-workbench.action.previousEditor" },
-
 
     // Show hover information
     {
@@ -211,7 +224,7 @@
         // "args": { "after": [ "\"hd2h\"hp`[v`]h" ] }
     },
 
-/*     {
+    /*     {
         "key": "ctrl+j ctrl+i",
         "command": "editor.debug.action.showDebugHover",
         "when": "editorTextFocus && inDebugMode"
@@ -233,13 +246,22 @@
     }, */
 
     // Navigate editor splits with ctrl+hjkl
-    { "key": "ctrl+k", "command": "workbench.action.focusAboveGroup" },
-    { "key": "ctrl+k ctrl+up", "command": "-workbench.action.focusAboveGroup" },
-    { "key": "ctrl+j", "command": "workbench.action.focusBelowGroup" },
-    { "key": "ctrl+k ctrl+down", "command": "-workbench.action.focusBelowGroup" },
-    { "key": "ctrl+h", "command": "workbench.action.focusLeftGroup" },
-    { "key": "ctrl+k ctrl+left", "command": "-workbench.action.focusLeftGroup" },
-    { "key": "ctrl+l", "command": "workbench.action.focusRightGroup" },
+    // { "key": "ctrl+k", "command": "workbench.action.focusAboveGroup" },
+    // { "key": "ctrl+k ctrl+up", "command": "-workbench.action.focusAboveGroup" },
+    // { "key": "ctrl+j", "command": "workbench.action.focusBelowGroup" },
+    // { "key": "ctrl+k ctrl+down", "command": "-workbench.action.focusBelowGroup" },
+    // { "key": "ctrl+h", "command": "workbench.action.focusLeftGroup" },
+    // { "key": "ctrl+k ctrl+left", "command": "-workbench.action.focusLeftGroup" },
+    // { "key": "ctrl+l", "command": "workbench.action.focusRightGroup" },
+    // This is event better and vim/tmux like
+    { "key": "ctrl+k", "command": "workbench.action.navigateUp" },
+    { "key": "ctrl+j", "command": "workbench.action.navigateDown" },
+    { "key": "ctrl+h", "command": "workbench.action.navigateLeft" },
+    { "key": "ctrl+l", "command": "workbench.action.navigateRight" },
+    { "key": "ctrl+h", "command": "workbench.action.previousPanelView", "when": "panelFocus" },
+    { "key": "ctrl+l", "command": "workbench.action.nextPanelView", "when": "panelFocus" },
+    { "key": "ctrl+k", "command": "workbench.files.action.focusOpenEditorsView", "when": "sideBarFocus && explorerViewletVisible" },
+    { "key": "ctrl+j", "command": "workbench.files.action.focusFilesExplorer", "when": "sideBarFocus && explorerViewletVisible && !filesExplorerFocus" },
     {
         "key": "ctrl+k ctrl+right",
         "command": "-workbench.action.focusRightGroup"
@@ -258,5 +280,70 @@
         "key": "ctrl+shift+j",
         "command": "editor.action.wordHighlight.next",
         "when": "editorTextFocus && hasWordHighlights"
+    },
+    {
+        "key": "alt+shift+;",
+        "command": "editor.action.selectHighlights",
+        "when": "editorFocus"
+    },
+    {
+        "key": "tab",
+        "command": "selectNextQuickFix",
+        "when": "editorFocus && quickFixWidgetVisible"
+    },
+    {
+        "key": "shift+tab",
+        "command": "selectPrevQuickFix",
+        "when": "editorFocus && quickFixWidgetVisible"
+    },
+    {
+        "key": "tab",
+        "command": "selectNextSuggestion",
+        "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible"
+    },
+    {
+        "key": "shift+tab",
+        "command": "selectPrevSuggestion",
+        "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible"
+    },
+    {
+        "key": "j",
+        "command": "multiCommand.navigateExplorerDownAndPreviewFile",
+        "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+    },
+    {
+        "key": "k",
+        "command": "multiCommand.navigateExplorerUpAndPreviewFile",
+        "when": "explorerViewletVisible && filesExplorerFocus && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+    },
+    {
+        "key": "ctrl+m ctrl+m",
+        "command": "editor.toggleFold",
+        "when": "editorTextFocus && foldingEnabled"
+    },
+    {
+        "key": "ctrl+k ctrl+l",
+        "command": "-editor.toggleFold",
+        "when": "editorTextFocus && foldingEnabled"
+    },
+    {
+        "key": "ctrl+tab",
+        "command": "-workbench.action.quickOpenNavigateNextInEditorPicker",
+        "when": "inEditorsPicker && inQuickOpen"
+    },
+    {
+        "key": "ctrl+shift+tab",
+        "command": "-workbench.action.quickOpenNavigatePreviousInEditorPicker",
+        "when": "inEditorsPicker && inQuickOpen"
+    },
+    {
+        "key": "ctrl+tab",
+        "command": "-workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup",
+        "when": "!activeEditorGroupEmpty"
+    },
+    {
+        "key": "ctrl+shift+tab",
+        "command": "-workbench.action.quickOpenLeastRecentlyUsedEditorInGroup",
+        "when": "!activeEditorGroupEmpty"
     },
 ]

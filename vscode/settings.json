@@ -11,6 +11,7 @@
     "dotnet-test-explorer.enableTelemetry": false,
     "editor.minimap.renderCharacters": false,
     "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
     "diffEditor.renderSideBySide": false,
     "editor.renderWhitespace": "none",
@@ -38,11 +39,9 @@
     },
     "workbench.colorTheme": "Pitch Black",
     "editor.accessibilitySupport": "off",
-    "editor.codeLens": false,
     "editor.copyWithSyntaxHighlighting": false,
     "vsicons.dontShowNewVersionMessage": true,
-    "window.zoomLevel": 1,
-    "workbench.activityBar.visible": false,
+    "workbench.activityBar.visible": true,
     "editor.minimap.enabled": false,
     "editor.inlineSuggest.enabled": true,
     "json.format.keepLines": true,
@@ -70,6 +69,9 @@
         { "before": [ "x" ], "after": [ "\"", "_", "x" ] },
         { "before": [ "X" ], "after": [ "\"", "_", "X" ] },
 
+        { "before": [ "j" ], "after": [ "g", "j" ] },
+        { "before": [ "k" ], "after": [ "g", "k" ] },
+
         // Move with regular vim delete that works as a cut
         { "before": [ "m" ], "after": [ "d" ] },
         { "before": [ "M" ], "after": [ "D" ] },
@@ -77,7 +79,7 @@
         { "before": [ "m", "m" ], "after": [ "d", "d" ] },
 
         // Insert new line on enter
-        { "before": [ "<CR>" ], "after": [ "i", "<CR>", "<ESC>" ] },
+        { "before": [ "<CR>" ], "after": [ "i", "<CR>", "<ESC>", "l" ] },
 
         // Jump to all easy motion
         { "before": [ "s" ], "after": [ "<leader>", "<leader>", "<leader>", "j" ] },
@@ -85,7 +87,7 @@
         { "before": [ "<C-n>" ], "commands": [ ":enew" ] },
         { "before": [ "<S-CR>" ], "after": [ "o" ] },
         { "before": [ "<C-CR>" ], "after": [ "O" ] },
-        
+
         // vim.keymap.set("n", "<S-CR>", "o") -- Break line on next line vim.keymap.set("n", "<C-CR>", "O") -- Break line on previous line
         { "before": [ "K" ], "commands": [ "lineBreakInsert" ], "silent": true },
         { "before": [ "<leader>", "k", "k" ], "commands": [ "bookmarks.toggle" ] },
@@ -97,9 +99,11 @@
         { "before": [ "<leader>", "r", "r" ], "commands": [ "editor.action.rename" ] },
         { "before": [ "<leader>", "k", "c" ], "commands": [ "editor.action.commentLine" ] },
         { "before": [ "<leader>", "g", "e" ], "commands": [ "go-to-next-error.nextInFiles.warning" ] },
+        // { "before": [ "<leader>", "g", "E" ], "commands": [ "go-to-next-error.nextInFiles.warning" ] }, // PRev error
         { "before": [ "<leader>", "g", "u" ], "commands": [ "editor.action.goToReferences" ] },
         { "before": [ "<leader>", "g", "d" ], "commands": [ "editor.action.revealDefinition" ] },
         { "before": [ "<leader>", "g", "i" ], "commands": [ "editor.action.goToImplementation" ] },
+        { "before": [ "g", "x" ], "commands": [ "editor.action.openLink" ] },
         { "before": [ "<leader>", "s", "e" ], "after": [ "g", "h" ] },
         { "before": [ "<Tab>" ], "commands": [ "editor.action.indentLines" ] },
         { "before": [ "<S-Tab>" ], "commands": [ "editor.action.outdentLines" ] },
@@ -112,6 +116,12 @@
         // Select all document
         { "before": [ "<C-a>" ], "after": [ "g", "g", "^", "v", "G", "$", ] },
 
+        { "before": [ "<C-Tab>" ], "after": [ "<Esc>" ], "commands": [ "workbench.action.nextEditor" ] },
+        { "before": [ "<C-S-Tab>" ], "after": [ "<Esc>" ], "commands": [ "workbench.action.previousEditor" ] },
+
+        // { "key": "ctrl+tab", "command": "workbench.action.nextEditor" },
+
+
         // Simulate mouse hover under cursor
         // { "before": [ "<C-S-Space>" ], "commands": [ "editor.action.showHover" ] },
         // see other kmap from nvim
@@ -121,6 +131,7 @@
         // vim.keymap.set("v", "<A-l>", '"hd"hp`[v`]') -- Move character to right
         // VisualLine comment out using line comments
     ],
+    "vim.debug.loggingLevelForConsole": "debug",
     "vim.visualModeKeyBindingsNonRecursive": [
 
         // Delete and change text without modifying the clipboard
@@ -138,7 +149,13 @@
         { "before": [ "p", ], "after": [ "p", "g", "v", "y" ] },
         { "before": [ "<Tab>" ], "commands": [ "editor.action.indentLines" ] },
         { "before": [ "<S-Tab>" ], "commands": [ "editor.action.outdentLines" ] },
-        { "before": [ "<leader>", "k", "c" ], "commands": [ "editor.action.blockComment" ] },
+        { "before": [ "<leader>", "k", "c" ], "commands": [ "editor.action.commentLine" ] },
+
+        { "before": [ "<C-Tab>" ], "after": [ "<Esc>" ], "commands": [ "workbench.action.nextEditor" ] },
+        { "before": [ "<C-S-Tab>" ], "after": [ "<Esc>" ], "commands": [ "workbench.action.previousEditor" ] },
+        
+        // Go to the end of line before new line symbol 
+        { "before": [ "$" ], "after": [ "$", "h" ] },
     ],
     "vim.operatorPendingModeKeyBindings": [
         { "before": [ "L" ], "after": [ "$" ] },
@@ -147,15 +164,43 @@
     "vim.leader": "<space>",
     "vim.handleKeys": {
         "<C-a>": true,
-        "<C-f>": true,
+        "<C-f>": false,
         "<C-d>": true,
         "<C-w>": false, // Using VSCode's smart expand instead
+        // "<C-Tab>": true,
+        // "<C-S-Tab>": true,
     },
     "vim.disableExtension": false,
     "editor.cursorSurroundingLines": 100,
     "workbench.editor.showTabs": false,
-    "window.menuBarVisibility": "toggle",
     "git.openRepositoryInParentFolders": "never",
     "terminal.integrated.sendKeybindingsToShell": true,
-    "terminal.integrated.allowChords": false
+    "terminal.integrated.allowChords": false,
+    "window.menuBarVisibility": "toggle",
+    "dotnet-test-explorer.testProjectPath": "**/*.csproj",
+    "dotnet-test-explorer.codeLensFailed": "❌",
+    "dotnet-test-explorer.codeLensPassed": "🐸",
+    "dotnet-test-explorer.codeLensSkipped": "⏩️",
+    "tailwindCSS.experimental.classRegex": [
+        "tailwind`([^`]*)",
+        "`([^`]*)",
+        [ "tailwind.style\\(([^)]*)\\)", "'([^']*)'" ]
+    ],
+    "tailwindCSS.classAttributes": [
+        "class",
+        "className",
+        "ngClass",
+        "style"
+    ],
+    "multiCommand.commands": [
+        {
+            "command": "multiCommand.navigateExplorerDownAndPreviewFile",
+            "sequence": [ "list.focusDown", "filesExplorer.openFilePreserveFocus" ]
+        },
+        {
+            "command": "multiCommand.navigateExplorerUpAndPreviewFile",
+            "sequence": [ "list.focusUp", "filesExplorer.openFilePreserveFocus" ]
+        }
+    ],
+    "window.zoomLevel": 1
 }
