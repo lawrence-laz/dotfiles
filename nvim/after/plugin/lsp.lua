@@ -7,7 +7,8 @@ lsp.set_preferences({})
 lsp.ensure_installed({
 	"tsserver",
 	"eslint",
-	"sumneko_lua",
+	-- "sumneko_lua",
+    "lua_ls", -- Temporarily
 	"rust_analyzer",
 	"bashls",
 	--'cpplint',
@@ -25,6 +26,8 @@ lsp.ensure_installed({
 	"lemminx",
 	"yamlls",
 	"html",
+    "zls",
+    -- "ols"
 })
 --
 -- vim.cmd[[snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<Cr>]]
@@ -129,6 +132,10 @@ lsp.ensure_installed({
 -- vim.keymap.set("v", "<TAB>", ">gv") -- Indent right without losing visual selection
 -- vim.keymap.set("n", "<S-TAB>", "<<") -- Indent right without losing visual selection
 -- vim.keymap.set("n", "<TAB>", ">>") -- Indent right without losing visual selection
+
+-- require("zls").setup({})
+-- require("ols").setup({})
+require('lspconfig').ols.setup({})
 
 require("neodev").setup({
 	-- add any options here, or leave empty to use the default settings

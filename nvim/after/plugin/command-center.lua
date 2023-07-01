@@ -143,6 +143,10 @@ require("command_center").add({
 		cmd = "<CMD>PackerSync<CR>",
 	},
 	{
+		desc = "Packer: Install",
+		cmd = "<CMD>PackerInstall<CR>",
+	},
+	{
 		desc = "Tmux: Split window with current directory",
 		cmd = '<CMD>silent !tmux split-window -c "`pwd`"<CR>',
 	},

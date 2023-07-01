@@ -1,2 +1,5 @@
 
 **/packer_compiled.lua
+
+.scripts/.vscode
+.scripts/omnisharp.json

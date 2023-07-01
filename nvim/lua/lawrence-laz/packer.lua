@@ -43,6 +43,8 @@ return require('packer').startup(function(use)
     use 'nvim-treesitter/nvim-treesitter-context' -- Also known as sticky scroll
     use 'mbbill/undotree'
 
+    use 'ziglang/zig.vim'
+
     use 'hrsh7th/cmp-buffer'
     use 'hrsh7th/cmp-path'
     use 'hrsh7th/cmp-cmdline'

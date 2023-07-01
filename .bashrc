@@ -81,6 +81,7 @@ fi
 # setxkbmap -layout us,lt -model pc104 -option 'grp:win_space_toggle'
 
 # Personal aliases
+alias deepsleep='sudo systemctl hibernate'
 alias loadssh='eval "$(ssh-agent)" > /dev/null && ssh-add -q ~/.ssh/github_key_old'
 alias sudo='sudo -E -s'
 alias open='xdg-open'
@@ -103,6 +104,7 @@ alias vimconf='vim ~/.config/nvim'
 alias vimf='vim `findf'
 alias vimplug='vim ~/.config/nvim/lua/plugins.lua'
 alias bashrc='vim ~/.bashrc && source ~/.bashrc'
+alias bash_profile='vim ~/.bash_profile && source ~/.bash_profile'
 alias inputrc='vim ~/.inputrc'
 alias i3conf='cd ~/.config && vim ~/.config/i3/config && cd -'
 alias i3save='i3-save-tree --workspace 1 > ~/.i3/workspace-1.json'
