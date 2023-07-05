@@ -10,7 +10,7 @@
     },
     "editor.fontFamily": "Fira Code",
     "editor.fontLigatures": true,
-    "workbench.iconTheme": "material-icon-theme",
+    "workbench.iconTheme": "vscode-icons",
     "javascript.updateImportsOnFileMove.enabled": "always",
     "telemetry.telemetryLevel": "off",
     "dotnet-test-explorer.enableTelemetry": false,
@@ -42,7 +42,6 @@
     "[csharp]": {
         "editor.defaultFormatter": "ms-dotnettools.csharp"
     },
-    "workbench.colorTheme": "Pitch Black",
     "editor.accessibilitySupport": "off",
     "editor.copyWithSyntaxHighlighting": false,
     "vsicons.dontShowNewVersionMessage": true,
@@ -181,7 +180,6 @@
     },
     "vim.disableExtension": false,
     "editor.cursorSurroundingLines": 100,
-    "workbench.editor.showTabs": false,
     "git.openRepositoryInParentFolders": "never",
     "terminal.integrated.sendKeybindingsToShell": true,
     "terminal.integrated.allowChords": false,
@@ -212,7 +210,6 @@
         }
     ],
     "zig.zls.path": "/home/llaz/.config/Code/User/globalStorage/ziglang.vscode-zig/zls_install/zls",
-    "window.zoomLevel": 1,
     "editor.formatOnSaveMode": "modificationsIfAvailable",
     "editor.formatOnSave": true,
     "github.copilot.enable": {
@@ -222,5 +219,10 @@
         "scminput": false,
         "csharp": true
     },
-    "debug.inlineValues": "on"
+    "debug.inlineValues": "on",
+    "workbench.layoutControl.enabled": false,
+    "workbench.colorTheme": "Pitch Black",
+    "window.zoomLevel": 1,
+    "workbench.editor.highlightModifiedTabs": true,
+    "workbench.editor.showTabs": false
 }
