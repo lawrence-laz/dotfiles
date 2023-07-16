@@ -186,7 +186,7 @@ return require('packer').startup(function(use)
     use 'tpope/vim-repeat'
     use 'kdheepak/lazygit.nvim'
     use 'tpope/vim-surround'
-    use 'rlane/pounce.nvim'
+    use 'rlane/pounce.nvim' -- leap.nvim better?
     use 'numToStr/Comment.nvim'
     use 'JoosepAlviste/nvim-ts-context-commentstring'
 

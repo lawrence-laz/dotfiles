@@ -1,5 +1,5 @@
--- ============================================================================
 -- Use ':map' to see active mappings for debugging purposes.
+-- ============================================================================
 -- ----------------------------------------------------------------------------
 -- <C-V> j/k g<C-a> -> enumerate block with sequence of numbers
 -- <~> -> Change case
@@ -80,7 +80,6 @@
 
 vim.g.mapleader = " " -- Key for <leader>
 
-
 -- Diff clipboard with visual selection
 vim.keymap.set("x", "<Leader>dd", function()
 	local ftype = vim.api.nvim_eval("&filetype")
@@ -104,11 +103,10 @@ vim.keymap.set("x", "<Leader>dd", function()
 	))
 end)
 
-
-vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv") -- Move selection down
-vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv") -- Move selection up
-vim.keymap.set("n", "<A-j>", "V:m '>+1<CR>gv=gv<ESC>") -- Move current line down
-vim.keymap.set("n", "<A-k>", "V:m '<-2<CR>gv=gv<ESC>") -- Move current line up
+vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv") -- Move selection down 
+vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv") -- Move selection up 
+vim.keymap.set("n", "<A-j>", "V:m '>+1<CR>gv=gv<ESC>") -- Move current line down 
+vim.keymap.set("n", "<A-k>", "V:m '<-2<CR>gv=gv<ESC>") -- Move current line up 
 vim.keymap.set("n", "<A-h>", '"hx2h"hp') -- Move character to left
 vim.keymap.set("n", "<A-l>", '"hx"hp') -- Move character to right
 vim.keymap.set("v", "<A-h>", '"hd2h"hp`[v`]') -- Move character to left
@@ -180,9 +178,7 @@ vim.keymap.set("v", "//", "y/\\V<C-R>=escape(@\",'/\\')<CR><CR>") -- Search sele
 -- vim.keymap.set("n", "<C-k>", "<C-u>") -- Go half-page up
 -- vim.keymap.set("v", "<C-j>", "<C-d>") -- Go half-page down
 -- vim.keymap.set("v", "<C-k>", "<C-u>") -- Go half-page up
-
 vim.keymap.set("n", "<C-n>", ":enew<CR>") -- New file
-
 vim.keymap.set("n", "H", "^") -- Jump to start of line
 vim.keymap.set("v", "H", "^") -- Jump to start of line
 vim.keymap.set("n", "L", "$") -- Jump to end of line

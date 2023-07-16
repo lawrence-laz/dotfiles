@@ -1,13 +1,21 @@
 PROMPT='%/ %# '
 
 # Start tmux on load
-if [ "$TMUX" = "" ]; then exec tmux; fi
+#if [ "$TMUX" = "" ]; then exec tmux; fi
 
 # Functions
 up-directory() {
    builtin cd ..  && zle reset-prompt
 }
 zle -N up-directory
+
+cdf() {
+    if [[ -z "$1" ]]; then
+        cd `find . -maxdepth 3 -type d 2>/dev/null | fzf`
+    else
+        cd `find . -maxdepth 3 -type d 2>/dev/null | fzf -q $1`
+    fi
+}
 
 # Key bindings
 bindkey "\e[A" history-beginning-search-backward # Arrow up
@@ -31,3 +39,5 @@ alias lg=lazygit
 alias ls="ls -a"
 alias q=exit
 alias snooze=pmset sleepnow
+alias c.="code -r ."
+alias v.="nvim ."
