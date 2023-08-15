@@ -2,6 +2,9 @@
 # - To get key codes, run `skhd -o` and press the key.
 # - In case skhd stops working, try commenting this file.
 # ########################################################
+# TODO: Why do I need alt instead of cmd, like I switch in all other? 
+# There must be a reason, but I'm afraind to change it again
+# ########################################################
 
 # change window focus within space
 alt - j : yabai -m window --focus south

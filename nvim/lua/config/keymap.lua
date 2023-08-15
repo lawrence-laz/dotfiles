@@ -1,3 +1,5 @@
+vim.keymap.set("n", "<A-k>", "[[<Cmd>call VSCodeCall('editor.action.moveLinesUpAction')<CR>]]") -- Move current line up 
+-- ============================= VSCode =============================
 --TODO:
 	--- First try dotnet aoc
 	--- if it sucks go through langs
@@ -49,26 +51,54 @@
 -- TODO: <C-S-Space>
 -- TODO: <leader>ge <leader>gE <C-S-F12>
 -- TODO: <C-.>
--- TODO: <leader>kd
+-- TODO: <leader>kd -- format
 -- TODO: <leader>rr
--- TODO: <leader> kk kp kn kl
+-- TODO: <leader> kk kp kn kl BOOKMARKS
 
 -- TODO: <leader>rt
 -- TODO: <A-S;> <A-S-.> <A-S-jk>
+-- TODO: <F5> continue while in debug
+-- TODO: <leader>kc comment doesn't work with multiple lines selected
+-- TODO: <leader>k <shift>enter pin tab
+-- TODO: while in debug <shift>k -> debug: show hover or <leader>dh?
+-- TODO: <C-`> change case clashes with terminal, use <leader>st show terminal?
+-- TODO: global zoom ctr+ -
 
 --vim.keymap.set("n", "zz", function() vim.cmd.VSCodeNotifyVisual('workbench.action.showCommands', 1) end)
 
 if vim.g.vscode then
-    -- VSCode extension
+	-- vim.keymap.set("v", "<A-j>", "[[<Cmd>call VSCodeNotifyVisual('editor.action.moveLinesDownAction', 1)<CR>]]") -- Move selection down 
+	-- vim.keymap.set("v", "<A-k>", "[[<Cmd>call VSCodeNotifyVisual('editor.action.moveLinesUpAction', 1)<CR>]]") -- Move selection up 
+	-- vim.keymap.set("n", "<A-j>", "[[<Cmd>call VSCodeCall('editor.action.moveLinesDownAction')<CR>]]") -- Move current line down 
+	-- vim.keymap.set("n", "<A-k>", "[[<Cmd>call VSCodeCall('editor.action.moveLinesUpAction')<CR>]]") -- Move current line down 
+	vim.keymap.set("n", "<leader>\\", "[[<Cmd>call VSCodeNotify('workbench.action.splitEditorRight')<CR>]]") -- Split window to side
+	vim.keymap.set("n", "<leader>-", "[[<Cmd>call VSCodeNotify('workbench.action.splitEditorDown')<CR>]]") -- Split window down
 else
-    -- ordinary Neovim
+	-- vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv") -- Move selection down 
+	-- vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv") -- Move selection up 
+	-- vim.keymap.set("n", "<A-j>", "V:m '>+1<CR>gv=gv<ESC>") -- Move current line down 
+	-- vim.keymap.set("n", "<A-k>", "V:m '<-2<CR>gv=gv<ESC>") -- Move current line up 
+	vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<CR>") -- Split window to side
+	vim.keymap.set("n", "<leader>-", "<cmd>split<CR>") -- Split window down
 end
 
--- vim.keymap.set("v", "<M-j>", ":m '>+1<CR>gv=gv") -- Move selection down 
-vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv") -- Move selection down 
-vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv") -- Move selection up 
-vim.keymap.set("n", "<A-j>", "V:m '>+1<CR>gv=gv<ESC>") -- Move current line down 
-vim.keymap.set("n", "<A-k>", "V:m '<-2<CR>gv=gv<ESC>") -- Move current line up 
+
+if vim.g.vscode then
+  -- Nothing
+else
+  vim.keymap.set("n", "<C-A-l>", "<cmd>Lexplore %:p:h<CR>") -- Open netrw
+  vim.keymap.set("n", "<A-l>", "<cmd>Lexplore %:p:h<CR>") -- Open netrw
+  vim.keymap.set("n", "<leader>l", "<cmd>Lexplore %:p:h<CR>") -- Open netrw
+end
+
+vim.keymap.set('x', 'p', '\"_dP') -- Paste without modifying register
+vim.keymap.set("n", "<S-Del>", '"_dd') -- Delete line without modifying registers
+vim.keymap.set("v", "<S-Del>", '"_D') -- Delete line without modifying registers
+vim.keymap.set("n", "<BS>", 'h"_x') -- Delete one character to left
+vim.keymap.set("n", "<C-BS>", '"_db') -- Delete one word to left
+vim.keymap.set("i", "<C-BS>", '<C-w>') -- Delete one word to left
+vim.keymap.set("v", "y", "y`>") -- Yank and jump to end of the yanked text
+
 vim.keymap.set("n", "<A-h>", '"hx2h"hp') -- Move character to left
 vim.keymap.set("n", "<A-l>", '"hx"hp') -- Move character to right
 vim.keymap.set("v", "<A-h>", '"hd2h"hp`[v`]') -- Move character to left
@@ -124,9 +154,9 @@ vim.keymap.set("n", "<S-TAB>", "<<") -- Indent right without losing visual selec
 vim.keymap.set("n", "<TAB>", ">>") -- Indent right without losing visual selection
 vim.keymap.set("n", "<C-a>", "gg^vG$") -- Select all
 
-
-vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<CR>") -- Split window to side
-vim.keymap.set("n", "<leader>-", "<cmd>split<CR>") -- Split window down
-vim.keymap.set("n", "<leader>rr", [[<Cmd>call VSCodeNotify('editor.action.rename')<CR>]])
-vim.keymap.set("n", "<leader>kc", [[<Cmd>call VSCodeNotify('editor.action.commentLine')<CR>]])
-vim.keymap.set("n", "<leader>ee", [[<Cmd>call VSCodeNotify('workbench.actions.view.problems')<CR>]])
+if vim.g.vscode then
+  vim.keymap.set("n", "<leader>rr", [[<Cmd>call VSCodeNotify('editor.action.rename')<CR>]])
+  vim.keymap.set("n", "<leader>kc", [[<Cmd>call VSCodeNotify('editor.action.commentLine')<CR>]])
+  vim.keymap.set("v", "<leader>kc", [[<Cmd>call VSCodeNotifyVisual('editor.action.commentLine', 1)<CR>]])
+  vim.keymap.set("n", "<leader>ee", [[<Cmd>call VSCodeNotify('workbench.actions.view.problems')<CR>]])
+end

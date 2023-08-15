@@ -239,6 +239,7 @@
         "editor.defaultFormatter": "vscode.typescript-language-features"
     },
     "cSpell.userWords": [
+        "comparand",
         "inputrc",
         "neovim",
         "SYSLIB"

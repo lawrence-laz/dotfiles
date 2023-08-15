@@ -37,3 +37,12 @@ brew install hyperfine
 # Utility to count lines of code in a directory
 brew install cloc
 
+# Python
+brew install --caskl anaconda
+
+# Watch
+brew install watch
+
+# File system navigator
+brew install broot
+

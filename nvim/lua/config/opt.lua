@@ -7,6 +7,14 @@ else
     vim.opt.number = true
 end
 
+-- ========================== Netrw =============================================
+vim.g.netrw_keepdir = 0 -- Keep the current directory and the browsing directory synced. This helps avoid the move files error.
+vim.g.netrw_winsize = 30 -- 30%.
+vim.g.netrw_banner = 1 -- Show banner, it has contextural info.
+vim.g.netrw_localcopydircmd = 'cp -r' -- Enable recursive copying.
+vim.cmd[[hi! link netrwMarkFile Search]] -- Highlight marked as search results for better visibility.
+-- ==============================================================================
+
 vim.g.CutlassOverrideDefaults = 1 -- Enable cutlass
 
 vim.opt.relativenumber = false
@@ -16,7 +24,7 @@ vim.opt.completeopt = "menu,menuone,noselect"
 vim.opt.conceallevel = 3 -- Hide * markup for bold and italic
 vim.opt.confirm = true -- Confirm to save changes before exiting modified buffer
 vim.opt.cursorline = true -- Enable highlighting of the current line
-vim.opt.expandtab = true -- Use spaces instead of tabs
+vim.opt.expandtab = true -- Use spaces instead of t:set tabstop=4
 vim.opt.formatoptions = "jcroqlnt" -- tcqj
 vim.opt.grepformat = "%f:%l:%c:%m"
 vim.opt.grepprg = "rg --vimgrep"
@@ -41,7 +49,8 @@ vim.opt.smartindent = true -- Insert indents automatically
 vim.opt.spelllang = { "en" }
 vim.opt.splitbelow = true -- Put new windows below current
 vim.opt.splitright = true -- Put new windows right of current
-vim.opt.tabstop = 4 -- Number of spaces tabs count for
+vim.opt.tabstop = 8 -- Number of spaces tabs count for
+vim.opt.shiftwidth = 8 -- Number of spaces tabs count for
 vim.opt.termguicolors = true -- True color support
 vim.opt.timeoutlen = 300
 vim.opt.undofile = true

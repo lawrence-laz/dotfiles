@@ -1,3 +1,8 @@
+# TODO: Install autojump
+# TODO: Install harpoon equivalent
+# TODO: alt + arrows in remote desktop
+# TODO: alt+shift+arrows in remote desktop
+
 PROMPT='%/ %# '
 
 # Start tmux on load
@@ -16,6 +21,9 @@ cdf() {
         cd `find . -maxdepth 3 -type d 2>/dev/null | fzf -q $1`
     fi
 }
+
+# Start skhd if not running
+[[ $(ps aux | grep skhd) =~ "bin/skhd" ]] || skhd --start-service
 
 # Key bindings
 bindkey "\e[A" history-beginning-search-backward # Arrow up
@@ -41,3 +49,5 @@ alias q=exit
 alias snooze=pmset sleepnow
 alias c.="code -r ."
 alias v.="nvim ."
+
+source /Users/llaz/.config/broot/launcher/bash/br
