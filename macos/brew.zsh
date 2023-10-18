@@ -46,3 +46,8 @@ brew install watch
 # File system navigator
 brew install broot
 
+# Cmake build system
+brew install cmake
+
+# Git repo information
+brew install onefetch

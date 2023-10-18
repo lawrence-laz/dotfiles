@@ -1,12 +1,19 @@
+# Runs for interactive shell only (does not run inside vim for example).
+
 # TODO: Install autojump
 # TODO: Install harpoon equivalent
 # TODO: alt + arrows in remote desktop
 # TODO: alt+shift+arrows in remote desktop
+# TODO: Add a function to convert .mov to .gif: ffmpeg -i in.mov -pix_fmt rgb8 -r 10 zig-test-runner.gif && gifsicle -O3 zig-test-runner.gif -o zig-test-runner.gif
+# pbcopy / pbpaste	- 	Interact with clipboard via command line
 
 PROMPT='%/ %# '
 
 # Start tmux on load
 #if [ "$TMUX" = "" ]; then exec tmux; fi
+
+# Add brew installed packages to path
+eval $(/opt/homebrew/bin/brew shellenv)
 
 # Functions
 up-directory() {
@@ -21,6 +28,31 @@ cdf() {
         cd `find . -maxdepth 3 -type d 2>/dev/null | fzf -q $1`
     fi
 }
+
+# mvout - moves source directory contents to parent and destroys source directory
+# mvout [SOURCE]
+mvout() {
+
+    if [[ -z "$1" ]]; then
+        SOURCE=$(pwd)
+        cd ..
+    else
+        SOURCE=$1
+    fi
+
+    if [ ! -d "$SOURCE" ]; then
+        echo 'Given path does not exist'
+        return 1
+    fi
+
+    cp -r "$SOURCE"/* "$SOURCE"/.. 
+    if [ $? -eq 0 ]; then
+        rm -rf "$SOURCE"
+    else
+        echo 'Unable to copy out contents from source directory'
+    fi
+}
+
 
 # Start skhd if not running
 [[ $(ps aux | grep skhd) =~ "bin/skhd" ]] || skhd --start-service
@@ -43,11 +75,5 @@ setopt HIST_IGNORE_DUPS
 alias zshrc="vim ~/.zshrc && source ~/.zshrc"
 alias zhrc="vim ~/.zshrc && source ~/.zshrc" # Just because
 alias hello="echo hi"
-alias lg=lazygit
-alias ls="ls -a"
-alias q=exit
-alias snooze=pmset sleepnow
-alias c.="code -r ."
-alias v.="nvim ."
 
 source /Users/llaz/.config/broot/launcher/bash/br

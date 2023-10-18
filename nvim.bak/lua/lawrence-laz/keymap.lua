@@ -103,25 +103,25 @@ vim.keymap.set("x", "<Leader>dd", function()
 	))
 end)
 
-vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv") -- Move selection down 
-vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv") -- Move selection up 
-vim.keymap.set("n", "<A-j>", "V:m '>+1<CR>gv=gv<ESC>") -- Move current line down 
-vim.keymap.set("n", "<A-k>", "V:m '<-2<CR>gv=gv<ESC>") -- Move current line up 
-vim.keymap.set("n", "<A-h>", '"hx2h"hp') -- Move character to left
-vim.keymap.set("n", "<A-l>", '"hx"hp') -- Move character to right
-vim.keymap.set("v", "<A-h>", '"hd2h"hp`[v`]') -- Move character to left
-vim.keymap.set("v", "<A-l>", '"hd"hp`[v`]') -- Move character to right
+vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")                  -- Move selection down
+vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")                  -- Move selection up
+vim.keymap.set("n", "<A-j>", "V:m '>+1<CR>gv=gv<ESC>")            -- Move current line down
+vim.keymap.set("n", "<A-k>", "V:m '<-2<CR>gv=gv<ESC>")            -- Move current line up
+vim.keymap.set("n", "<A-h>", '"hx2h"hp')                          -- Move character to left
+vim.keymap.set("n", "<A-l>", '"hx"hp')                            -- Move character to right
+vim.keymap.set("v", "<A-h>", '"hd2h"hp`[v`]')                     -- Move character to left
+vim.keymap.set("v", "<A-l>", '"hd"hp`[v`]')                       -- Move character to right
 
-vim.keymap.set("n", "j", "gj") -- Move cursor down including wrapped lines
-vim.keymap.set("n", "k", "gk") -- Move cursor up including wrapped lines
+vim.keymap.set("n", "j", "gj")                                    -- Move cursor down including wrapped lines
+vim.keymap.set("n", "k", "gk")                                    -- Move cursor up including wrapped lines
 
-vim.keymap.set("n", "<C-->", "<C-O>") -- Go back
-vim.keymap.set("n", "<C-_>", "<C-I>") -- Go forward
+vim.keymap.set("n", "<C-->", "<C-O>")                             -- Go back
+vim.keymap.set("n", "<C-_>", "<C-I>")                             -- Go forward
 
 vim.keymap.set("v", "//", "y/\\V<C-R>=escape(@\",'/\\')<CR><CR>") -- Search selection in visual mode
-vim.keymap.set("v", "<C-Enter>", "gx") -- Open selection with default app
+vim.keymap.set("v", "<C-Enter>", "gx")                            -- Open selection with default app
 
-vim.keymap.set("n", "Q", "<nop>") -- ???
+vim.keymap.set("n", "Q", "<nop>")                                 -- ???
 
 -- Source lua config files after save
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
@@ -153,20 +153,21 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 -- vim.keymap.set('n', 'C', '"_C') -- Change text without modifying registers
 -- vim.keymap.set('n', 'd', '"_d') -- Delete text without modifying registers
 -- vim.keymap.set('n', 'x', '"_x') -- Delete character without modifying registers
-vim.keymap.set('x', 'p', '\"_dP') -- Paste without modifying register
+vim.keymap.set('x', 'p', '\"_dP')      -- Paste without modifying register
 vim.keymap.set("n", "<S-Del>", '"_dd') -- Delete line without modifying registers
-vim.keymap.set("v", "<S-Del>", '"_D') -- Delete line without modifying registers
-vim.keymap.set("n", "<BS>", 'h"_x') -- Delete one character to left
-vim.keymap.set("n", "<C-BS>", '"_db') -- Delete one word to left
+vim.keymap.set("v", "<S-Del>", '"_D')  -- Delete line without modifying registers
+vim.keymap.set("n", "<BS>", 'h"_x')    -- Delete one character to left
+vim.keymap.set("n", "<C-BS>", '"_db')  -- Delete one word to left
 vim.keymap.set("i", "<C-BS>", '<C-w>') -- Delete one word to left
-vim.keymap.set("v", "y", "y`>") -- Yank and jump to end of the yanked text
+vim.keymap.set("v", "y", "y`>")        -- Yank and jump to end of the yanked text
 
 -- Folding
-vim.keymap.set("n", "<C-S-[>", "zc") -- Fold current
-vim.keymap.set("n", "<C-S-]>", "zo") -- Unfold current
+vim.keymap.set("n", "<C-S-[>", "zc")                              -- Fold current
+vim.keymap.set("n", "<C-S-]>", "zo")                              -- Unfold current
 
-vim.keymap.set("n", "J", "gJ") -- Join lines without spaces in between
+vim.keymap.set("n", "J", "gJ")                                    -- Join lines without spaces in between
 vim.keymap.set("v", "//", "y/\\V<C-R>=escape(@\",'/\\')<CR><CR>") -- Search selection in visual mode
+
 
 -- Retired in favor of tmux/vim pane movement
 -- vim.keymap.set("n", "<C-l>", "w") -- Go word forwards
@@ -179,33 +180,33 @@ vim.keymap.set("v", "//", "y/\\V<C-R>=escape(@\",'/\\')<CR><CR>") -- Search sele
 -- vim.keymap.set("v", "<C-j>", "<C-d>") -- Go half-page down
 -- vim.keymap.set("v", "<C-k>", "<C-u>") -- Go half-page up
 vim.keymap.set("n", "<C-n>", ":enew<CR>") -- New file
-vim.keymap.set("n", "H", "^") -- Jump to start of line
-vim.keymap.set("v", "H", "^") -- Jump to start of line
-vim.keymap.set("n", "L", "$") -- Jump to end of line
-vim.keymap.set("v", "L", "$") -- Jump to end of line
+vim.keymap.set("n", "H", "^")             -- Jump to start of line
+vim.keymap.set("v", "H", "^")             -- Jump to start of line
+vim.keymap.set("n", "L", "$")             -- Jump to end of line
+vim.keymap.set("v", "L", "$")             -- Jump to end of line
 
 vim.keymap.set("n", "<CR>", "i<CR><ESC>") -- Break line
-vim.keymap.set("n", "<S-CR>", "o") -- Break line on next line
-vim.keymap.set("n", "<C-CR>", "O") -- Break line on previous line
-vim.keymap.set("i", "<S-CR>", "<ESC>o") -- Break line on next line
-vim.keymap.set("i", "<C-CR>", "<ESC>O") -- Break line on previous line
+vim.keymap.set("n", "<S-CR>", "o")        -- Break line on next line
+vim.keymap.set("n", "<C-CR>", "O")        -- Break line on previous line
+vim.keymap.set("i", "<S-CR>", "<ESC>o")   -- Break line on next line
+vim.keymap.set("i", "<C-CR>", "<ESC>O")   -- Break line on previous line
 
 -- Insert line break keeping cursor unmoved
 --nnoremap oo m`o<ESC>``
 --nnoremap OO m`O<ESC>``
-vim.keymap.set("v", "<", "<gv") -- Indent left without losing visual selection
-vim.keymap.set("v", ">", ">gv") -- Indent right without losing visual selection
-vim.keymap.set("v", "<S-TAB>", "<gv") -- Indent right without losing visual selection
-vim.keymap.set("v", "<TAB>", ">gv") -- Indent right without losing visual selection
-vim.keymap.set("n", "<S-TAB>", "<<") -- Indent right without losing visual selection
-vim.keymap.set("n", "<TAB>", ">>") -- Indent right without losing visual selection
+vim.keymap.set("v", "<", "<gv")        -- Indent left without losing visual selection
+vim.keymap.set("v", ">", ">gv")        -- Indent right without losing visual selection
+vim.keymap.set("v", "<S-TAB>", "<gv")  -- Indent right without losing visual selection
+vim.keymap.set("v", "<TAB>", ">gv")    -- Indent right without losing visual selection
+vim.keymap.set("n", "<S-TAB>", "<<")   -- Indent right without losing visual selection
+vim.keymap.set("n", "<TAB>", ">>")     -- Indent right without losing visual selection
 vim.keymap.set("n", "<C-a>", "gg^vG$") -- Select all
 
 -- Retired in favor of the default "go down half a page"
 -- vim.keymap.set("n", "<C-d>", "<cmd>copy .<CR>") -- Duplicate line
 -- vim.keymap.set("v", "<C-d>", "y'>o<Esc>pgv") -- Duplicate line
-vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<CR>") -- Split window to side
-vim.keymap.set("n", "<leader>-", "<cmd>split<CR>") -- Split window down
+vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<CR>")            -- Split window to side
+vim.keymap.set("n", "<leader>-", "<cmd>split<CR>")              -- Split window down
 
 vim.keymap.set("n", "<leader>is", "<cmd>Telescope symbols<CR>") -- Insert symbols
 vim.keymap.set("n", "<leader>is", "<cmd>Telescope symbols<CR>") -- Insert symbols

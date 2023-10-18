@@ -1,6 +1,8 @@
 source ./defaults.zsh
 
-ln -s ~/git/dotfiles/macos/.zhrc ~/.zhrc
+ln -s ~/git/dotfiles/macos/.zshrc ~/.zshrc
+ln -s ~/git/dotfiles/macos/.zshenv ~/.zshenv
+ln -s ~/git/dotfiles/macos/.zprofile ~/.zprofile
 ln -s ~/git/dotfiles/macos/yabairc ~/.config/yabai/yabairc
 ln -s ~/git/dotfiles/macos/skhdrc ~/.config/skhd/skhdrc
 

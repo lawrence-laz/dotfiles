@@ -1,14 +1,16 @@
+require 'utils.global'
+
 -- Bootstrap package manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -17,7 +19,35 @@ vim.g.maplocalleader = ' '
 
 -- Initialize package manager
 -- and load ./lua/plugins/init.lua
-require('lazy').setup('plugins')
+-- root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
+require('lazy').setup(
+	'plugins',
+	{
+		dev = {
+			-- This is where lazy.nvim will look for a packages when dev=true on package options.
+			path = "~/git",
+		}
+	})
 
 -- Load configuration
 require('config')
+
+--[[
+Min repro configuration:
+```lua
+for name, url in pairs{
+  -- ADD PLUGINS _NECESSARY_ TO REPRODUCE THE ISSUE, e.g:
+  -- some_plugin = 'https://github.com/author/plugin.nvim'
+} do
+  local install_path = vim.fn.fnamemodify('nvim_issue/'..name, ':p')
+  if vim.fn.isdirectory(install_path) == 0 then
+    vim.fn.system { 'git', 'clone', '--depth=1', url, install_path }
+  end
+  vim.opt.runtimepath:append(install_path)
+end
+
+-- ADD INIT.LUA SETTINGS THAT IS _NECESSARY_ FOR REPRODUCING THE ISSUE
+```
+
+Run: nvim --clean -u my_issue.lua
+--]]

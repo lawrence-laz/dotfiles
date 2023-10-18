@@ -10,8 +10,8 @@ local when = function(arg)
 	end
 end
 
-vim.keymap.set("n", "<C-S-p>", "<CMD>Telescope command_center<CR>")
-vim.keymap.set("v", "<C-S-p>", "<CMD>Telescope command_center<CR>")
+-- vim.keymap.set("n", "<C-S-p>", "<CMD>Telescope command_center<CR>")
+-- vim.keymap.set("v", "<C-S-p>", "<CMD>Telescope command_center<CR>")
 
 require("command_center").add({
 	{
@@ -159,26 +159,26 @@ require("command_center").add({
 		cmd = "<CMD>lua vim.cmd[[pu=strftime('%Y-%m-%d')]]<CR>",
 	},
 	-- { desc = "Change case", cmd = '<CMD>call b:VM_Selection.Search.case()<cr>' },
-	{ desc = "Run the nearest test", cmd = '<CMD>lua require("neotest").run.run()<CR>' },
-	{ desc = "Run current file tests", cmd = '<CMD>lua require("neotest").run.run(vim.fn.expand("%"))<CR>' },
-	{ desc = "Debug the nearest test", cmd = '<CMD>lua require("neotest").run.run({strategy = "dap"})<CR>' },
-	{ desc = "Stop the nearest test", cmd = '<CMD>lua require("neotest").run.stop()<CR>' },
-	{ desc = "Attach to the nearest test", cmd = '<CMD>lua require("neotest").run.attach()<CR>' },
-	{ desc = "Show test output", cmd = '<CMD>lua require("neotest").output.open()<CR>' },
-	{ desc = "Toggle output pannel", cmd = '<CMD>lua require("neotest").output_panel.toggle()<CR>' },
+	{ desc = "Run the nearest test",            cmd = '<CMD>lua require("neotest").run.run()<CR>' },
+	{ desc = "Run current file tests",          cmd = '<CMD>lua require("neotest").run.run(vim.fn.expand("%"))<CR>' },
+	{ desc = "Debug the nearest test",          cmd = '<CMD>lua require("neotest").run.run({strategy = "dap"})<CR>' },
+	{ desc = "Stop the nearest test",           cmd = '<CMD>lua require("neotest").run.stop()<CR>' },
+	{ desc = "Attach to the nearest test",      cmd = '<CMD>lua require("neotest").run.attach()<CR>' },
+	{ desc = "Show test output",                cmd = '<CMD>lua require("neotest").output.open()<CR>' },
+	{ desc = "Toggle output pannel",            cmd = '<CMD>lua require("neotest").output_panel.toggle()<CR>' },
 	{ desc = "Toggle tests explorer (summary)", cmd = '<CMD>lua require"neotest".summary.toggle()<CR>' },
-	{ desc = "Markdown: Paste image and link", cmd = '<CMD>lua require("telekasten").paste_img_and_link()<CR>' },
-	{ desc = "Markdown: Toggle todo", cmd = '<CMD>lua require("telekasten").toggle_todo()<CR>' },
-	{ desc = "Markdown: Preview image", cmd = '<CMD>lua require("telekasten").preview_img()<CR>' },
-	{ desc = "Show key mappings", cmd = "<CMD>lua ShowMappingsInBuffer()<CR>" },
-	{ desc = "File: Copy full path", cmd = "<CMD>redir @* | ech expand('%:p') | redir END<CR>" },
-	{ desc = "File: Show unsaved changes", cmd = "<CMD>:w !diff % -<CR>" },
-	{ desc = "File: Reveal in file explorer", cmd = "<CMD>:!nautilus '%:p:h'<CR>" },
-	{ desc = "Language Server: Restart", cmd = "<CMD>:LspRestart<CR>" },
-	{ desc = "Language Server: Info", cmd = "<CMD>:LspInfo<CR>" },
-	{ desc = "Lua: Reload module", cmd = "<CMD>:Telescope reloader<CR>" },
-	{ desc = "GitHub: Open in Browser", cmd = "<CMD>!gh browse<CR>" },
-	{ desc = "Diff: Current split", cmd = "<CMD>:windo diffthis<CR>" },
+	{ desc = "Markdown: Paste image and link",  cmd = '<CMD>lua require("telekasten").paste_img_and_link()<CR>' },
+	{ desc = "Markdown: Toggle todo",           cmd = '<CMD>lua require("telekasten").toggle_todo()<CR>' },
+	{ desc = "Markdown: Preview image",         cmd = '<CMD>lua require("telekasten").preview_img()<CR>' },
+	{ desc = "Show key mappings",               cmd = "<CMD>lua ShowMappingsInBuffer()<CR>" },
+	{ desc = "File: Copy full path",            cmd = "<CMD>redir @* | ech expand('%:p') | redir END<CR>" },
+	{ desc = "File: Show unsaved changes",      cmd = "<CMD>:w !diff % -<CR>" },
+	{ desc = "File: Reveal in file explorer",   cmd = "<CMD>:!nautilus '%:p:h'<CR>" },
+	{ desc = "Language Server: Restart",        cmd = "<CMD>:LspRestart<CR>" },
+	{ desc = "Language Server: Info",           cmd = "<CMD>:LspInfo<CR>" },
+	{ desc = "Lua: Reload module",              cmd = "<CMD>:Telescope reloader<CR>" },
+	{ desc = "GitHub: Open in Browser",         cmd = "<CMD>!gh browse<CR>" },
+	{ desc = "Diff: Current split",             cmd = "<CMD>:windo diffthis<CR>" },
 	{
 		desc = "Diff: New split",
 		cmd = function()
@@ -220,4 +220,3 @@ function CloseAllButCurrent()
 		end)
 	end
 end
-

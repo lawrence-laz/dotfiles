@@ -210,7 +210,7 @@
             "sequence": [ "list.focusUp", "filesExplorer.openFilePreserveFocus" ]
         }
     ],
-    "zig.zls.path": "/home/llaz/.config/Code/User/globalStorage/ziglang.vscode-zig/zls_install/zls",
+    "zig.zls.path": "/Users/llaz/Library/Application Support/Code/User/globalStorage/ziglang.vscode-zig/zls_install/zls",
     "editor.formatOnSaveMode": "modificationsIfAvailable",
     "editor.formatOnSave": true,
     "github.copilot.enable": {
@@ -254,5 +254,6 @@
         "warning",
         "info",
         "hint"
-    ]
+    ],
+    "zig.zigPath": ""
 }

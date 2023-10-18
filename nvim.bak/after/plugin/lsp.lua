@@ -8,7 +8,7 @@ lsp.ensure_installed({
 	"tsserver",
 	"eslint",
 	-- "sumneko_lua",
-    "lua_ls", -- Temporarily
+	"lua_ls", -- Temporarily
 	"rust_analyzer",
 	"bashls",
 	--'cpplint',
@@ -26,8 +26,8 @@ lsp.ensure_installed({
 	"lemminx",
 	"yamlls",
 	"html",
-    "zls",
-    -- "ols"
+	"zls",
+	-- "ols"
 })
 --
 -- vim.cmd[[snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<Cr>]]
@@ -255,11 +255,11 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("n", "<leader>se", vim.diagnostic.open_float) -- [s]how [e]rror
 	vim.keymap.set("n", "<leader>sE", vim.diagnostic.setloclist) -- [s]how all [E]rrors in file  alternative is telescope_builtin.diagnostics
 	vim.keymap.set("n", "<leader>sm", vim.lsp.buf.signature_help) -- [s]how [m]ethod signature (VS like)
-	vim.keymap.set("n", "<C-S-Space>", vim.lsp.buf.hover) -- [s]how [m]ethod signature (VS like)
+	vim.keymap.set("n", "<C-S-Space>", vim.lsp.buf.hover)  -- [s]how [m]ethod signature (VS like)
 
 	-------------------------- "Go to" mappings
 	vim.keymap.set("n", "<leader>ge", vim.diagnostic.goto_next) -- [g]o to next [e]rror
-	vim.keymap.set("n", "<C-S-F12>", function() -- Go to next error/warning/info/hint
+	vim.keymap.set("n", "<C-S-F12>", function()          -- Go to next error/warning/info/hint
 		if vim.diagnostic.get_next({ severity = vim.diagnostic.severity.ERROR }) then
 			vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
 		elseif vim.diagnostic.get_next({ severity = vim.diagnostic.severity.WARN }) then
@@ -305,7 +305,7 @@ local cmp_config = lsp.defaults.cmp_config({
 	sources = {
 		{ name = "path" },
 		{ name = "nvim_lsp", keyword_length = 1 },
-		{ name = "buffer", keyword_length = 1 },
+		{ name = "buffer",   keyword_length = 1 },
 		{ name = "luasnip" },
 	},
 	mapping = {
@@ -327,12 +327,12 @@ local cmp_config = lsp.defaults.cmp_config({
 		["<Tab>"] = require("cmp").mapping(function(fallback)
 			if require("cmp").visible() then
 				require("cmp").select_next_item()
-			-- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-			-- they way you will only jump inside the snippet region
+				-- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+				-- they way you will only jump inside the snippet region
 			elseif require("luasnip").expand_or_jumpable() then
 				require("luasnip").expand_or_jump()
-			-- elseif has_words_before() then -- I use <C-Space> to open completion
-			-- 	require("cmp").complete()
+				-- elseif has_words_before() then -- I use <C-Space> to open completion
+				-- 	require("cmp").complete()
 			else
 				local mode = vim.fn.mode()
 				if mode == "n" then -- Mappings are for "s" and "i" modes only, so this is unreachalbe, but left for reference
@@ -340,8 +340,8 @@ local cmp_config = lsp.defaults.cmp_config({
 				elseif mode == "v" then
 					vim.api.nvim_feedkeys(">gv", "v", false)
 				elseif mode == "i" then
-				-- 	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-t>", true, false, true), "i", true)
-				-- else
+					-- 	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-t>", true, false, true), "i", true)
+					-- else
 					fallback()
 				end
 			end
@@ -358,7 +358,8 @@ local cmp_config = lsp.defaults.cmp_config({
 				elseif mode == "v" then
 					vim.api.nvim_feedkeys("<gv", "v", false)
 				elseif mode == "i" then
-					vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-d>", true, false, true), "i", true)
+					vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-d>", true, false, true),
+						"i", true)
 				else
 					fallback()
 				end
@@ -388,4 +389,3 @@ lsp.configure("tsserver", {
 	-- on_attach = require'lsp.servers.tsserver'.on_attach,
 	capabilities = capabilities,
 })
-
