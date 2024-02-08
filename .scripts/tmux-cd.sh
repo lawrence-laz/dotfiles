@@ -4,7 +4,6 @@ if [[ $# -eq 1 ]]; then
     selected=$1
 else
     selected=$(( 
-        echo "$HOME/notes"; \
         find ~/git -maxdepth 4 -type d -o -type d -name "*" ; \
         find ~ -maxdepth 5 -path ~/gdrive -prune -path ~/git -prune -type d -o -type d -name "*"
     ) | uniq -u | fzf | sed 's/ /\\ /g'    )
