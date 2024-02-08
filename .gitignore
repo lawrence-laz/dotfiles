@@ -10,3 +10,5 @@ dotnet/dotnet.sln
 .vscode/settings.json
 node_modules
 tmux-client-*.log
+package-lock.json
+package.json
