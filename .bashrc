@@ -17,6 +17,7 @@
 # `nmcli dev wifi`        Show available wifi
 # `nmcli`                 Show all network stuff (including vpn)
 # `br`                    File navigation tree by Canop/broot
+# `bc`			  Basic Calculator
 # `lsof -p 8080`          Show process using this port
 # `locate *.desktop`      Search all files with given pattern from index
 # `sudo updatedb`         Update search index
@@ -29,8 +30,18 @@
 # /media/fasthdd/swapfile.img swap swap sw 0 0
 # swapon /media/fasthdd/swapfile.img
 # `pavucontrol`           Pulse audio settings
-# `ffmpeg -ss <start_seconds> -t <duration_seconds> -i "input.mp3" -c:a copy "output.mp3"`   Slice media file
-# `ffmpeg -i input.flac -ab 320k -map_metadata 0 -id3v2_version 3 output.mp3`                Convert .flac to .mp3
+# `ffmpeg -ss <start_seconds> -t <duration_seconds> -i "input.mp3" -c:a copy "output.mp3"`    Slice media file
+# `ffmpeg -i input.flac -ab 320k -map_metadata 0 -id3v2_version 3 output.mp3`                 Convert .flac to .mp3
+# `ffmpeg -i input.flv -vcodec libx264 -acodec aac output.mp4`				      Convert to protable .mp4
+# `ffmpeg -framerate 1 -i portrait\ \(3\).jpg -c:v libx264 -r 30 -pix_fmt yuv420p output.mp4` Convert .jpg to .mp4
+#
+#
+# SSH:
+# ssh-keygen -t rsa
+# cat ~/.ssh/id_rsa.pub | ssh user@123.45.56.78 "mkdir -p ~/.ssh && cat >>  ~/.ssh/authorized_keys"
+# ssh-add
+#
+# :sort u 		Unique/distinct lines
 
 # =====================
 # Keyboard shortcuts

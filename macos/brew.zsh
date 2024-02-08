@@ -51,3 +51,18 @@ brew install cmake
 
 # Git repo information
 brew install onefetch
+
+# Get process id Utility
+brew install pidof
+
+# Tree viewer
+brew install tree
+
+# Media (video) meta data
+brew install mediainfo
+
+# Core unix tools
+brew install coreutils
+
+# Google Drive
+brew install gdrive

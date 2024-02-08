@@ -15,4 +15,5 @@ ln -s ~/git/dotfiles/vscode/keybindings.json ~/Library/Application\ Support/Code
 rm -r ~/.config/kitty
 ln -s ~/git/dotfiles/kitty/ ~/.config/kitty
 
+# Currently mapped all karabiner/ dir
 ln -s ~/git/dotfiles/macos/karabiner.json ~/.config/karabiner/karabiner.json

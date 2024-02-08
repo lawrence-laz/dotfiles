@@ -4,8 +4,8 @@
 .scripts/.vscode
 .scripts/omnisharp.json
 macos/karabiner/automatic_backups
-macos/karabiner/assets/complex_modifications
 macos/karabiner/.DS_Store
 dotnet/obj
 dotnet/dotnet.sln
 .vscode/settings.json
+node_modules

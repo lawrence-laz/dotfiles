@@ -26,7 +26,11 @@ return {
 				},
 				finder = {
 					keys = {
-						shuttle = { '[w', '<C-l>', '<C-h>' },
+						shuttle = {
+							'[w',
+							-- '<C-l>', -- Conflicts with pane navigation
+							-- '<C-h>' -- Conflicts with pane navigation
+						},
 						toggle_or_open = { 'o', '<CR>' },
 						vsplit = { 's', '|' },
 						split = { 'i', '-' },

@@ -3,14 +3,14 @@ require 'utils.global'
 -- Bootstrap package manager
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable", -- latest stable release
-		lazypath,
-	})
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -21,13 +21,13 @@ vim.g.maplocalleader = ' '
 -- and load ./lua/plugins/init.lua
 -- root = vim.fn.stdpath("data") .. "/lazy", -- directory where plugins will be installed
 require('lazy').setup(
-	'plugins',
-	{
-		dev = {
-			-- This is where lazy.nvim will look for a packages when dev=true on package options.
-			path = "~/git",
-		}
-	})
+    'plugins',
+    {
+        dev = {
+            -- This is where lazy.nvim will look for a packages when dev=true on package options.
+            path = "~/git",
+        }
+    })
 
 -- Load configuration
 require('config')
@@ -50,4 +50,14 @@ end
 ```
 
 Run: nvim --clean -u my_issue.lua
+--]]
+
+--[[
+Profile, debug slowness
+:profile start profile.log
+:profile func *
+:profile file *
+" At this point do slow actions
+:profile pause
+:noautocmd qall!
 --]]

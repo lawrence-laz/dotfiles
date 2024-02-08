@@ -24,7 +24,8 @@ return {
 			preview_ext_enable = false, -- If true, preview buf will add file ext, preview window may be highlighed(treesitter), but may be slower.
 			fix_enable = false, -- If true, when saving the current file, if the bookmark line number of the current file changes, try to fix it.
 
-			virt_text = "", --"",
+			virt_text = "",
+			sign_icon = "",
 			virt_pattern = {
 				"*.go", "*.lua", "*.sh", "*.php", "*.rs", "*.cs", "*.ts", "*.tsx", "*.js", "*.jsx",
 				"*.css", "*.htm", "*.zig"

@@ -1,47 +1,53 @@
 return {
-	{
-		"LazyVim/LazyVim",
-		opts = {
-			colorscheme = "catppuccin",
-		},
-	},
+	-- {
+	-- 	"LazyVim/LazyVim",
+	-- 	condition = false,
+	-- 	opts = {
+	-- 		colorscheme = "catppuccin",
+	-- 	},
+	-- },
 	{
 		"catppuccin/nvim",
 		name = "catppuccin",
-		opts = {
-			term_colors = true,
-			transparent_background = true,
-			styles = {
-				comments = {},
-				conditionals = {},
-				loops = {},
-				functions = {},
-				keywords = {},
-				strings = {},
-				variables = {},
-				numbers = {},
-				booleans = {},
-				properties = {},
-				types = {},
-			},
-			highlight_overrides = {
-				all = function(colors)
-					return {
-						Whitespace = { fg = "#212224" },
-						DiagnosticSignHint = { fg = "#212224" },
-						DiagnosticVirtualTextHint = { fg = colors.surface0 },
-						NonText = { fg = "#212224" }
-					}
-				end,
-			},
-			color_overrides = {
-				mocha = {
-					base = "#000000",
-					mantle = "#000000",
-					crust = "#000000",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("catppuccin").setup({
+				term_colors = true,
+				transparent_background = true,
+				styles = {
+					comments = {},
+					conditionals = {},
+					loops = {},
+					functions = {},
+					keywords = {},
+					strings = {},
+					variables = {},
+					numbers = {},
+					booleans = {},
+					properties = {},
+					types = {},
 				},
-			},
-		},
+				highlight_overrides = {
+					all = function(colors)
+						return {
+							Whitespace = { fg = "#212224" },
+							DiagnosticSignHint = { fg = "#212224" },
+							DiagnosticVirtualTextHint = { fg = colors.surface0 },
+							NonText = { fg = "#212224" }
+						}
+					end,
+				},
+				color_overrides = {
+					mocha = {
+						base = "#000000",
+						mantle = "#000000",
+						crust = "#000000",
+					},
+				},
+			})
+			vim.cmd.colorscheme "catppuccin"
+		end,
 	},
 }
 

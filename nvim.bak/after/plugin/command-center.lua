@@ -174,6 +174,7 @@ require("command_center").add({
 	{ desc = "File: Copy full path",            cmd = "<CMD>redir @* | ech expand('%:p') | redir END<CR>" },
 	{ desc = "File: Show unsaved changes",      cmd = "<CMD>:w !diff % -<CR>" },
 	{ desc = "File: Reveal in file explorer",   cmd = "<CMD>:!nautilus '%:p:h'<CR>" },
+	{ desc = "File: Copy absolute path",        cmd = "<CMD>:!echo %:p | tr -d '\n' | pbcopy" },
 	{ desc = "Language Server: Restart",        cmd = "<CMD>:LspRestart<CR>" },
 	{ desc = "Language Server: Info",           cmd = "<CMD>:LspInfo<CR>" },
 	{ desc = "Lua: Reload module",              cmd = "<CMD>:Telescope reloader<CR>" },

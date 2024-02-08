@@ -1,0 +1,135 @@
+    let mapleader="\<space>"
+vnoremap <leader>kc :vsc Edit.CommentSelection<CR>
+vnoremap <leader>ku :vsc Edit.UncommentSelection<CR>
+nnoremap <leader>kc :vsc Edit.CommentSelection<CR>
+nnoremap gcc :vsc Edit.ToggleLineComment<CR>
+vnoremap gc :vsc Edit.ToggleLineComment<CR>
+nnoremap <leader>ku :vsc Edit.UncommentSelection<CR>
+nnoremap <leader>kd :vsc Edit.FormatDocument<CR>
+nnoremap <leader>ge :vsc View.NextError<CR>
+nnoremap <leader>gE :vsc View.PreviousError<CR>
+nnoremap ge :vsc View.NextError<CR>
+nnoremap gE :vsc View.PreviousError<CR>
+nnoremap <leader>fu :vsc Edit.FindAllReferences<CR>
+nnoremap gu :vsc Edit.FindAllReferences<CR>
+nnoremap <leader>gi :vsc Edit.GoToImplementation<CR>
+nnoremap gi :vsc Edit.GoToImplementation<CR>
+nnoremap <leader>se :vsc Edit.QuickInfo<CR>
+nnoremap K :vsc Edit.QuickInfo<CR>
+nnoremap <leader>kk :vsc Edit.ToggleBookmark<CR>
+nnoremap <leader>kl :vsc Edit.ClearBookmarks<CR>
+nnoremap <leader>kp :vsc Edit.PreviousBookmark<CR>
+nnoremap <leader>kn :vsc Edit.NextBookmark<CR>
+nnoremap <leader>ke :vsc View.BookmarkWindow<CR>
+nnoremap <leader>rr :vsc Refactor.Rename<CR>
+nnoremap <leader>rg :vsc Edit.RemoveAndSort<CR>
+
+nnoremap <leader>tr :vsc RunTestsInCurrentContext<CR>
+
+nnoremap <leader>gg :!start lazygit<CR>
+
+nnoremap <CR> i<CR><esc>l
+nnoremap <C-CR> :vsc Edit.LineOpenAbove<CR>
+nnoremap <S-CR> :vsc Edit.LineOpenBelow<CR>
+
+vnoremap <Tab> :vsc Edit.IncreaseLineIndent<CR>
+vnoremap <S-Tab> :vsc Edit.DecreaseLineIndent<CR>
+nnoremap <Tab> :vsc Edit.IncreaseLineIndent<CR>
+nnoremap <S-Tab> :vsc Edit.DecreaseLineIndent<CR>
+
+nnoremap <C-Tab> :vsc Window.NextTab<CR>
+nnoremap <C-S-Tab> :vsc Window.PreviousTab<CR>
+
+nnoremap <A-k> :vsc Edit.MoveSelectedLinesUp<CR>
+nnoremap <A-j> :vsc Edit.MoveSelectedLinesDown<CR>
+vnoremap <A-k> :vsc Edit.MoveSelectedLinesUp<CR>
+vnoremap <A-j> :vsc Edit.MoveSelectedLinesDown<CR>
+
+nnoremap <C-S-j> :vsc Edit.NextHighlightedReference<CR>lb<ESC>
+nnoremap <C-S-k> :vsc Edit.PreviousHighlightedReference<CR>lb<ESC>
+vnoremap <C-S-j> :vsc Edit.NextHighlightedReference<CR>lb<ESC>
+vnoremap <C-S-k> :vsc Edit.PreviousHighlightedReference<CR>lb<ESC>
+
+" https://marketplace.visualstudio.com/items?itemName=maksim-vorobiev.PeasyMotion2022
+nnoremap s gS:vsc Tools.InvokePeasyMotion<CR>
+
+" Cutlass
+" Delete and change text without modifying the clipboard
+nnoremap D "_D
+nnoremap d "_d
+nnoremap dd "_dd
+nnoremap c "_c
+nnoremap C "_C
+nnoremap cc "_cc
+nnoremap x "_x
+nnoremap X "_X
+" Move with regular vim delete that works as a cut
+nnoremap m d
+nnoremap M D
+nnoremap mm dd
+
+" Delete and change text without modifying the clipboard
+vnoremap d "_d
+vnoremap c "_c
+vnoremap x "_x
+" Move with regular vim delete that works as a cut
+vnoremap m d
+
+" Don't move cursor after yank
+vnoremap y ygv<ESC>
+
+" Paste without modifying the clipboard
+vnoremap p pgvy
+
+" Keep cursor centered
+:set so=20
+
+" Use system clipboard
+set clipboard=unnamed
+
+" Multi caret
+"nnoremap <C-A-Up> <S-A-k>
+"nnoremap <C-A-Down> <S-A-j>
+nnoremap <S-A-k> <C-A-Up>
+nnoremap <S-A-j> <C-A-Down>
+
+" Surround simulating bindings
+" nnoremap s) ciw(<C-r>")<Esc>
+" nnoremap s] ciw[<C-r>"]<Esc>
+" nnoremap s} ciw{<C-r>"}<Esc>
+" nnoremap s> ciw<lt><C-r>"><Esc>
+" nnoremap s" ciw"<C-r>""<Esc>
+" nnoremap s' ciw'<C-r>"'<Esc>
+" nnoremap sw) ciW(<C-r>")<Esc>
+" nnoremap sw] ciW[<C-r>"]<Esc>
+" nnoremap sw} ciW{<C-r>"}<Esc>
+" nnoremap sw> ciW<lt><C-r>"><Esc>
+" nnoremap sw" ciW"<C-r>""<Esc>
+" nnoremap sw' ciW'<C-r>"'<Esc>
+
+" Surround delete bindings
+nnoremap ds) vi(dvhp
+nnoremap ds] vi[dvhp
+nnoremap ds} vi{dvhp
+nnoremap ds> vi<dvhp
+nnoremap ds" vi"dvhp
+nnoremap ds' vi'dvhp
+
+" Surround change bindings
+nnoremap cs"' vi"oh<Esc>msvi"l<Esc>cl'<Esc>`scl'<Esc>
+nnoremap cs'" vi'oh<Esc>msvi'l<Esc>cl"<Esc>`scl"<Esc>
+
+" Surround visual selected text
+vnoremap S" c"<C-r>""<Esc>
+vnoremap S' c"<C-r>"'<Esc>
+vnoremap S) c(<C-r>")<Esc>
+vnoremap S] c[<C-r>"]<Esc>
+vnoremap S} c{<C-r>"}<Esc>
+vnoremap S> c<lt><C-r>"><Esc>
+vnoremap S* c/*<C-r>"*/<Esc>
+"vnoremap St c<lt>div><CR><C-r>"<Esc>
+" Surround in div tag and edit tag
+vnoremap St c<lt>div><CR><C-r>"<Esc>`<lt>lcw
+
+set ignorecase
+set smartcase
