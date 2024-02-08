@@ -10,7 +10,7 @@
     },
     "editor.fontFamily": "Fira Code",
     "editor.fontLigatures": true,
-    "workbench.iconTheme": "vscode-icons",
+    "workbench.iconTheme": "material-icon-theme",
     "javascript.updateImportsOnFileMove.enabled": "always",
     "telemetry.telemetryLevel": "off",
     "dotnet-test-explorer.enableTelemetry": false,
@@ -30,6 +30,7 @@
         "**/.factorypath": true
     },
     "editor.bracketPairColorization.enabled": true,
+    "go-to-next-error.multiSeverityHandlingMethod": "hover",
     "editor.guides.bracketPairs": true,
     "files.insertFinalNewline": true,
     "editor.linkedEditing": true,
@@ -45,7 +46,6 @@
     "editor.accessibilitySupport": "off",
     "editor.copyWithSyntaxHighlighting": false,
     "vsicons.dontShowNewVersionMessage": true,
-    "workbench.activityBar.visible": true,
     "editor.minimap.enabled": false,
     "editor.inlineSuggest.enabled": true,
     "json.format.keepLines": true,
@@ -179,7 +179,7 @@
         // "<C-S-Tab>": true,
     },
     "vim.disableExtension": false,
-    "editor.cursorSurroundingLines": 100,
+    "editor.cursorSurroundingLines": 200,
     "git.openRepositoryInParentFolders": "never",
     "terminal.integrated.sendKeybindingsToShell": true,
     "terminal.integrated.allowChords": false,
@@ -209,7 +209,7 @@
             "sequence": [ "list.focusUp", "filesExplorer.openFilePreserveFocus" ]
         }
     ],
-    "zig.zls.path": "/home/llaz/.config/Code/User/globalStorage/ziglang.vscode-zig/zls_install/zls",
+    "zig.zls.path": "",
     "editor.formatOnSaveMode": "modificationsIfAvailable",
     "editor.formatOnSave": true,
     "github.copilot.enable": {
@@ -224,5 +224,39 @@
     "workbench.colorTheme": "Pitch Black",
     "window.zoomLevel": 1,
     "workbench.editor.highlightModifiedTabs": true,
-    "workbench.editor.showTabs": false
+    "workbench.editor.showTabs": "single",
+    "[msbuild]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.formatOnType": true,
+        "editor.formatOnPaste": true
+    },
+    "files.associations": {
+        "*.csproj": "msbuild"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "cSpell.userWords": [
+        "comparand",
+        "inputrc",
+        "neovim",
+        "SYSLIB"
+    ],
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "editor.cursorSurroundingLinesStyle": "all",
+    "errorLens.enabled": true,
+    "errorLens.enabledDiagnosticLevels": [
+        "error",
+        "warning",
+        "info",
+        "hint"
+    ],
+    "zig.zigPath": "",
+    "json.schemas": [ ],
+    "zig.initialSetupDone": true,
+    "zig.path": "",
+    "zig.zls.enableBuildOnSave": true
 }
