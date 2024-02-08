@@ -1,45 +1,59 @@
+# ########################################################
+# - To get key codes, run `skhd -o` and press the key.
+# - In case skhd stops working, try commenting this file.
+# ########################################################
+# TODO:
+# - [ ] cmd+l	focus url line
+# ########################################################
+
 # change window focus within space
-alt - j : yabai -m window --focus south
-alt - k : yabai -m window --focus north
-alt - h : yabai -m window --focus west
-alt - l : yabai -m window --focus east
+cmd - j : yabai -m window --focus south
+cmd - k : yabai -m window --focus north
+cmd - h : yabai -m window --focus west
+cmd - l : yabai -m window --focus east
 
 # toggle window float
-shift + alt - f : yabai -m window --toggle float --grid 4:4:1:1:2:2
+shift + cmd - f : yabai -m window --toggle float --grid 4:4:1:1:2:2
 
 # maximize a window
-alt - f : yabai -m window --toggle zoom-fullscreen
+cmd - f : yabai -m window --toggle zoom-fullscreen
 
 # swap windows
-shift + alt - j : yabai -m window --swap south
-shift + alt - k : yabai -m window --swap north
-shift + alt - h : yabai -m window --swap west
-shift + alt - l : yabai -m window --swap east
+shift + cmd - j : yabai -m window --swap south
+shift + cmd - k : yabai -m window --swap north
+shift + cmd - h : yabai -m window --swap west
+shift + cmd - l : yabai -m window --swap east
 
 # move window to space #
-shift + alt - 1 : yabai -m window --space 1;
-shift + alt - 2 : yabai -m window --space 2;
-shift + alt - 3 : yabai -m window --space 3;
-shift + alt - 4 : yabai -m window --space 4;
-shift + alt - 5 : yabai -m window --space 5;
-shift + alt - 6 : yabai -m window --space 6;
-shift + alt - 7 : yabai -m window --space 7;
-shift + alt - 8 : yabai -m window --space 8;
-shift + alt - 9 : yabai -m window --space 9;
+shift + cmd - 1 : yabai -m window --space 1;
+shift + cmd - 2 : yabai -m window --space 2;
+shift + cmd - 3 : yabai -m window --space 3;
+shift + cmd - 4 : yabai -m window --space 4;
+shift + cmd - 5 : yabai -m window --space 5;
+shift + cmd - 6 : yabai -m window --space 6;
+shift + cmd - 7 : yabai -m window --space 7;
+shift + cmd - 8 : yabai -m window --space 8;
+shift + cmd - 9 : yabai -m window --space 9;
 
 # focus space
-alt - 1 : yabai -m space --focus 1;
-alt - 2 : yabai -m space --focus 2;
-alt - 3 : yabai -m space --focus 3;
-alt - 4 : yabai -m space --focus 4;
-alt - 5 : yabai -m space --focus 5;
-alt - 6 : yabai -m space --focus 6;
-alt - 7 : yabai -m space --focus 7;
-alt - 8 : yabai -m space --focus 8;
-alt - 9 : yabai -m space --focus 9;
+cmd - 0x12 : yabai -m space --focus 1;
+cmd - 0x13 : yabai -m space --focus 2;
+cmd - 0x14 : yabai -m space --focus 3;
+cmd - 0x15 : yabai -m space --focus 4;
+cmd - 0x17 : yabai -m space --focus 5; # Who came up with these key codes? -_-
+cmd - 0x16 : yabai -m space --focus 6;
+cmd - 0x1A : yabai -m space --focus 7;
+cmd - 0x1C : yabai -m space --focus 8;
+cmd - 0x19 : yabai -m space --focus 9;
 
-alt - return : osascript -e 'tell application "Kitty" to create window with default profile command ""' || open -na Kitty
+# resize window
+ctrl + cmd - h : yabai -m window --resize right:-20:0 2> /dev/null || yabai -m window --resize left:-20:0 2> /dev/null
+ctrl + cmd - j : yabai -m window --resize bottom:0:20 2> /dev/null || yabai -m window --resize top:0:20 2> /dev/null
+ctrl + cmd - k : yabai -m window --resize bottom:0:-20 2> /dev/null || yabai -m window --resize top:0:-20 2> /dev/null
+ctrl + cmd - l : yabai -m window --resize right:20:0 2> /dev/null || yabai -m window --resize left:20:0 2> /dev/null
+
+cmd - return : osascript -e 'tell application "Kitty" to create window with default profile command ""' || open -na Kitty
 
 # shift + alt - q : osascript -e 'tell application "System Events" to perform action "AXPress" of (first button whose subrole is "AXCloseButton") of (first window whose subrole is "AXStandardWindow") of (first process whose frontmost is true)'
 # shift + alt - q : tell application "System Events" to keystroke "q" using {option down, shift down}
-shift + alt - q : yabai -m window --close 
+shift + cmd - q : yabai -m window --close 
