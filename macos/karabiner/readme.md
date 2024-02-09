@@ -35,4 +35,5 @@ non_us_backslash -> grave_accent_and_tilde (`)
 
 - Order is important, first defined consumes the event first, therefore put more concrete at top.
 - Map modifiers as modifiers and not `key_code`, instead use `"any": "key_code"` for blanket mapping.
-	- This doesn't work, just explicitly list all you need, most control, clearest, even though cumbersome.
+	- This doesn't work, just **explicitly list all** you need, most control, clearest, even though cumbersome.
+  - Or maybe using `to_if_alone` works?
