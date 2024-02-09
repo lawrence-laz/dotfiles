@@ -66,3 +66,7 @@ brew install coreutils
 
 # Google Drive
 brew install gdrive
+
+# SQLite
+brew install sqlite
+brew install --cask db-browser-for-sqlite
