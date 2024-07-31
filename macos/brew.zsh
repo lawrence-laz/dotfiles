@@ -70,3 +70,12 @@ brew install gdrive
 # SQLite
 brew install sqlite
 brew install --cask db-browser-for-sqlite
+
+# Encodes data into qrcodes
+brew isntall qrencode
+
+# Scans barcodes and qrcodes `zbarimg`
+brew install zbar
+
+# Tool for creating web books with markdown
+brew install mdbook
