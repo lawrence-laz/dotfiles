@@ -180,7 +180,6 @@
 -- TODO: <leader>se <leader>sE
 -- TODO: <C-S-Space>
 -- TODO: <leader>ge <leader>gE <C-S-F12>
--- TODO: <leader>kd -- format
 -- TODO: <leader>rr
 -- TODO: <leader> kk kp kn kl BOOKMARKS
 

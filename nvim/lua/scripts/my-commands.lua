@@ -149,7 +149,13 @@ local commands = {
     },
     {
         name = "Code: Format",
-        exec = vim.lsp.buf.format,
+        exec = function()
+            if (vim.bo.filetype == "cs") then
+                vim.cmd(":Neoformat csharpier")
+            else
+                vim.lsp.buf.format()
+            end
+        end,
         keymap = { "n", "<leader>kd" }
     },
     {
