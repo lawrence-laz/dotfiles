@@ -22,12 +22,14 @@
 -- :'<,'>!c -ts '	'       formats as table
 -- :'<,'>!s                 execute selection as bash script and replace with outputs
 -- :ls                      list all buffers even closed and then :b index
+-- :windo diffthis          diff two windows -> :tabnew <leader>- :enew :windo diffthis
 --
 -- TOOD: nvimtree, execute bash command on file in tree
 -- TODO: auto complete lua in command mode
 -- TODO: get auto compelte working in command window
 --
 -- ===== KEYMAPS ==============================================================================================================
+-- <C-b>g      Tmux select file path
 -- <C-v><Tab>  Insert TAB when spaces are used.
 -- <C-o>       Execute one normal mode command in insert mode. Useful for Telescope <C-o>dd to change what you type.
 -- g_          Go to last non-blank character.
@@ -35,12 +37,16 @@
 -- q:|Command mode for entering commands like in a buffer.
 -- q/|Search mode for entering search term like in a buffer.
 -- <C-w> + - expands, s - horizontal split, v - vertical split
+-- <C-w> HJKL - moves window
 -- <leader>m1 / `1  - Add mark jump to mark (upper case ones are global)
 -- '.               - Jump to last edit
 -- ''               - Last position before jump
 --
+-- i        - Go to test in neotest under cursor
+--
 -- cgn      - Change last search highlight
 -- gn       - Visual select search highlight
+-- g;       - Go to last edit
 -- *        - Find selection or word under cursor
 --
 -- <leader>ma               - Add mark 'a'
@@ -65,6 +71,7 @@
 -- zR        - open/reset all folds
 -- zA        - opens all folds at current cursor
 -- zf        - Fold anything in visual mode
+-- aa        - While in visual mode go to next arg and select it <<<<<<<<<<<< AWESOME
 -- ===========Telescope ==============
 -- <C-v>    - open in vertical split
 -- <C-t>    - open in new tab
@@ -130,6 +137,8 @@
 -- ]l   - locations
 -- ]c   - changes
 -- ]b   - break points
+--
+-- d]}  - delete to end of block
 --
 --
 -- just use F10/F11 etc?
@@ -235,12 +244,15 @@ else
         if vim.bo.filetype == 'DiffviewFiles' then
             vim.cmd [[DiffviewToggleFiles]]
         else
-            api = require 'nvim-tree.api'
-            if api.tree.is_tree_buf() then
-                api.tree.close()
-            else
-                api.tree.focus()
-            end
+            -- Trying to use oil.nvim now.
+            vim.cmd [[Oil]]
+            -- Might ditch nvim-tree eventually.
+            -- api = require 'nvim-tree.api'
+            -- if api.tree.is_tree_buf() then
+            --     api.tree.close()
+            -- else
+            --     api.tree.focus()
+            -- end
         end
     end) -- Open netrw
     -- vim.keymap.set("n", "<C-A-l>", "<cmd>Lexplore %:p:h<CR>") -- Open netrw
@@ -304,6 +316,14 @@ vim.keymap.set("n", "Q", "<nop>")     -- ???
 
 vim.keymap.set("n", "<leader>m", "m") -- Add mark (since 'm' is 'move' is my config)
 
+vim.api.nvim_create_augroup('AutoFormatting', {})
+vim.api.nvim_create_autocmd('BufWritePre', {
+    pattern = '*.zig',
+    group = 'AutoFormatting',
+    callback = function()
+        vim.lsp.buf.format({ --[[ async = true ]] }) -- Async formats stuff after save.
+    end,
+})
 
 -- Source lua config files after save
 -- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
@@ -475,6 +495,158 @@ else
         end
     end)
 
+    vim.api.nvim_create_autocmd('filetype', {
+        pattern = 'neotest-output',
+        callback = function()
+            -- Open file under cursor in the widest window available.
+            vim.keymap.set('n', 'gF', function()
+                local current_word = vim.fn.expand("<cWORD>")
+                local tokens = vim.split(current_word, ":", { trimempty = true })
+                local win_ids = vim.api.nvim_list_wins()
+                local widest_win_id = -1;
+                local widest_win_width = -1;
+                for _, win_id in ipairs(win_ids) do
+                    if (vim.api.nvim_win_get_config(win_id).zindex) then
+                        -- Skip floating windows.
+                        goto continue
+                    end
+                    local win_width = vim.api.nvim_win_get_width(win_id)
+                    if (win_width > widest_win_width) then
+                        widest_win_width = win_width
+                        widest_win_id = win_id
+                    end
+                    ::continue::
+                end
+                vim.api.nvim_set_current_win(widest_win_id)
+                if (#tokens == 1) then
+                    vim.cmd("e " .. tokens[1])
+                else
+                    vim.cmd("e +" .. tokens[2] .. " " .. tokens[1])
+                end
+            end, { remap = true, buffer = true })
+        end
+    })
+
+    vim.api.nvim_create_autocmd('filetype', {
+        pattern = 'oil',
+        callback = function()
+            -- Execute command on target entry
+            vim.keymap.set('n', '!', function()
+                require 'oil.actions'.open_cmdline.callback()
+            end, { remap = true, buffer = true })
+            vim.keymap.set('n', '<TAB>', function()
+                require 'oil.actions'.preview.callback()
+            end, { remap = true, buffer = true })
+
+            -- Yank absolute path to clipboard register.
+            vim.keymap.set('n', 'gy', function()
+                local oil = require 'oil'
+                local entry = oil.get_cursor_entry()
+                local dir = oil.get_current_dir()
+                if not entry or not dir then
+                    return
+                end
+                local path = dir .. entry.name
+                vim.fn.setreg(vim.v.register, path)
+            end, { remap = true, buffer = true })
+
+            -- Append absolute path to clibpoard register.
+            -- Use `gp` or `gm` to paste or move respectively.
+            vim.keymap.set('n', 'gY', function()
+                local oil = require 'oil'
+                local entry = oil.get_cursor_entry()
+                local dir = oil.get_current_dir()
+                if not entry or not dir then
+                    return
+                end
+                local path = dir .. entry.name
+                local prev_clipboard = vim.fn.getreg(vim.v.register)
+                prev_clipboard = prev_clipboard .. "\n" .. path
+                vim.fn.setreg(vim.v.register, prev_clipboard)
+            end, { remap = true, buffer = true })
+
+            -- Paste files from absolute paths.
+            vim.keymap.set('n', 'gp',
+                function()
+                    local oil = require 'oil'
+                    if vim.bo.modified then
+                        local ok, choice = pcall(vim.fn.confirm, "Discard changes?", "No\nYes")
+                        if not ok or choice ~= 2 then
+                            return
+                        end
+                    end
+                    local source_paths = {}
+                    for path in vim.fn.getreg('+'):gmatch('[^\n%s]+') do
+                        source_paths[#source_paths + 1] = path
+                    end
+                    local target = oil.get_cursor_entry()
+                    local current_dir = oil.get_current_dir()
+                    if not target or not current_dir then
+                        return
+                    end
+                    local target_path = current_dir .. target.name
+                    local is_target_a_dir = target.type == "directory"
+                    if is_target_a_dir then
+                        -- Use target_path, which points to some dir
+                    else
+                        -- Target is a file, get parent dir
+                        target_path = vim.fn.fnamemodify(target_path, ":h")
+                        if (vim.fn.filereadable(target_path)) then
+                            -- File already exists, give a different name
+                            target_path = vim.fn.input("Target path: ", target_path, "file")
+                        end
+                    end
+                    for _, source_path in ipairs(source_paths) do
+                        vim.fn.system { 'cp', '-R', source_path, target_path }
+                    end
+                    vim.cmd.edit({ bang = true })
+                    vim.cmd.nohlsearch()
+                    print('Pasted ' .. #source_paths .. ' items')
+                end,
+                { remap = true, buffer = true })
+
+            -- Move files from absolute paths
+            vim.keymap.set('n', 'gm',
+                function()
+                    local oil = require 'oil'
+                    if vim.bo.modified then
+                        local ok, choice = pcall(vim.fn.confirm, "Discard changes?", "No\nYes")
+                        if not ok or choice ~= 2 then
+                            return
+                        end
+                    end
+                    local source_paths = {}
+                    for path in vim.fn.getreg('+'):gmatch('[^\n%s]+') do
+                        source_paths[#source_paths + 1] = path
+                    end
+                    local target = oil.get_cursor_entry()
+                    local current_dir = oil.get_current_dir()
+                    if not target or not current_dir then
+                        return
+                    end
+                    local target_path = current_dir .. target.name
+                    local is_target_a_dir = target.type == "directory"
+                    if is_target_a_dir then
+                        -- Use target_path, which points to some dir
+                    else
+                        -- Target is a file, get parent dir
+                        target_path = vim.fn.fnamemodify(target_path, ":h")
+                        if (vim.fn.filereadable(target_path)) then
+                            -- File already exists, give a different name
+                            target_path = vim.fn.input("Target path: ", target_path, "file")
+                        end
+                    end
+                    for _, source_path in ipairs(source_paths) do
+                        vim.fn.system { 'mv', source_path, target_path }
+                    end
+                    vim.cmd.edit({ bang = true })
+                    vim.cmd.nohlsearch()
+                    print('Moved ' .. #source_paths .. ' items')
+                end,
+                { remap = true, buffer = true })
+        end
+    })
+
     vim.keymap.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<CR>", { silent = true })
     vim.keymap.set("n", "<C-j>", "<cmd>TmuxNavigateDown<CR>", { silent = true })
     vim.keymap.set("n", "<C-k>", "<cmd>TmuxNavigateUp<CR>", { silent = true })
@@ -546,6 +718,10 @@ else
                     local is_folder = node.fs_stat and node.fs_stat.type == 'directory' or false
                     local target_path = is_folder and node.absolute_path or
                         vim.fn.fnamemodify(node.absolute_path, ":h")
+                    if (vim.fn.filereadable(target_path)) then
+                        -- File already exists, give a different name
+                        target_path = vim.fn.input("Target path: ", target_path, "file")
+                    end
                     for _, source_path in ipairs(source_paths) do
                         vim.fn.system { 'cp', '-R', source_path, target_path }
                     end

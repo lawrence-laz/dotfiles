@@ -61,6 +61,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
         vim.opt.shiftwidth = 2;
     end,
 })
+-- vim.opt.colorcolumn = 100    -- Vertical guideline (distracting)
 vim.opt.shiftwidth = 4       -- Number of spaces tabs count for
 vim.opt.termguicolors = true -- True color support
 vim.opt.timeoutlen = 300
