@@ -114,12 +114,12 @@ return {
                     request = "launch",
                     program = function()
                         return vim.fn.input("Path to executable: ",
-                            vim.fn.glob(vim.fn.getcwd() .. "/zig-out/bin/"),
-                            "file")
+                            vim.fn.glob(vim.fn.getcwd() .. "/zig-out/bin/"), "file")
                     end,
                     args = { "zig" },
                     cwd = "${workspaceFolder}",
                     stopOnEntry = false,
+                    initCommands = { "command source ~/.lldbinit" },
                 },
             }
 

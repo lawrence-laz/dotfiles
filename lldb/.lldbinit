@@ -1,0 +1,5 @@
+# Put commands in ~/.lldbinit to run them automatically when starting lldb
+command script import /Users/llaz/git/zig/tools/lldb_pretty_printers.py
+type category enable zig
+type category enable zig.std
+type category enable zig.stage2
