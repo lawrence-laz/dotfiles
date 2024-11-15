@@ -12,6 +12,7 @@ gui:
     selectedLineBgColor:
       - reverse
       - blue
+  filterMode: 'fuzzy' 
 git:
   paging:
     colorArg: always
