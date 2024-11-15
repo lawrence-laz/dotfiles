@@ -22,7 +22,14 @@ return {
             -- { "<C-S-w>", desc = "Decrement selection", mode = "x" },
         },
         opts = {
-            indent = { enable = true },
+
+            -- indent = { enable = true },
+
+            indent = {
+                enable = true,
+                disable = { "zig" }
+            },
+
             autotag = {
                 enable = true,
             },

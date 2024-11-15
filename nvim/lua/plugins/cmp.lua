@@ -32,6 +32,7 @@ return {
                 }),
                 sources = require 'cmp'.config.sources({
                     { name = 'nvim_lsp' },
+                    -- { name = 'treesitter' }, -- Use for files that don't have lsp TODO!
                     -- { name = 'vsnip' }, -- For vsnip users.
                     { name = 'luasnip' }, -- For luasnip users.
                     -- { name = 'ultisnips' }, -- For ultisnips users.
@@ -75,6 +76,7 @@ return {
                 end,
             })
         end,
+        dependencies = { "ray-x/cmp-treesitter" },
     },
     { "hrsh7th/cmp-buffer" },
     { "hrsh7th/cmp-path" },

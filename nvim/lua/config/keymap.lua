@@ -233,6 +233,15 @@ else
     vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<CR>")            -- Split window to side
     vim.keymap.set("n", "<leader>-", "<cmd>split<CR>")              -- Split window down
 
+    -- TODO This is pretty cool, share with others
+    vim.keymap.set("v", "1", function()
+        local shell_command = vim.fn.input("!")
+        local keys = vim.api.nvim_replace_termcodes([[mi<CR><CR><ESC>k0vg_p<S-v>:!]] .. shell_command .. [[<CR>kJJ]],
+            true,
+            true, true)
+        vim.api.nvim_feedkeys(keys, 'v', false)
+    end);
+
     -- Marks (shadowed by cutlass/move)
     vim.keymap.set("n", "<leader>m", "m") -- Add mark
 end
@@ -498,6 +507,7 @@ else
     vim.api.nvim_create_autocmd('filetype', {
         pattern = 'neotest-output',
         callback = function()
+            vim.cmd [[set wrap]]
             -- Open file under cursor in the widest window available.
             vim.keymap.set('n', 'gF', function()
                 local current_word = vim.fn.expand("<cWORD>")
@@ -643,6 +653,13 @@ else
                     vim.cmd.nohlsearch()
                     print('Moved ' .. #source_paths .. ' items')
                 end,
+                { remap = true, buffer = true })
+
+            -- Scroll down in preview
+            vim.keymap.set('n', '<S-j>', require 'oil.actions'.preview_scroll_down.callback,
+                { remap = true, buffer = true })
+            -- Scroll up in preview
+            vim.keymap.set('n', '<S-k>', require 'oil.actions'.preview_scroll_up.callback,
                 { remap = true, buffer = true })
         end
     })

@@ -17,6 +17,7 @@ vim.cmd [[hi! link netrwMarkFile Search]] -- Highlight marked as search results 
 
 -- Redirect any command to buffer for better pager experience (like less).
 vim.cmd [[com -nargs=1 -complete=command Redir :execute "tabnew | pu=execute(\'" . <q-args> . "\') | setl nomodified"]]
+vim.cmd [[command -bar -nargs=* -complete=file -range=% -bang Write <line1>,<line2>write<bang> <args>]]
 
 vim.g.CutlassOverrideDefaults = 1 -- Enable cutlass
 

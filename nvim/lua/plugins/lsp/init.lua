@@ -53,6 +53,7 @@ return {
     {
         "neovim/nvim-lspconfig",
         lazy = false,
+        dev = true,
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
             "williamboman/mason.nvim",
@@ -153,13 +154,18 @@ return {
                     -- 	P(b)
                     -- 	P(c)
                     -- end,
-                    cmd = { 'zls', '--config-path', 'zls.json' },
+                    -- cmd = { 'zls', '--config-path', 'zls.json' },
                     settings = {
                         -- Doesn't seem to work?
                         -- nvim "`zls --show-config-path`"
                         -- Make sure workspaces are set up correctly, for this to work
                         -- on the zls side.
                         enable_build_on_save = true,
+                        enable_argument_placeholders = false,
+                    },
+                },
+                rust_analyzer = {
+                    settings = {
                     },
                 }
             },
@@ -192,6 +198,7 @@ return {
                 end,
                 zls = function(_, opts)
                     -- Update zls:
+                    -- this contains 0.13 only, no dev builds as of 24-08-19
                     --[[
 cd ~/bin && mv -f zls zls.bak && curl -O https://zigtools-releases.nyc3.digitaloceanspaces.com/zls/master/aarch64-macos/zls && chmod-exec zls
                     --]]

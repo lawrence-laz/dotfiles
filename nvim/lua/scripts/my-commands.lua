@@ -152,6 +152,8 @@ local commands = {
         exec = function()
             if (vim.bo.filetype == "cs") then
                 vim.cmd(":Neoformat csharpier")
+            elseif (vim.bo.filetype == "javascript") then
+                vim.cmd(":Neoformat prettier")
             else
                 vim.lsp.buf.format()
             end
@@ -164,7 +166,7 @@ local commands = {
     },
     {
         name = "Code: Find usages",
-        exec = "Lspsaga finder ref",
+        exec = "Telescope lsp_references initial_mode=normal",
         keymap = { "n", "gu" }
     },
     {
@@ -181,6 +183,11 @@ local commands = {
     {
         name = "Code: Generate documentation",
         exec = ':execute "normal \\<Plug>(doge-generate)"',
+    },
+    {
+        name = "Document: Find symbol",
+        exec = "Telescope lsp_document_symbols",
+        keymap = { "n", "<C-,>" }
     },
     -- run to cursor
     { name = "Debug: Run",                  exec = require 'dap'.continue,          keymap = { "n", "drr" } },
@@ -202,6 +209,8 @@ local commands = {
     { name = "Debug: Show callstack",       exec = "Telescope dap frames",          keymap = { "n", "dS" } }, -- ds is "delete surrounding"
     -- { name = "Debug: Stop",              exec = require 'dap'.stop,              keymap = { "n", "ds" } },
     { name = "Debug: List breakpoints",     exec = dap_list_breapoints },
+    { name = "Fold: Close all",             exec = require('ufo').closeAllFolds,    keymap = { "n", "zM" } },
+    { name = "Fold: Open all",              exec = require('ufo').openAllFolds,     keymap = { "n", "zR" } },
     {
         name = "Diagnostics: Show for current file",
         exec = "Lspsaga show_buf_diagnostics",
@@ -230,18 +239,18 @@ local commands = {
     {
         name = "Git: Next hunk",
         exec = require 'gitsigns'.next_hunk,
-        keymap = { "n", "<leader>gn" }
+        keymap = { "n", "]g" }
     },
     {
         name = "Git: Previous hunk",
         exec = require 'gitsigns'.prev_hunk,
-        keymap = { "n", "<leader>gN" }
+        keymap = { "n", "[g" }
     },
-    {
-        name = "Git: Preview hunk",
-        exec = "Gitsigns preview_hunk",
-        keymap = { "n", "<leader>gp" }
-    },
+    -- {
+    --     name = "Git: Preview hunk",
+    --     exec = "Gitsigns preview_hunk",
+    --     keymap = { "n", "<leader>gp" }
+    -- },
     {
         name = "Git: Reset hunk",
         exec = require 'gitsigns'.reset_hunk,
@@ -287,6 +296,14 @@ local commands = {
             local path = result.stdout:gsub("\n", "")
             vim.api.nvim_call_function("netrw#BrowseX", { path, 0 })
         end,
+    },
+    {
+        name = "TreeSitter: Inspect tree",
+        exec = vim.treesitter.inspect_tree,
+    },
+    {
+        name = "TreeSitter: Edit query",
+        exec = vim.treesitter.query.edit,
     },
     {
         name = "Zig: Build and run",
