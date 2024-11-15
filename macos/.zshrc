@@ -34,6 +34,11 @@
 # ps -p PID                                 - Get proc by PID
 # otool -L <file>                           - Check what the file is linked against
 # otool -l <file>                           - Check RPATH for linking frameworks in /Library/Frameworks
+# df -lh .                                  - Check available space in current folder
+# uname -m                                  - Get CPU arch
+# wc -l *.zig                               - word count lines files pattern
+# du -sh dir                                - see dir size
+# find . -type f -perm +111                 - Find executables
 #
 # TODO: Set up git helper commands to check if:
 #       current commit contains any string (case insensitive), either is changed code, or commit description, or changed files
@@ -163,10 +168,6 @@ setopt HIST_FIND_NO_DUPS
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 
-# Aliases
-alias zshrc="vim ~/.zshrc && source ~/.zshrc"
-alias zhrc="vim ~/.zshrc && source ~/.zshrc" # Just because
-alias hello="echo hi"
-alias init="/Users/llaz/git/init/zig-out/bin/init -c '/Users/llaz/git/init/config/'"
+# Aliases in ./zshenv
 
 source /Users/llaz/.config/broot/launcher/bash/br
