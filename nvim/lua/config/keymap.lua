@@ -497,7 +497,15 @@ if vim.g.vscode then
     -- Nothing yet
 else
     vim.keymap.set("n", "<C-e>t", function()
-        require("neotest").summary.toggle()
+        if (pcall(require("neotest").summary.toggle)) then
+            -- All good
+        else
+            -- Odd state, the summary was taken over by other buffers and stuff and is now a single window.
+            -- Split window and toggle twice to return to correct state.
+            vim.cmd [[split]]
+            require("neotest").summary.toggle()
+            require("neotest").summary.toggle()
+        end
         local win = vim.fn.bufwinid("Neotest Summary")
         if win > -1 then
             vim.api.nvim_set_current_win(win)
