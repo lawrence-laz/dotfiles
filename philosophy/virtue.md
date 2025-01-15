@@ -19,6 +19,9 @@ ill-consideredness  | forthrightness   | sugarcoating            | expressing th
                     |                  |                         | 
                     |                  |                         | 
 
+do all virtues and vices really can be classified in a spectrum like this?
+
+
 
 
 spite

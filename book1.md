@@ -4,11 +4,14 @@ https://www.squibler.io/dangerous-writing-prompt-app/
 [[Meditations]]
 
 NOTES FOR SELF:
- - L: the book’s content is notes for me, but intro is explanation and reasoning behind the need for these notes
----
+ L: the book’s content is notes for me, but intro is explanation and reasoning behind the need for these notes
+ go through gallub strengths and their positives and negatives, try to look at it from the lense of this book and distill stuff into vices, impulses, virtues, etc.
+/home/llaz/git/notes/philosophy/personal philosophy.md
+/home/llaz/git/notes/philosophy/virtue.md
+
 
 ## Introduction
-This book contains thoughts and ideas that are not original. Some of them I've learned from the great minds that have lived in this world. Some of them I have arrived at myself, just to find someone else already been there and talked about it. Majority of the ideas and thoughts one might consider to be common sense. But that is not the point. The point is that I, as a rational human being, recognize these thoughts to be true, or at least believe them to be true and worth living by. These thoughts and ideas are what define me as a human being and the character I aspire to have. As Epictetus said, paraphrased, it doesn't matter by who the idea was said, the idea is what is important. And if I find the idea to be agreeable and of value to me, I make it my own. This does mean that, once again, originality is not the aim of this book. What you can expect is a lot of repetition and looking at same things from different perspectives. It will contain ideas, that might be very contradicting to today's modern person, as they are mostly oriented towards the internal of a being, soul, ming, character, good judgement and it mainly describes to do away with everything that is external. Or not do away, but rather not ascribe too much value to the externals things, as that is how you become attached to them and in a way a slave to them. Your happiness becomes dependant on the externals, which are not in your hands.
+This book contains thoughts and ideas some of whch are not original. Part of them I have learned from the great minds that have lived in this world. The other part I have arrived at myself, just to find someone else already been there and talked about it. Majority of the ideas and thoughts one might consider to be common sense. But that is not the point. The point is that I, as a rational human being, recognize these thoughts to be true, or at least believe them to be true and worth living by. These thoughts and ideas are what define me as a human being and the character I aspire to have. As Epictetus said, paraphrased, it doesn't matter by who the idea was said, the idea is what is important. And if I find the idea to be agreeable and of value to me, I make it my own. This *does* mean that, once again, originality is not the aim of this book. What you can expect is a lot of repetition and looking at same things from different perspectives. It will contain ideas, that might be very contradicting to today's modern person, as they are mostly oriented towards the internal of a being, soul, mind, character, good judgement and it mainly describes to do away with everything that is external. Or not to do away, but rather not ascribe too much value to the external things, as that is how you become attached to them and in a way a slave to them. Your happiness becomes dependant on the externals, which are not in your hands.
 
 While ideas will be in general, as common property, list good authors to read, minimalists etc.
 
@@ -16,7 +19,7 @@ Any truth I maintain is my own property, put value in the thing spoken not the p
 
 On how it might seem superflouos and boring to repeat the same thing many times, but the process of internalizing and adopting character changing ideas are hard and take time.
 
----
+
 There’s a chance you won’t read anything new in this book, as it’s not the point of this book to introduce something new. Just because it is something everybody knows doesn’t mean it shouldn’t be repeated. We forget, either by chance or by choice. And then we need to be reminded of it.
 
 
@@ -49,6 +52,8 @@ There are at least two different ways we can put rational effort into being good
 
 
 ## On death
+fear of death, like with all fears, don't yield and you're good.
+seeking of death, the greeks seems to justify some scenarios, I'm not sure, I don't know of a good example.
 
 ## On want
 There are different kind of wants. 
@@ -71,8 +76,17 @@ there's this whole thing about what do we know, what we don't know etc. that Dec
 I generally agree/think that there's is only one certainty in knowning: I think, therefore I am. It does not claim anything about the source of our existence, or the plane of existence (are we in simulation?), it doesn't claim free will, determinism or anything like that. It simply states the fact that we recognize being self-aware. It might feel insignificant at first, but this is underestimated imo. It's an **objective** piece of knowledge that is also fundamental, i.e. is not based on any other assumptions. This is huge, because most other things that are objective are only objective when reasoning from a commonly shared fundamentals/principles, which are usually subjective, but recognized to be true or valid by involved parties. Still, if you dig deeper into any objective thing it is standing on **belief** based fundamentals. You don't need to be theist to recognize the importance of belief. The concept of belief is sort of hold hostage by religions and god. But outside of these, everything is based on beliefs if you dig deep enough. (todo elaborate, with examples maybe). But not the "I know therefore I am". It's simply objectively true.
 If you are educated in formal logic, you might think that "there are plenty of objectively true things" and povide an example on something like "this lightbulb is either on or not". But it's a trivial statement. It can be generally shown to be true for any application. It does not provide any knowledge. It only portrays a certain property of a logical system. THe "I think, therefore I am" is not trivial. It also cannot be applied to anything else and maintain it's objective validity. You might say "I can see it, there for it is", but that assumes that your senses are not deceiving you, either temporarily due to lack of sleep, or fundamentally, not showing you the truth of the world, the concrete argument is not important, it's the fact that there is more to dig into it, while "I think therefore I am" is fundamental, there is nothing more to dig into.
 There's this grid of: known knowns, known unknowns, uknown knowns and unknown unknowns.
+This is a topic that can be approached in multiple ways. One is the epistemology and analysing what we know for the sake of knowledge. The other is from character point of view, what do I know? How do I know it? How does knowing it make me feel and act? How do I feel and react to others who claim to know otherwise? How do I feel about knowing less than someone else? 
+The latter ones are very practical and can be analysed in much the same way as everything else in this book. So it shall.
 
 ## On learning
+gallups strengths
+learning is one of those things that seems like a "good" thing. we get praised when we learn at school. when we read books, etc. but it's not. it's indifferent. how it plays in ones life and character can manifest as both good and bad. learning for the sake of learning can be bad (think binge watching youtube on "knowledge" channels), our brains can consume knowledge like candy and get addicted to it in a similar way. learning can also be good, if you don't know something, and you ought to, then it's the thing you do to avoid ignorance.
+compare to ignorance
+
+## On ignorance
+ignorance is a bliss
+"I have no idea what I'm doing"
 
 ## On taking care of oneself
 Sleep and eating is not for pleasure, if it becomes for pleasure, you have laziness and gluttony.
@@ -87,10 +101,23 @@ The interesting and important finding here is that sleep and food are a chore an
 This is similar to most other things: the thing is neither good nor bad, it's indiffirent. What makes it good or bad is how you act/use it.
 But again, it's not just any thing, it's a chore. The difference being you can choose to eliminate some things from your life completely, thus sidestepping the whole good/bad thing entirely, because the thing itself is indifferent. But you cannot eliminate sleep and food from your life. If you do that on free will then it becomes either good or bad.
 
+## On reward
+"giving yourself a reward" like a dessert or a candy
+definitely can be bad and dangerous in a sense that you can succumb and even begin rationalising "I deserve to rest and do nothing today" when in reality laziness is taking over and all you need is maybe some proper rest instead you binge watch TV series.
+but can be used as a tool for promoting good judgement/behavior.
+
 ## On social duties
 social duties should probably be treated as chores in prev chapter about sleep and food.
 but how to differentiate what is social dutie and what is a social norm?
 the former being the thing you really ought to do, while the latter is something that is being done or expected of your because of culture/etc.
+humans are complex beings. many humans joining in a group and forming a society is even more complex. I cannot claim to understand or draw any conclusions or discuss causalities in this regard, there's probably a science of this (is it anthropology?).
+clearly humans, cultures and societies work to an extent where we exist and thrive on earth so far. it's easy to claim that societies are rotten and we ought to act differently, but again, the system is so complex that there's no knowing what hurricane could be caused by some buttefly flapping its wings in a different way.
+when it comes to individuals though, I think all the discussed principles still apply. just because the society at large operates one way or another, that does not make it "good". society is external. it's a mechanism. you don't have to change or want to change it, but you ought to not allow it affect you in an impulsive manner.
+it's easy to rationalize bad behavior with stuff like "this is what we do" or "it's how things have always been" and alike.
+one must stay rational and use critical thinking, regardless of the external pressure.
+this makes the society a mechanism to observe and analyse. since it's complex it can be tiring. this segways into the next topic - on avoiding things and people.
+L: strong characters makes impressions on culture, weak characters carry culture’s impressions on their face (index)
+
 
 ## On avoiding things and people
 things and people are indifferent, neither good nor bad.
@@ -108,14 +135,19 @@ like fear can affect what you choose in certain cases and it is bad, because jud
 ## On happiness
     How it is related to where you attach importance.
     Ask yourself where is your hapiness, if it's not within you, ask why you gave it away?
-    The answer is probably that you did it unvolantarely. To learn to be conscious and deliberate with your hapiness is a skill that takes long to master.
+    The answer is probably that you did it involantarely. To learn to be conscious and deliberate with your hapiness is a skill that takes long to master.
     Remembering E: a wise man does not depend on anything to be happy
 ## On fortune
-## On death
-## On externals and internals
-## On virtue and vice
+## On externals and internals (should be at the top somewhere?)
+## On virtue and vice (at the top?)
 ## On disagreements
+stubbornes is a vice that can make you act bad in a context of disagreements.
+rashness, rage ar another two.
 ## On background mind
+when actively used it gets better: both quantative and in quality: more, faster ideas and ideas that are good, not just impulses.
+coming back into the foundational belief of "humans are capable of knowing what is good and bad", isn't the background mind the one that provides this "feeling"? but at the same time it's also the one filled with impulses. 
+The background mind is neither good nor bad, it seems like it's eager to help. You have to use it, cooperate with it.
+
 ## On steadiness
 S: when you are on the road, there must be an end, but when astray, your wanderings are limitless
 S: it’s impossible to keep constant pace but possible to keep constant direction/destination
@@ -124,6 +156,8 @@ S paraphrased: you should act same regardless of context, that is your principle
 ## On being true with oneself
 S paraphrased: find yourself guilty, identify your vices, be harsh. If you want to improve, you have to make amends, and one who doesn’t recognise their wrongs is not going to make amends
 
+this is the first step to any growth in character and self-improvements.
+
 ## On rationalization 
     - metaphor on cage, and how it is bad to be in a cage formed by your own ignorance, but when ignorance clears and you become aware of the cage that was built around you and you still keep rationalizing and building the cage, you are basically consciously building yourself a prison.
 ## On intent vs result
@@ -131,6 +165,20 @@ S paraphrased: find yourself guilty, identify your vices, be harsh. If you want 
     How it's the only thing under our control
     Just because circumstances are hard, or you happen to be unfortunate, tired, it does not mean that you cannot make good judgement
     Triggers, how it’s easy to keep the monster behind the doors if you don’t even look at the doors (Easier*)
+    what about determinism. if "everything is just physics and atoms moving according to initial big bang" then "there is no free will". so how should you act knowing that there is no free will? what a paradoxical question right? you just understood that there is no free will and the first question is asking you to exercise your will in deciding what to do now?
+    the problem of determinism is huge when approached from existential side. but it's not as revelant from the practical point of view. and practical point of view is what I am interested in with this book.
+    there are 2 ways to practically escape this problem:
+    1) if everything is deterministic it doesn't matter, the system is so complex that we cannot comprehend or use that knowledge in any way, the very exsistance and our thoughts are predetermined meaning we essentially don't exist and are just an echo. yet here we are, with all the problems and questions in life. for a determinsm to "matter" in practical sense, one would need to have "godly" powers to draw conclusions from it. so nothing changes for us.
+    2) even more practical and possibly applicable to other "philosophical cliche conundrums", if you feel like the problem you are facing or the question you are asking yourself is "deep", "complex", "paradoxical", "existential" then you are probably entering a wishy-washy land of "what ifs" and it should be treated as a cue to move on. a way to check if it's the case is to question the causal effects of different answers to such questions. "what if everything is predetermined? it has been up until this moment, nothing changed"
+/home/llaz/git/notes/philosophy/free will.md
+
+## On free will of a human
+    Is life deterministic
+    THere is at least a perceived free will in us. Even if it's not free, there is an interesting relation between our will and what we do, because if we choose to do it, even if one might argue that we chose just because of the complext causal line of the universe, that doesn't change the fact that the decision was made and it has consequences. If we don't make a decision or make a different decision, the same still applies. So even if we don't have a truly free will, it's not productive to cling to that, as our decisions still matter. And be very coutious here, as subscribing to the idea of no free will can open up a back door for vice into your life, it's very easy to rationalize that the bad decisions you made are just the way the universe made me. This gets to very fundamental things, where we might start talking about beliefs, rather than logically testable truths. But one of the principals I follow is that whatever level of free will we have it is enough, as it is a very precious thing that has a great amount of power and is the only thing that we truly have, and are not just merely lent (see stoics, epictetus, etc.).
+
+## on obsession
+obsession is bad (depends on definition, but this is the way I am defining focus that is overly excesive and interrupts other things)
+the opposite end is also bad. not sure what to call it. but if you don't care about a thing regardless of whether it is expedient. basically idgaf attitude. it's bad.
 
 ## On feelings, emotions and empathy
     ### Good use of emotions
@@ -138,14 +186,24 @@ S paraphrased: find yourself guilty, identify your vices, be harsh. If you want 
 ## On fear and anxiety
     How it promotes irrational behavior
 ## On being cautious and confident at the same time
-## On impulse
-## On natural impulse towards externals, but not internals
+    from seneca or epictetus? - be cautious in things that are in your control and confident in externals. this way your energy will be divided effectively where it has impact.
+## On impulse (to top?)
+## On natural impulse towards externals, but not internals (to top)
     Why internals require concious effort
     "No art gives delight in err, only the art of living life, we draw pleasure from our vices"
 ## On rules and principles
+rules are built on top of principles as a way to put them in practice.
+but principles are more important to have strong foundation as rules without principles "do not stand" or rather don't have anything to stand on.
+
 ## On beliefs
     How beliefs are at the very root of most rationality, we need axioms to apply logic to.
+    beliefs are not good or bad. but disregarding rationality in favour of just belief, like with some religions is bad in my book (pun not inteded).
+    disbelief just to oppose is a bad thing and links back into disagreements.
+
 ## On logical fallacies and cognitive biases
+things we inherit but should not remain ignorant about
+why are they not teached at school?
+
 ## On stubborness
 
 ## On fear and anxiety
@@ -153,9 +211,6 @@ S paraphrased: find yourself guilty, identify your vices, be harsh. If you want 
 ## On being cautious and confident at the same time
 ## On natural preference towards externals and not internals
 ## On impulse
-## On free will of a human
-    Is life deterministic
-    THere is at least a perceived free will in us. Even if it's not free, there is an interesting relation between our will and what we do, because if we choose to do it, even if one might argue that we chose just because of the complext causal line of the universe, that doesn't change the fact that the decision was made and it has consequences. If we don't make a decision or make a different decision, the same still applies. So even if we don't have a truly free will, it's not productive to cling to that, as our decisions still matter. And be very coutious here, as subscribing to the idea of no free will can open up a back door for vice into your life, it's very easy to rationalize that the bad decisions you made are just the way the universe made me. This gets to very fundamental things, where we might start talking about beliefs, rather than logically testable truths. But one of the principals I follow is that whatever level of free will we have it is enough, as it is a very precious thing that has a great amount of power and is the only thing that we truly have, and are not just merely lent (see stoics, epictetus, etc.).
 ## On focusing on past, future and present
 ## On laziness
 ## On procrastination
@@ -187,7 +242,7 @@ S: just like it doesn’t matter if you lay a sick person on a wooden bed or a g
 
 ## thought bag
 
-  - on human as a structural body in physical world, and the blueprint it represents, the separation between two and interactions, which are unknown
+  - on human as a structural body in physical world, and the blueprint it represents, the separation between two and interactions, which are unknown (wrong book? lol)
   - everyone is fighting a different or unique battle
   - Decision fatigue and why it’s important to focus on important decisions
  - L: on things that are indifferent. They can sometimes be used for bad. Indulging in such cases is very easy and happens on impulse. In such cases the easiest way to improve one self is to abstain from the thing completely. Once that becomes easy, the next, harder thing, is to include the thing in your life again, but without indulging and using it for bad. If a thing can serve purpose, use it for good alone. If it doesn’t serve any good purpose, use it for testing your will of not indulging.
@@ -242,7 +297,6 @@ When you have time, follow up on your plans, instead of giving in to time waster
 
 L: we teach how to do something correctly, but we spend little time teaching whether it is good to do it in the first place.
 L: abandoning a discipline in despair of not being the best at it is a bad thing, it is succumbing to ambition, or maybe pride. “We do what we must, because we can”
-L: strong characters makes impressions on culture, weak characters carry culture’s impressions on their face
 LL: let’s start with example, focus is good, obsession is bad. Focus is when we consciously put our attention to a topic, obsession is when we impulsively default to a topic.
 
 Now this is true in a generic sense as well. Whenever you put internals to use and consciously do something, it’s good. Whenever you act impulsively it becomes bad. The effects of both can be different or the same, bad behaviour can produce desirable outcomes by chance, that does not mean the thing was good to begin with. That’s why goals aren’t that important. If you are looking for direction - have a strategy and principles and act according to them. The outcomes is what comes out of that, but you only have so much control of them.
@@ -469,3 +523,24 @@ aka, the model does not suggest how to solve problems, just how to do it product
 also this doesn't include compromises and emotional things, which is not compatible in principle with this model, but again, not saying it's bad, it's just different
 to show good faith and that you  care, put in effort to try multiple things
 models
+
+don't search for hacks, don't search for "best thing", it's a trap that looks apealing, but it brings mental shutdown, like this is it, this is what I do and I no longer have to question in or be critical thinking, resonable. that's not good. 
+
+world is huge and existance is vast. there are a lot of different things. SOme nice, some scary, some good some bad.
+they affect us in one way or another. affect how we feel about the world.
+thing is, our life span is limited, and we will never experience everything.
+so its important to choose correct
+everytime you choose something negative you are paying an opportunity cost of doing something good instead.
+
+anger is gift - RATM, my interpretation yielding to anger is bad, analysing where the anger is coming from and using the energy anger brings consciously can be good.
+
+impulsive draw comes from non-conscious part of mind. it's also usually related to immediate results, either quick dopamine or quick reaction (like anger/rage). it seems like they might have come from the evolutinary necessity. in the old days you probably couldn't stuff your face with junk food, so dopamine to keep your intrinsic drive towards getting food was advantagious. it's no longer that much neceserry. same thing goes for anger or reactional things, there were probably more dangerous situations on a daily basis, being able to act quickly and with determination would have been advantagious. nowadays it's not that common for it to be advantagious. but we are left with this evolutionary backage. and now we have to deal with it consciously. we now consciously know what is the right thing to do and what will  give us happiness in the long run. but these things are not evolutinary wired into us. we have to consciously choose them. and usually the happiness feedback comes slower from these. impulses probably helped to get to where we are today as a species, but conscious mind helps us keep going forward.
+
+at the core stoicism is about classifying all things in either good, bad or indifferent and then focusing on ascending to good, avoiding bad and accepting indifferent as it is. the next natural question is how do you determine what is good, bad and indifferent? it's a two step process. the first step is identifying if it's a thing that is in your control. if it is - then it's either good or bad, if it's not then it's indifferent. the second step is differentiating good from bad. and this is where we get to the foundation of stoicism as a logical reasoning system, and as with all such systems, the foundation is based on belief, a belief that is then used as an axiom to logically and objectively derive all other parts of the system. the belief of stoicism is that we are born with an intrinsic ability to differentiate good from bad. when we lie, or take something that doesn't belong to us, we both physically and mentally feel that we are not supposed to do this. the ability is pronounced differently in distinct people, and it's also prone to nurture or neglect. if you use the ability - you get better at it, if you neflect it - you become worse at it. there are multiple ways one can neglect this ability: act on impulse ignoring it, try to rationalize your behavior thus actively decalibrating it. there only one way to improve it though: use it. stoicism is very simple at it's core. the difficulty comes from applying it to your daily life. but it's a worthy endevour.
+
+## Index
+Add meditations here with page numbers to where they were discussed. Kind of like Marcus Aurelius, but only acts as an index.
+
+## References
+Add good authors here
+
