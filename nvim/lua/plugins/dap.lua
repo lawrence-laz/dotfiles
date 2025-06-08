@@ -124,7 +124,8 @@ return {
             }
 
             local liblldb_path = require("mason-registry").get_package("codelldb"):get_install_path()
-                .. "/extension/lldb/lib/liblldb.dylib"
+                .. "/extension/lldb/lib/liblldb.so" -- Linux
+            -- .. "/extension/lldb/lib/liblldb.dylib" -- MacOS
 
             dap.adapters.codelldb = {
                 type = "server",
@@ -134,6 +135,24 @@ return {
                     args = { "--liblldb", liblldb_path, "--port", "${port}" },
                     -- On windows you may have to uncomment this:
                     -- detached = false,
+                },
+            }
+
+            -- .NET C#
+            dap.adapters.coreclr = {
+                type = 'executable',
+                command = '/home/llaz/bin/netcoredbg/netcoredbg',
+                args = { '--interpreter=vscode' }
+            }
+
+            dap.configurations.cs = {
+                {
+                    type = "coreclr",
+                    name = "launch - netcoredbg",
+                    request = "launch",
+                    program = function()
+                        return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+                    end,
                 },
             }
 

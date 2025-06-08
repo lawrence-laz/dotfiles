@@ -7,6 +7,12 @@ else
     vim.opt.number = true
 end
 
+
+vim.cmd [[let g:loaded_matchparen=1]]
+
+vim.cmd [[set shell=/bin/bash\ --init-file\ ~/.bash_aliases]] -- Load aliases
+vim.cmd [[let $BASH_ENV = "~/.bash_aliases"]]                 -- Load aliases
+
 -- ========================== Netrw =============================================
 vim.g.netrw_keepdir = 0                   -- Keep the current directory and the browsing directory synced. This helps avoid the move files error.
 vim.g.netrw_winsize = 30                  -- 30%.

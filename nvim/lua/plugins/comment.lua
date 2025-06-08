@@ -7,6 +7,7 @@ return {
         end
     },
     {
+        enable = true,
         'numToStr/Comment.nvim',
         opts = {
             ---Add a space b/w comment and the line

@@ -52,7 +52,7 @@ return {
                     keys = {
                         toggle_or_jump = { 'o', '<CR>' },
                         quit = 'q',
-                        jump = 'e',
+                        jump = 'i',
                     },
                 }
             })

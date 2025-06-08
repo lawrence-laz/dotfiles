@@ -1,6 +1,4 @@
--- https://github.com/neovim/nvim-
--- lspconfig/blob/master/doc/server_configurations.md
-
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
 
 function LspRename()
     local curr_name = vim.fn.expand("<cword>")
@@ -53,7 +51,7 @@ return {
     {
         "neovim/nvim-lspconfig",
         lazy = false,
-        dev = true,
+        dev = false,
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
             "williamboman/mason.nvim",
@@ -64,7 +62,7 @@ return {
         opts = {
             -- options for vim.diagnostic.config()
             diagnostics = {
-                underline = false,
+                underline = true,
                 update_in_insert = false,
                 virtual_text = {
                     spacing = 4,
@@ -86,14 +84,14 @@ return {
             },
 
             -- Automatically format on save.
-            autoformat = true,
+            autoformat = false,
 
             -- A list of servers to set up.
             -- Defined by a table which is passed to lspconfig.server_name.setup(...) function.
             ---@type lspconfig.options
             servers = {
                 bashls = {},
-                gopls = {},
+                -- gopls = {},
                 svelte = {},
                 zk = {
                     -- Zettelkasten for markdown.
@@ -164,6 +162,12 @@ return {
                         enable_argument_placeholders = false,
                     },
                 },
+                tailwindcss = {
+                    settings = {},
+                },
+                vtsls = {
+                    settings = {},
+                },
                 rust_analyzer = {
                     settings = {
                     },
@@ -203,7 +207,10 @@ return {
 cd ~/bin && mv -f zls zls.bak && curl -O https://zigtools-releases.nyc3.digitaloceanspaces.com/zls/master/aarch64-macos/zls && chmod-exec zls
                     --]]
                     -- Zig: https://ziglang.org/download/
-                    --[[
+                    --[[ Linux
+cd ~/zig && mv -f sdk sdk.bak && mkdir sdk && curl https://ziglang.org/download/index.json | jq '.master."aarch64-linux".tarball' | xargs -I{} curl -o "./zig-sdk.tar.xz" "{}" && tar -xvf zig-sdk.tar.xz -C ./sdk && cd sdk && mvout $(find . -name zig-*)
+                    --]]
+                    --[[ MacOS
 cd ~ && mv -f zig-sdk zig-sdk.bak && mkdir zig-sdk && curl https://ziglang.org/download/index.json | jq '.master."aarch64-macos".tarball' | xargs -I{} curl -o "./zig-sdk.tar.xz" "{}" && tar -xvf zig-sdk.tar.xz -C ./zig-sdk && cd zig-sdk && mvout $(find . -name zig-*)
                     --]]
                     -- Build form source:lsp
@@ -215,15 +222,18 @@ cd ~ && mv -f zig-sdk zig-sdk.bak && mkdir zig-sdk && curl https://ziglang.org/d
                         }
                     }
 
+                    vim.g.zig_fmt_parse_errors = 0
+                    vim.g.zig_fmt_autosave = 0
+
                     opts.root_dir =
                         require 'lspconfig.util'.root_pattern("build.zig", "zls.json", ".git");
                     require 'lspconfig'.zls.setup(opts)
                     -- "zig.zls.enableBuildOnSave": false
                 end,
 
-                gopls = function(_, ops)
-                    require 'lspconfig'.gopls.setup {}
-                end,
+                -- gopls = function(_, ops)
+                --     require 'lspconfig'.gopls.setup {}
+                -- end,
                 -- example to setup with typescript.nvim
                 -- tsserver = function(_, opts)
                 --   require("typescript").setup({ server = opts })
@@ -334,11 +344,11 @@ cd ~ && mv -f zig-sdk zig-sdk.bak && mkdir zig-sdk && curl https://ziglang.org/d
                 if server_opts then
                     server_opts = server_opts == true and {} or server_opts
                     -- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
-                    if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
-                        setup(server)
-                    else
-                        ensure_installed[#ensure_installed + 1] = server
-                    end
+                    -- if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
+                    setup(server)
+                    -- else
+                    --     ensure_installed[#ensure_installed + 1] = server
+                    -- end
                 end
             end
 

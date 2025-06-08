@@ -2,20 +2,21 @@ return {
     {
         "nvim-treesitter/nvim-treesitter-context",
         event = "BufReadPre",
-        enabled = true,
+        enabled = false,
         opts = { mode = "cursor" },
     },
     {
         "nvim-treesitter/nvim-treesitter",
         lazy = false,
+        enabled = true,
         version = false, -- last release is way too old and doesn't work on Windows
         build = ":TSUpdate",
         event = { "BufReadPost", "BufNewFile" },
-        dependencies = {
-            { "nvim-treesitter/nvim-treesitter-textobjects", },
-            { "windwp/nvim-ts-autotag",                      opts = {} },
-            { 'JoosepAlviste/nvim-ts-context-commentstring' },
-        },
+        -- dependencies = {
+        --     { "nvim-treesitter/nvim-treesitter-textobjects", },
+        --     { "windwp/nvim-ts-autotag",                      opts = {} },
+        --     { 'JoosepAlviste/nvim-ts-context-commentstring' },
+        -- },
         cmd = { "TSUpdateSync" },
         keys = {
             -- { "<C-w>",   desc = "Increment selection" },
@@ -26,7 +27,7 @@ return {
             -- indent = { enable = true },
 
             indent = {
-                enable = true,
+                enable = false,
                 disable = { "zig" }
             },
 
@@ -92,7 +93,7 @@ return {
                 additional_vim_regex_highlighting = false,
             },
             incremental_selection = {
-                enable = true,
+                enable = false,
                 keymaps = -- nil,
                 {
                     -- init_selection = '<C-w>',

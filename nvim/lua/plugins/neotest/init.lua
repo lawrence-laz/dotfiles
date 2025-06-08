@@ -1,12 +1,12 @@
 return {
     "nvim-neotest/neotest",
-    dev = true,
+    dev = false,
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",
         "antoinemadec/FixCursorHold.nvim",
         "Issafalcon/neotest-dotnet",
-        { "lawrence-laz/neotest-zig",    dev = true },
+        { "lawrence-laz/neotest-zig",    tag = "1.3.1", dev = true },
         { "nvim-neotest/neotest-plenary" },
         "nvim-neotest/neotest-go",
     },

@@ -209,8 +209,8 @@ local commands = {
     { name = "Debug: Show callstack",       exec = "Telescope dap frames",          keymap = { "n", "dS" } }, -- ds is "delete surrounding"
     -- { name = "Debug: Stop",              exec = require 'dap'.stop,              keymap = { "n", "ds" } },
     { name = "Debug: List breakpoints",     exec = dap_list_breapoints },
-    { name = "Fold: Close all",             exec = require('ufo').closeAllFolds,    keymap = { "n", "zM" } },
-    { name = "Fold: Open all",              exec = require('ufo').openAllFolds,     keymap = { "n", "zR" } },
+    -- { name = "Fold: Close all",             exec = require('ufo').closeAllFolds,    keymap = { "n", "zM" } },
+    -- { name = "Fold: Open all",              exec = require('ufo').openAllFolds,     keymap = { "n", "zR" } },
     {
         name = "Diagnostics: Show for current file",
         exec = "Lspsaga show_buf_diagnostics",
@@ -218,6 +218,20 @@ local commands = {
     {
         name = "Diagnostics: Show for workspace",
         exec = "Lspsaga show_workspace_diagnostics",
+    },
+    {
+        name = "Fold: Open all",
+        exec = "lua require('ufo').openAllFolds()",
+        keymap = { "n", "zO" },
+
+        -- vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+    },
+    {
+        name = "Fold: Close all",
+        exec = "lua require('ufo').closeAllFolds()",
+        keymap = { "n", "zM" },
+
+        -- vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
     },
     {
         name = "Git: Blame",
@@ -289,7 +303,8 @@ local commands = {
     {
         name = "GitHub: Open link current repo",
         exec = function()
-            local result = vim.system({ 'git', 'config', '--get', 'remote.origin.url' }, { text = true }):wait()
+            local result = vim.system({ 'git', 'config', '--get', 'remote.origin.url' }, { text = true })
+                :wait()
             if (result.code ~= 0) then
                 print("Git exited with non-zero result")
             end
@@ -297,14 +312,14 @@ local commands = {
             vim.api.nvim_call_function("netrw#BrowseX", { path, 0 })
         end,
     },
-    {
-        name = "TreeSitter: Inspect tree",
-        exec = vim.treesitter.inspect_tree,
-    },
-    {
-        name = "TreeSitter: Edit query",
-        exec = vim.treesitter.query.edit,
-    },
+    -- {
+    --     name = "TreeSitter: Inspect tree",
+    --     exec = vim.treesitter.inspect_tree,
+    -- },
+    -- {
+    --     name = "TreeSitter: Edit query",
+    --     exec = vim.treesitter.query.edit,
+    -- },
     {
         name = "Zig: Build and run",
         exec = "wall | !zig build run",
@@ -429,7 +444,7 @@ local commands = {
     },
     {
         name = "Test: Show full output",
-        exec = require 'neotest'.output.open,
+        exec = "", --require 'neotest'.output.open,
         keymap = { "n", "<leader>to" }
     },
     {
@@ -437,17 +452,17 @@ local commands = {
         exec = function() require 'neotest'.output.open({ short = true }) end,
         keymap = { "n", "<leader>tO" }
     },
-    {
-        name = "Increment selection",
-        exec = require 'nvim-treesitter.incremental_selection'.node_incremental,
-        -- todo: use something wiht v? or visual only, right?
-        -- keymap = { "v", "<C-w>" },
-    },
-    {
-        name = "Decrement selection",
-        exec = require 'nvim-treesitter.incremental_selection'.node_decremental,
-        -- keymap = { "v", "<C-S-w>" },
-    },
+    -- {
+    --     name = "Increment selection",
+    --     exec = require 'nvim-treesitter.incremental_selection'.node_incremental,
+    --     -- todo: use something wiht v? or visual only, right?
+    --     -- keymap = { "v", "<C-w>" },
+    -- },
+    -- {
+    --     name = "Decrement selection",
+    --     exec = require 'nvim-treesitter.incremental_selection'.node_decremental,
+    --     -- keymap = { "v", "<C-S-w>" },
+    -- },
     {
         name = "Search help",
         exec = "Telescope help_tags"

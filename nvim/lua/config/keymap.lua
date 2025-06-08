@@ -11,6 +11,7 @@
 -- :cfdo %s/foo/bar/g       preform a command on all quick fix FILES
 -- :cdo? s/foo/bar/g        perform a command on all quick fix LINES
 -- :%s/before/after/g       /g makes it global?; for new lines use \r
+--                 /gc      c for "check" so you say "y" "n"
 -- :s/before/after/         line only, /g applies multiple times, default only first match
 -- :S/before/after/         case retaining mode BEFORE AFTER (from abolish plugin)
 -- :g/r                     search with regex
@@ -23,6 +24,7 @@
 -- :'<,'>!s                 execute selection as bash script and replace with outputs
 -- :ls                      list all buffers even closed and then :b index
 -- :windo diffthis          diff two windows -> :tabnew <leader>- :enew :windo diffthis
+-- :sort u                  Unique/distinct lines
 --
 -- TOOD: nvimtree, execute bash command on file in tree
 -- TODO: auto complete lua in command mode
@@ -44,6 +46,7 @@
 --
 -- i        - Go to test in neotest under cursor
 --
+-- c/term   - Change to searched result (NICE!)
 -- cgn      - Change last search highlight
 -- gn       - Visual select search highlight
 -- g;       - Go to last edit
@@ -404,16 +407,16 @@ else
     vim.keymap.set("i", "<C-k>", function() vim.lsp.buf.signature_help() end)
 
     -- vim.keymap.set('n', '<C-m><C-m>', 'za')
-    vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
-    vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
-    vim.keymap.set('n', 'zr', require('ufo').openFoldsExceptKinds)
-    vim.keymap.set('n', 'zm', require('ufo').closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
-    vim.keymap.set('n', 'K', function()
-        local winid = require('ufo').peekFoldedLinesUnderCursor()
-        if not winid then
-            vim.lsp.buf.hover()
-        end
-    end)
+    -- vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+    -- vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+    -- vim.keymap.set('n', 'zr', require('ufo').openFoldsExceptKinds)
+    -- vim.keymap.set('n', 'zm', require('ufo').closeFoldsWith) -- closeAllFolds == closeFoldsWith(0)
+    -- vim.keymap.set('n', 'K', function()
+    --     local winid = require('ufo').peekFoldedLinesUnderCursor()
+    --     if not winid then
+    --         vim.lsp.buf.hover()
+    --     end
+    -- end)
 
     vim.keymap.set('i', '<Tab>', function()
     end)
@@ -483,14 +486,15 @@ else
     vim.keymap.set("v", "<C-f>", function()
         local selection = vim.get_visual_selection()
         require("telescope.builtin").current_buffer_fuzzy_find({ default_text = selection })
-    end)                                                                   -- Find in current file's content
-    vim.keymap.set("n", "<C-S-f>", require("telescope.builtin").live_grep) -- Find file contents globally
+    end) -- Find in current file's content
+    vim.keymap.set("n", "<C-S-f>", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
+    -- vim.keymap.set("n", "<C-S-f>", require("telescope.builtin").live_grep) -- Find file contents globally
     vim.keymap.set("v", "<C-S-f>", function()
         local selection = vim.get_visual_selection()
         require("telescope.builtin").live_grep({ default_text = selection })
-    end)                                  -- Find file contents globally
-    vim.keymap.set("n", "<C-->", "<C-O>") -- Go back
-    vim.keymap.set("n", "<C-_>", "<C-I>") -- Go forward
+    end)                                    -- Find file contents globally
+    vim.keymap.set("n", "<C-->", "<C-O>")   -- Go back
+    vim.keymap.set("n", "<C-S-->", "<C-I>") -- Go forward
 end
 
 if vim.g.vscode then
@@ -596,6 +600,7 @@ else
                     local source_paths = {}
                     for path in vim.fn.getreg('+'):gmatch('[^\n%s]+') do
                         source_paths[#source_paths + 1] = path
+                        print(path)
                     end
                     local target = oil.get_cursor_entry()
                     local current_dir = oil.get_current_dir()
@@ -672,28 +677,34 @@ else
         end
     })
 
-    vim.keymap.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<CR>", { silent = true })
-    vim.keymap.set("n", "<C-j>", "<cmd>TmuxNavigateDown<CR>", { silent = true })
-    vim.keymap.set("n", "<C-k>", "<cmd>TmuxNavigateUp<CR>", { silent = true })
-    vim.keymap.set("n", "<C-l>", "<cmd>TmuxNavigateRight<CR>", { silent = true })
-    vim.keymap.set("n", "<C-b><Right>", "<cmd>TmuxNavigateRight<CR>", { silent = true })
-    vim.api.nvim_create_autocmd('filetype', {
-        pattern = 'netrw',
-        desc = 'Better mappings for netrw',
-        callback = function()
-            vim.keymap.set('n', 'a', '%', { remap = true, buffer = true })
-            vim.keymap.set('n', 'r', 'R', { remap = true, buffer = true })
-            vim.keymap.set('n', "<C-h>", "<cmd>TmuxNavigateLeft<CR>",
-                { remap = true, buffer = true, silent = true })
-            vim.keymap.set('n', "<C-j>", "<cmd>TmuxNavigateDown<CR>",
-                { remap = true, buffer = true, silent = true })
-            vim.keymap.set('n', "<C-k>", "<cmd>TmuxNavigateUp<CR>",
-                { remap = true, buffer = true, silent = true })
 
-            vim.keymap.set('n', "<C-l>", "<cmd>TmuxNavigateRight<CR>",
-                { remap = true, buffer = true, silent = true })
-        end
-    })
+
+    vim.keymap.set("n", "<C-H>", function() require("kitty-navigator").navigateLeft() end, { silent = true })
+    vim.keymap.set("n", "<C-J>", function() require("kitty-navigator").navigateDown() end, { silent = true })
+    vim.keymap.set("n", "<C-K>", function() require("kitty-navigator").navigateUp() end, { silent = true })
+    vim.keymap.set("n", "<C-L>", function() require("kitty-navigator").navigateRight() end, { silent = true })
+    -- vim.keymap.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<CR>", { silent = true })
+    -- vim.keymap.set("n", "<C-j>", "<cmd>TmuxNavigateDown<CR>", { silent = true })
+    -- vim.keymap.set("n", "<C-k>", "<cmd>TmuxNavigateUp<CR>", { silent = true })
+    -- vim.keymap.set("n", "<C-l>", "<cmd>TmuxNavigateRight<CR>", { silent = true })
+    -- vim.keymap.set("n", "<C-b><Right>", "<cmd>TmuxNavigateRight<CR>", { silent = true })
+    -- vim.api.nvim_create_autocmd('filetype', {
+    --     pattern = 'netrw',
+    --     desc = 'Better mappings for netrw',
+    --     callback = function()
+    --         vim.keymap.set('n', 'a', '%', { remap = true, buffer = true })
+    --         vim.keymap.set('n', 'r', 'R', { remap = true, buffer = true })
+    --         vim.keymap.set('n', "<C-h>", "<cmd>TmuxNavigateLeft<CR>",
+    --             { remap = true, buffer = true, silent = true })
+    --         vim.keymap.set('n', "<C-j>", "<cmd>TmuxNavigateDown<CR>",
+    --             { remap = true, buffer = true, silent = true })
+    --         vim.keymap.set('n', "<C-k>", "<cmd>TmuxNavigateUp<CR>",
+    --             { remap = true, buffer = true, silent = true })
+    --
+    --         vim.keymap.set('n', "<C-l>", "<cmd>TmuxNavigateRight<CR>",
+    --             { remap = true, buffer = true, silent = true })
+    --     end
+    -- })
 
     vim.api.nvim_create_autocmd('filetype', {
         pattern = 'lua',
@@ -778,7 +789,7 @@ else
 
     vim.keymap.set("n", "<C-S-p>", require 'scripts.my-commands', { silent = true }) -- scripts/my-commands.lua
 
-    vim.keymap.set("n", "<C-b><Right>", "<cmd>TmuxNavigateRight<CR>", { silent = true })
+    -- vim.keymap.set("n", "<C-b><Right>", "<cmd>TmuxNavigateRight<CR>", { silent = true })
 
     -- TODO: hjkl navigation and <C-MM>(za?) expand shrink https://github.com/nvim-tree/nvim-tree.lua/wiki/Recipes
     --

@@ -76,7 +76,7 @@ return {
                 end,
             })
         end,
-        dependencies = { "ray-x/cmp-treesitter" },
+        -- dependencies = { "ray-x/cmp-treesitter" },
     },
     { "hrsh7th/cmp-buffer" },
     { "hrsh7th/cmp-path" },
