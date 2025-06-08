@@ -14,6 +14,9 @@ Thumbnail: ???
 
 - hi 
 
+- library review (nuget, zig, c, etc.)
+- educational stuff of concepts and stuff
+
 REDACTED V2:
 - So you know how often times it's quite difficult to tell, which is more effective: solving an issue at hand, or building a utility, which helps you to solve the said issue now and in the future.
 Development environment is one of those scenarios where I spare no effort and really want to get things right,
@@ -227,3 +230,24 @@ some things, which are pretty good:
  - 99 problems
  - perf ninja
  - https://github.com/zigcc/zig-cookbook
+
+
+ - using kitty instead of tmux
+    - [x] <C-b>x        Close session
+    - [x] <C-b>l        Jump to prev window
+    - [x] <C-b>z        Zoom
+    - [x] <C-b>n        New session
+    - [x] <C-b>s    List sessions                           
+        - [ ] Sorted by name
+        - [ ] Searchable with '/'
+    - [x] <C-b>L        Jump to prev session
+    - [x] <C-b>-        Split horizontal
+    - [x] <C-b>|        Split vertical
+    - [ ] <C-b>CR       Copy mode (pipe to stripped nvim?)      <---------- Need to pipe to nvim, but ansi polute, color less?
+    - [x] <C-b>f        Open new session from fzf folder
+    - [x] <C-h/j/k/l>   KittyNavigate with nvim
+    - [ ] <C-b>g        Go to file path                         <---------- kittn hints could be used for this
+    - [ ] restrict remote control 
+
+
+

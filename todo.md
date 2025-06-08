@@ -1,8 +1,5 @@
 ***
 [!] adding items to todo list should be mindful. always add reasoning behind why a given item is needed, like a user story.
-
-- Spend more effort, be wise (personal projects, philosophy, etc.)
-- Write journal, on virtue, on vice, on seeking wisdom (add journal in notes/?)
 ***
 
 ===========================
@@ -20,7 +17,7 @@ See [projects] for bigger chunks
 (                      Nvim                                ) (                 Philosophy                   )
 
 
-
+https://jamesclear.com/3-2-1
 
 
 
@@ -28,40 +25,46 @@ See [projects] for bigger chunks
 
 
 # Next year
+- [ ] Get ready to move in
 
 # This year
-- [ ] read https://blog.ploeh.dk/2014/05/19/di-friendly-framework/
-- [ ] read https://blog.ploeh.dk/2014/05/19/di-friendly-library/
-- [ ] Run vsdbg on nvim
-	https://github.com/dotnet/vscode-csharp/issues/3699
-	https://github.com/arkaragian/vimenv/blob/master/after/plugin/nvim-dap.lua
-	https://github.com/OmniSharp/omnisharp-vim/issues/96
-	https://github.com/mfussenegger/nvim-dap/discussions/869
-	https://github.com/dotnet/vscode-csharp/issues/1059
-	https://code.visualstudio.com/docs/csharp/debugger-settings
+- [ ] Start building a house
 
 # Next Month
-
-# This Month
-- [ ] Zig: transform tree, render 3d stuff, to:
+- [ ] Zig: do learopengl.com in zgl
+    - do stuff like Sketchup with interacting and stuff
 	- get better at Zig
 	- get useful and interesting skills for the future
 	- apply at work
-- [ ] Atnaujinti statybų planą, to have a better understanding of next steps and find if anything is missing.
-- [ ] Find the cause of lag with big files in nvim and remove it
+- [ ] finish Jaysan parsing + JSON test suite
+
+# This Month
 
 # Next week
-- [ ] Fix karabiner config, so that the following things would work:
-	- Consider doing explicit mappings for each functionality and app, it will take a while, but might be easier to maintain.
-	- RDP on windows Alt+arrow, goes up a directory and browser history
-	- RDP win+arrow, contorl windows, maximize, maximize
-	- Everywhere win+arrow, to move windows and jump between windows
-	- Nvim, alt+hjkl, to move lines and characters around
 
 # This week
-- [ ] Yabai, shortcut for win+shift+hl to move to other window?
-- [ ] Yabai, full screen
-- [ ] Yabai, floating/docker screen
+- [ ] reconsider laz.dev and related hosting
+- [ ] House project
+
+
+
+James Clear:
+"Your first task is to find what feels effortless to you.
+
+Your second task is to put maximum effort into it."
+
+Time will multiply whatever you feed it.
+
+Good habits make time your ally. Bad habits make time your enemy.
+
+"Things that keep talented people from fulfilling their potential:
+
+Trying to please everyone
+Imitating the desires of others
+Chasing status without questioning why
+Playing superhero and trying to do it all alone
+Dividing attention between too many projects
+Which one is most likely to pull you in?"
 
 
 

@@ -19,6 +19,8 @@ dramatic 3rd person view from top sideways, atmospheric lights, fog of war, time
 
 > if you don't cut down forests too much, your "forest city" might not show up on map, this can work for elf like tribes
 
+wind whistling sounds like when driving a bike very fast to give a feeling of fast moovements
+
 each tribe should have their own starting city running by NPC
 - auto biome selection for effects and stuff based on items, etc. in the area (like forests, etc.)
 - medals for achievements per period

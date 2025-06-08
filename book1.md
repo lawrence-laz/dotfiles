@@ -544,3 +544,28 @@ Add meditations here with page numbers to where they were discussed. Kind of lik
 ## References
 Add good authors here
 
+
+
+
+TODO:
+
+
+ - Enjoy life in moderation. Being too strict/limiting (there must be a better word to describe this) with oneself for a long period of time is difficult and unecessary. It's not wise to avoid one extreme by going to another extreme. The virtue is to enjoy life in moderation. Rudimental example - candies. Completely baning eating candy (for indefinite period of time) is an extreme stance without any good ground except for slippery-slopey it leads to gluttony. It's ok to abstain for a short time to "check" or "get clean", but candies are not so hard-core or bad in themselves as to avoid them completely. One ought to have strong enough character to enjoy them in moderation. Feel like wanting multiple? Take just one and enjoy it. Be in control.
+
+L: just because a thought came to your mind it doesn't mean that it's good or that you have to defend it or follow it
+
+it's just an impression, and the good lies in proper use of impressions
+
+if you blindly follow or even seek out feelings you are being impulsive
+
+I wonder what is the antonym of impulsive? but the opposite end is not good either, being too strict and disregarding ones feelings not only makes one miserable, but it's not wise, it's equivalent to being impulsive in a way that you are not using critical thinking to evaluate the impressions, you just default to the answer
+
+there needs to be synergy between the conscious and subconscious. it's not that subconscious is only providing you with bad feelings from "animalistic" or evolutionary nature. it's also responsible for feelings of guilt and duty (wrong word)
+
+I wonder what the workflow looks like
+
+the impression comes, you consciously apply critical thinking and make a judgement, then use discipline to carry out the judgement
+
+if a feeling of "I need to clean up" comes up, but you disregard it as "i dont have time or I am tired" but actually laziness is what was behind the decision then you are doing bad, not only for being lazy but for rationalizing it as "no t having time"
+
+the feeling of happiness comes with each good decision, but good decision can be both: accepting and declining the impression, the difficulty comes from applying ones mind in choosing which one is which each time. there are also neither good nor bad ones, then you must recognize as such too. the sum of this is what makes a person wise

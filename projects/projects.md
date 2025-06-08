@@ -48,7 +48,10 @@ In progress projects:
     - Games
         - [[running-mmo]] (training?)
         - [[parawar]]
+        - [[space-mmo]]
+        simcity mmo
     - Libraries
+        - [[jaysan]]
         - [[zig-enumerable]]
         - [[toolset-net]]
         - [[decor]]
@@ -62,18 +65,20 @@ In progress projects:
         - [[daily-writer]]
         - [[wisdom-training-app]]
     - Tools
+        - [[sqlite-terminal-studio]]
         - [[single-file-db.md]]
         - [[cli-repl]]
         - [[nvim-text-object-between]]
         - [[cli-convert]]
         - [[touchy]]
+        - [[treesitter-lsp.nvim]]
     - Web
         - [[youtube]]
         - [[augalinis-maistas]]
         - [[devblog]]
         - [[generic-analytics]]
         - [[math-learner]]
-        - [[po-pakuotes]]
+        - [[po-pakuotes]] closed
         - raktai.net
 - Writing
     - [[The Distance Between Us]]
@@ -86,7 +91,7 @@ sort out Random ideas below, like some are pretty good, ex. (code complexity ana
 Basement:
 --------------------------------
 - cli name tester to see if it's a good name (check github with stars, brew repo, apt-get, arch repo, aliases of dotfiles, etc.)
-- chew -  cli tool for analysing data
+- chew (probe?) -  cli tool for analysing data
 	- !!!!!!!! something pretty/possibly cool -> wolphram alpha for data?
 	- show many things according to data, offer transformation services, etc.
 	- free for individuals and academia, paid for bigger companies and support
