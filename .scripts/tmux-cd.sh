@@ -1,18 +1,29 @@
 #!/usr/bin/env bash
+
+DIRS=(
+    "$HOME/git"
+    "$HOME"
+)
+
 # Doesn't support whitespaces in path :(
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
     selected=$(( 
-        find ~/git -maxdepth 4 -type d -o -type d -name "*" ; \
-        find ~ -maxdepth 5 -path ~/gdrive -prune -path ~/git -prune -type d -o -type d -name "*"
-    ) | uniq -u | fzf | sed 's/ /\\ /g'    )
+        find "${DIRS[@]}" -maxdepth 1 -type d; \
+        find ~/git/playground -maxdepth 2
+    ) \
+    | uniq -u \
+    | sed "s|^$HOME/||" \
+    | fzf --margin 10% --color bw \
+    | sed 's/ /\\ /g')
+
+    [[ $selected ]] && selected="$HOME/$selected"
 fi
 
 if [[ -z $selected ]]; then
     exit 0
 fi
-
 
 selected_dirname=$(dirname "$selected")
 selected_name_part1=$(basename "$selected_dirname")

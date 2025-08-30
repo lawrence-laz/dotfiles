@@ -1,3 +1,0 @@
-return {
-    "rr-/vim-hexdec",
-}

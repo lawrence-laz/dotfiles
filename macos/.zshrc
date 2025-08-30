@@ -62,10 +62,6 @@ chruby ruby-3.1.3
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 
-# Edit cmd line in vim using 'vv'
-autoload -Uz edit-command-line
-zle -N edit-command-line
-bindkey -M vicmd 'vv' edit-command-line
 # Vim mode
 set -o vi
 
@@ -75,11 +71,6 @@ set -o vi
 # Add brew installed packages to path
 eval $(/opt/homebrew/bin/brew shellenv)
 
-# Functions
-up-directory() {
-   builtin cd ..  && zle reset-prompt
-}
-zle -N up-directory
 
 cdf() {
     if [[ -z "$1" ]]; then
@@ -100,9 +91,9 @@ cpf() {
 }
 
 # Open current tmux pane in nvim for convenient copying
-tmux2vim() {
-	tmux capture-pane -pS - | awk NF | nvim '+ normal G$' -c ':set nonumber'
-}
+# tmux2vim() {
+# 	tmux capture-pane -pS - | awk NF | nvim '+ normal G$' -c ':set nonumber'
+# }
 
 # Move files from source to dest, where each is entered via fzf
 mvf() {
@@ -151,12 +142,11 @@ mvout() {
 
 
 # Start skhd if not running
-[[ $(ps aux | grep skhd) =~ "bin/skhd" ]] || skhd --start-service
+# [[ $(ps aux | grep skhd) =~ "bin/skhd" ]] || skhd --start-service
 
 # Key bindings
 bindkey "\e[A" history-beginning-search-backward # Arrow up
 bindkey "\e[B" history-beginning-search-forward  # Arrow down
-bindkey "\e[1;3A" up-directory # Alt + up
 # bindkey "\e[1;3D" cd -\n # ???
 
 # History
