@@ -37,11 +37,13 @@ vim.opt.listchars = {
     nbsp = '␣',
 }
 vim.o.inccommand = 'split'  -- Preview substitutions live
+vim.o.incsearch = true      -- Show results as you type
 vim.o.cursorline = true     -- Show on which line the cursor is on
 vim.o.scrolloff = 999       -- Keep cursor centered vertically
 vim.o.confirm = true        -- Confirm to save on close if there are changes
 vim.o.winborder = "rounded" -- Add border around floating windows
-
+vim.opt.grepprg = "rg --vimgrep --hidden --smart-case"
+vim.opt.grepformat = "%f:%l:%c:%m"
 
 -- ----------------------------------------------------------------
 -- Helper functions
@@ -99,11 +101,15 @@ vim.cmd [[command -bar -nargs=* -complete=file -range=% -bang Write <line1>,<lin
 -- @:                Rerun last command
 -- <C-x><C-f>        File path completion
 -- <C-x><C-o>        Autocomplete
+-- <C-n> (<C-p>)     Autocomplete current buf
 -- <C-n> and <C-P>   Next and previous
 -- :`<,`>norm        Repeat something on selection (<c-v> for esc, etc.)
 -- cgn               Change search result (Repeat wiht .)
 -- :read out.txt     Reads file into current cursor position
 -- :w ++p            Create missing parent directories when saving
+-- :cdo :cfdo        Run command on all items or files (end with | update to save)
+-- :g/pattern        Search regex (jump with :123)
+-- <C-r>"            Paste back what was changed in insert mode
 
 vim.keymap.set('n', '<leader>e', '<cmd>Oil<CR>')                      -- Explore
 vim.keymap.set("v", "<C-a>", "<C-a>gv")                               -- Increment numbers in visual mode without losing selection
@@ -120,36 +126,6 @@ vim.keymap.set("v", "<C-a>", "<C-a>gv")                               -- Increme
 vim.keymap.set("v", "*", '"tyq/"tp<CR>')                              -- Search selection
 
 vim.keymap.set("i", "<C-Space>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", { desc = "Signature help" })
-
-do -- Override the delete/change/select operations to not affect the current yank.
-    local keymap_opts = { noremap = true, silent = true }
-
-    for _, mode in pairs({ "x", "n" }) do
-        for _, lhs in pairs({ "c", "C", "s", "S" }) do
-            vim.keymap.set(mode, lhs, string.format('"c%s', lhs), keymap_opts) -- Change goes into 'c' register
-        end
-        for _, lhs in pairs({ "d", "D", "x", "X" }) do
-            vim.keymap.set(mode, lhs, string.format('"d%s', lhs), keymap_opts) -- Delete goes into 'd' register
-        end
-    end
-
-    vim.keymap.set('x', 'p', '\"pdP') -- Paste goes into 'p' register
-
-    -- Select mode goes into '_' register
-    for char_nr = 33, 126 do
-        local char = vim.fn.nr2char(char_nr)
-        vim.keymap.set('s', char, string.format('<c-o>"_c%s', char == "\\" and "\\\\" or char), keymap_opts)
-    end
-    vim.keymap.set('s', '<bs>', '<c-o>"_c', keymap_opts)
-    vim.keymap.set('s', '<space>', '<c-o>"_c<space>', keymap_opts)
-
-    -- Use m key for actual move behavior (i. e. copy and delete)
-    vim.keymap.set('n', 'm', 'd', keymap_opts)
-    vim.keymap.set('x', 'm', 'd', keymap_opts)
-    vim.keymap.set('n', 'mm', 'dd', keymap_opts)
-    vim.keymap.set('n', 'M', 'D', keymap_opts)
-    vim.keymap.set("n", "<leader>m", "m") -- Mark is overriden by move, so need another keymap
-end
 
 -- Quickfix buffer
 vim.api.nvim_create_autocmd('FileType', {
@@ -179,11 +155,32 @@ vim.pack.add({
     { src = 'https://github.com/stevearc/oil.nvim' },
     { src = 'https://github.com/echasnovski/mini.pick' },
     { src = 'https://github.com/neovim/nvim-lspconfig' },
-    { src = 'https://github.com/JanikkinaJ/lazydev.nvim',  version = "ca311b8" }, -- https://github.com/folke/lazydev.nvim/issues/114
+    { src = 'https://github.com/JanikkinaJ/lazydev.nvim',             version = "ca311b8" }, -- https://github.com/folke/lazydev.nvim/issues/114
     { src = 'https://github.com/lewis6991/gitsigns.nvim' },
+    { src = 'https://github.com/nvim-treesitter/nvim-treesitter.git', branch = 'master' }
 })
 
 require('lazydev').setup()
+require('nvim-treesitter.configs').setup(
+    {
+        modules = {},
+        ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "zig" },
+        sync_install = false,
+        auto_install = true,
+        ignore_install = { "javascript" },
+        highlight = {
+            enable = true,
+            disable = function(lang, buf)
+                local max_filesize = 100 * 1024 -- 100 KB
+                local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+                if ok and stats and stats.size > max_filesize then
+                    return true
+                end
+            end,
+            additional_vim_regex_highlighting = false,
+        },
+    }
+)
 
 -- ----------------------------------------------------------------
 -- Mini.pick
@@ -300,6 +297,9 @@ local create_commands = function(commands)
 end
 
 local commands = create_commands({
+
+    { name = "Build: Make",          exec = ":make", },
+
     { name = "Edit: Wrap Text",      exec = feedkeys("gw"),              keymap = { "v", "gw" }, },
     -- Note 'gq' triggers LSP if it's attached.
 
@@ -342,16 +342,20 @@ local commands = create_commands({
         exec = function() vim.fn.setqflist({}, 'r') end,
     },
 
-    { name = "Make: Run",                      exec = "make",                               silent = true },
+    { name = "Make: Run",                        exec = "make",                               silent = true },
 
-    { name = "File: Info",                     exec = feedkeys("g<C-g>"),                   keymap = { "n", "g<C-g>" },     silent = true },
-    { name = "File: Find",                     exec = pick.registry.hidden_files,           keymap = { "n", "<leader>ff" }, silent = true },
-    { name = "File: Recent",                   exec = pick.builtin.buffers,                 keymap = { "n", "<leader>fr" }, silent = true },
-    { name = "File: Grep",                     exec = pick.builtin.grep_live,               keymap = { "n", "<leader>fg" }, silent = true },
-    { name = "File: Show unsaved changes",     exec = ":w !diff % -", },
-    { name = "File: Type",                     exec = ":set filetype?", },
-    { name = "File: Copy absolute path",       exec = [[:!echo %:p | tr -d '\n' | pbcopy]], silent = true },
-    { name = "File: Reload & Discard Changes", exec = feedkeys("e!") },
+    { name = "File: Info",                       exec = feedkeys("g<C-g>"),                   keymap = { "n", "g<C-g>" },     silent = true },
+    { name = "File: Find",                       exec = pick.registry.hidden_files,           keymap = { "n", "<leader>ff" }, silent = true },
+    { name = "File: Recent",                     exec = pick.builtin.buffers,                 keymap = { "n", "<leader>fr" }, silent = true },
+    { name = "File: Grep",                       exec = pick.builtin.grep_live,               keymap = { "n", "<leader>fg" }, silent = true },
+    { name = "File: Show unsaved changes",       exec = ":w !diff % -", },
+    { name = "File: Type",                       exec = ":set filetype?", },
+    { name = "File: Copy absolute path",         exec = [[:!echo %:p | tr -d '\n' | pbcopy]], silent = true },
+    { name = "File: Reload & Discard Changes",   exec = feedkeys("e!") },
+
+    { name = "Tab: Close all except current",    exec = ":tabonly" },
+
+    { name = "Window: Close all except current", exec = ":only" },
 
     {
         name = "Terminal: Run with output",
