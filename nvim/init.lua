@@ -341,6 +341,25 @@ local commands = create_commands({
         name = "Quickfix: Clear",
         exec = function() vim.fn.setqflist({}, 'r') end,
     },
+    { name = "Quickfix: Filter",                 exec = feedkeys(":Cfilter "), },
+    {
+        name = "Quickfix: Copy file paths",
+        exec = function()
+            vim.cmd [[call setreg('+', [])]]
+            vim.cmd [[cdo let @+ .= expand('%:p') . "\n"]]
+        end
+    },
+
+    {
+        name = "Explorer: Send to quickfix",
+        exec = function()
+            require('oil.actions').send_to_qflist.callback({
+                action = "a",
+                only_matching_search = true,
+                target = "qflist",
+            });
+        end
+    },
 
     { name = "Make: Run",                        exec = "make",                               silent = true },
 
