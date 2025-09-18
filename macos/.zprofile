@@ -8,6 +8,8 @@ export PATH="/Users/llaz/.local/share/bob/nvim-bin:$PATH"
 export PATH="/Users/llaz/.local/share/nvim/mason/bin:$PATH"
 export PATH="/Users/llaz/.local/share/nvim/roslyn:$PATH"
 export PATH="/Users/llaz/git/dotfiles/.scripts/:$PATH"
+export PATH="/opt/homebrew/opt/python@3.13/libexec/bin:$PATH"
+
 # Android SDK is in one of these:
 # /Users/llaz/Library/Android/sdk
 # /usr/local/Caskroom/android-sdk/{YOUR_SDK_VERSION_NUMBER}
