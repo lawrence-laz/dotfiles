@@ -6,7 +6,8 @@ vim.g.have_nerd_font = true
 -- Options
 -- ----------------------------------------------------------------
 
-vim.o.completeopt = "menu,menuone,popup,fuzzy" -- Completion menu
+vim.opt.completeopt = { "menuone", "noinsert", "preview", "fuzzy" }
+vim.opt.pumheight = 10
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true              -- Use spaces instead of tabs
@@ -42,6 +43,7 @@ vim.o.cursorline = true     -- Show on which line the cursor is on
 vim.o.scrolloff = 999       -- Keep cursor centered vertically
 vim.o.confirm = true        -- Confirm to save on close if there are changes
 vim.o.winborder = "rounded" -- Add border around floating windows
+vim.o.conceallevel = 0      -- Don't hide stuff from me
 vim.opt.grepprg = "rg --vimgrep --hidden --smart-case"
 vim.opt.grepformat = "%f:%l:%c:%m"
 
@@ -99,10 +101,14 @@ vim.cmd [[command -bar -nargs=* -complete=file -range=% -bang Write <line1>,<lin
 -- :center           Center text
 -- !!                Execute shell and insert
 -- @:                Rerun last command
--- <C-x><C-f>        File path completion
+
+-- DEFAULT COMPLETION BINDINGS
 -- <C-x><C-o>        Autocomplete
+-- <C-x><C-f>        File path completion
 -- <C-n> (<C-p>)     Autocomplete current buf
--- <C-n> and <C-P>   Next and previous
+-- <C-n> and <C-p>   Next and previous
+-- <C-y>             Accept current
+
 -- :`<,`>norm        Repeat something on selection (<c-v> for esc, etc.)
 -- cgn               Change search result (Repeat wiht .)
 -- :read out.txt     Reads file into current cursor position
@@ -124,6 +130,44 @@ vim.keymap.set("v", ">", ">gv")                                       -- Indent 
 vim.keymap.set("n", "<C-a>", "gg^vG$")                                -- Select all text
 vim.keymap.set("v", "<C-a>", "<C-a>gv")                               -- Increment numbers in visual mode without losing selection
 vim.keymap.set("v", "*", '"tyq/"tp<CR>')                              -- Search selection
+
+-- Marks
+vim.keymap.set("n", "<leader>k1", "mQ")
+vim.keymap.set("n", "<leader>k2", "mW")
+vim.keymap.set("n", "<leader>k3", "mE")
+vim.keymap.set("n", "<leader>k4", "mR")
+vim.keymap.set("n", "<leader>k5", "mT")
+vim.keymap.set("n", "<leader>k6", "mY")
+vim.keymap.set("n", "<leader>k7", "mU")
+vim.keymap.set("n", "<leader>k8", "mI")
+vim.keymap.set("n", "<leader>k9", "mO")
+vim.keymap.set("n", "<leader>k0", "mP")
+vim.keymap.set("n", "<leader>ką", "mQ")
+vim.keymap.set("n", "<leader>kč", "mW")
+vim.keymap.set("n", "<leader>kę", "mE")
+vim.keymap.set("n", "<leader>kė", "mR")
+vim.keymap.set("n", "<leader>kį", "mT")
+vim.keymap.set("n", "<leader>kš", "mY")
+vim.keymap.set("n", "<leader>kų", "mU")
+vim.keymap.set("n", "<leader>kj", "mI")
+vim.keymap.set("n", "<leader>1", "mz'Q'z")
+vim.keymap.set("n", "<leader>2", "mz'W'z")
+vim.keymap.set("n", "<leader>3", "mz'E'z")
+vim.keymap.set("n", "<leader>4", "mz'R'z")
+vim.keymap.set("n", "<leader>5", "mz'T'z")
+vim.keymap.set("n", "<leader>6", "mz'Y'z")
+vim.keymap.set("n", "<leader>7", "mz'U'z")
+vim.keymap.set("n", "<leader>8", "mz'I'z")
+vim.keymap.set("n", "<leader>9", "mz'O'z")
+vim.keymap.set("n", "<leader>0", "mz'P'z")
+vim.keymap.set("n", "<leader>ą", "mz'Q'z")
+vim.keymap.set("n", "<leader>č", "mz'W'z")
+vim.keymap.set("n", "<leader>ę", "mz'E'z")
+vim.keymap.set("n", "<leader>ė", "mz'R'z")
+vim.keymap.set("n", "<leader>į", "mz'T'z")
+vim.keymap.set("n", "<leader>š", "mz'Y'z")
+vim.keymap.set("n", "<leader>ų", "mz'U'z")
+vim.keymap.set("n", "<leader>ū", "mz'I'z")
 
 vim.keymap.set("i", "<C-Space>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", { desc = "Signature help" })
 
@@ -151,10 +195,12 @@ vim.cmd(":hi normal guibg=black")
 -- Plugins
 -- ----------------------------------------------------------------
 vim.pack.add({
+    { src = 'https://github.com/nvim-lua/plenary.nvim' },
     { src = 'https://github.com/NMAC427/guess-indent.nvim' },
     { src = 'https://github.com/stevearc/oil.nvim' },
     { src = 'https://github.com/echasnovski/mini.pick' },
     { src = 'https://github.com/neovim/nvim-lspconfig' },
+    -- { src = 'https://github.com/GustavEikaas/easy-dotnet.nvim' },                            -- Wouldn't be dotnet if it just worked without additional plugins
     { src = 'https://github.com/JanikkinaJ/lazydev.nvim',             version = "ca311b8" }, -- https://github.com/folke/lazydev.nvim/issues/114
     { src = 'https://github.com/lewis6991/gitsigns.nvim' },
     { src = 'https://github.com/nvim-treesitter/nvim-treesitter.git', branch = 'master' }
@@ -186,7 +232,11 @@ require('nvim-treesitter.configs').setup(
 -- Mini.pick
 -- ----------------------------------------------------------------
 local pick = require('mini.pick')
-pick.setup()
+pick.setup({
+    mappings = {
+        choose_marked = '<C-q>'
+    }
+})
 -- Temporarily change rg config for a single action
 local with_rg_config = function(config_name, action)
     local rg_env = 'RIPGREP_CONFIG_PATH'
@@ -209,6 +259,129 @@ require('oil').setup({
         "mtime",
     },
 })
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'oil',
+    callback = function()
+        -- Execute command on target entry
+        vim.keymap.set('n', '!', function()
+            require 'oil.actions'.open_cmdline.callback()
+        end, { remap = true, buffer = true })
+        vim.keymap.set('n', '<TAB>', function()
+            require 'oil.actions'.preview.callback()
+        end, { remap = true, buffer = true })
+
+        -- Yank absolute path to clipboard register.
+        vim.keymap.set('n', 'gy', function()
+            local oil = require 'oil'
+            local entry = oil.get_cursor_entry()
+            local dir = oil.get_current_dir()
+            if not entry or not dir then
+                return
+            end
+            local path = dir .. entry.name
+            vim.fn.setreg(vim.v.register, path)
+            print("Copied path")
+        end, { remap = true, buffer = true })
+
+        -- Append absolute path to clibpoard register.
+        -- Use `gp` or `gm` to paste or move respectively.
+        vim.keymap.set('n', 'gY', function()
+            local oil = require 'oil'
+            local entry = oil.get_cursor_entry()
+            local dir = oil.get_current_dir()
+            if not entry or not dir then
+                return
+            end
+            local path = dir .. entry.name
+            local prev_clipboard = vim.fn.getreg(vim.v.register)
+            prev_clipboard = prev_clipboard .. "\n" .. path
+            vim.fn.setreg(vim.v.register, prev_clipboard)
+            print('Copied path (append)')
+        end, { remap = true, buffer = true })
+
+        -- Paste files from absolute paths.
+        vim.keymap.set('n', 'gp',
+            function()
+                local oil = require 'oil'
+                if vim.bo.modified then
+                    local ok, choice = pcall(vim.fn.confirm, "Discard changes?", "No\nYes")
+                    if not ok or choice ~= 2 then
+                        return
+                    end
+                end
+                local source_paths = {}
+                for path in vim.fn.getreg('+'):gmatch('[^\n%s]+') do
+                    source_paths[#source_paths + 1] = path
+                    print(path)
+                end
+                local target = oil.get_cursor_entry()
+                local current_dir = oil.get_current_dir()
+                if not target or not current_dir then
+                    return
+                end
+                local target_path = current_dir .. target.name
+                local is_target_a_dir = target.type == "directory"
+                if is_target_a_dir then
+                    -- Use target_path, which points to some dir
+                else
+                    -- Target is a file, get parent dir
+                    target_path = vim.fn.fnamemodify(target_path, ":h")
+                    if (vim.fn.filereadable(target_path)) then
+                        -- File already exists, give a different name
+                        target_path = vim.fn.input("Target path: ", target_path, "file")
+                    end
+                end
+                for _, source_path in ipairs(source_paths) do
+                    vim.fn.system { 'cp', '-R', source_path, target_path }
+                end
+                vim.cmd.edit({ bang = true })
+                vim.cmd.nohlsearch()
+                print('Pasted ' .. #source_paths .. ' items')
+            end,
+            { remap = true, buffer = true })
+
+        -- Move files from absolute paths
+        vim.keymap.set('n', 'gm',
+            function()
+                local oil = require 'oil'
+                if vim.bo.modified then
+                    local ok, choice = pcall(vim.fn.confirm, "Discard changes?", "No\nYes")
+                    if not ok or choice ~= 2 then
+                        return
+                    end
+                end
+                local source_paths = {}
+                for path in vim.fn.getreg('+'):gmatch('[^\n%s]+') do
+                    source_paths[#source_paths + 1] = path
+                end
+                local target = oil.get_cursor_entry()
+                local current_dir = oil.get_current_dir()
+                if not target or not current_dir then
+                    return
+                end
+                local target_path = current_dir .. target.name
+                local is_target_a_dir = target.type == "directory"
+                if is_target_a_dir then
+                    -- Use target_path, which points to some dir
+                else
+                    -- Target is a file, get parent dir
+                    target_path = vim.fn.fnamemodify(target_path, ":h")
+                    if (vim.fn.filereadable(target_path)) then
+                        -- File already exists, give a different name
+                        target_path = vim.fn.input("Target path: ", target_path, "file")
+                    end
+                end
+                for _, source_path in ipairs(source_paths) do
+                    vim.fn.system { 'mv', source_path, target_path }
+                end
+                vim.cmd.edit({ bang = true })
+                vim.cmd.nohlsearch()
+                require("oil.actions").refresh.callback()
+                print('Moved ' .. #source_paths .. ' items')
+            end,
+            { remap = true, buffer = true })
+    end
+})
 
 local gitsigns = require('gitsigns')
 gitsigns.setup({
@@ -223,10 +396,52 @@ gitsigns.setup({
 
 
 -- ----------------------------------------------------------------
+-- Markdown
+-- ----------------------------------------------------------------
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'markdown',
+    callback = function()
+        vim.keymap.set("n", "gf", function()
+            local word = vim.fn.expand("<cWORD>")
+            local label, path = word:match("%[([^%]]+)%]%(([^%)]+)%)") -- Matches markdown link format [label](path)
+            _ = label
+            if path then
+                if path:match("^file://") then
+                    path = path:gsub("^file://", "")
+                    local line = path:match("#L(%d+)$")
+                    path = path:gsub("#L%d+$", "")
+
+                    if line then
+                        vim.cmd("tabedit +" .. line .. " " .. vim.fn.fnameescape(path))
+                    else
+                        vim.cmd("tabedit " .. path)
+                    end
+                else
+                    vim.cmd.normal({ "gf", bang = true }) -- Fallback to normal gf
+                end
+            else
+                vim.cmd.normal({ "gf", bang = true }) -- Fallback to normal gf
+            end
+        end, { noremap = true, silent = true })
+    end
+})
+
+-- ----------------------------------------------------------------
 -- LSP
 -- ----------------------------------------------------------------
+vim.lsp.config('roslyn_ls', {
+    cmd = {
+        "/usr/local/share/dotnet/dotnet",
+        "/Users/llaz/dotnet-sdk/Microsoft.CodeAnalysis.LanguageServer.dll",
+        "--logLevel",
+        "Information",
+        "--extensionLogDirectory",
+        "/Users/llaz/temp/roslyn_ls/logs",
+        "--stdio",
+    }
+})
 
-vim.lsp.enable({ 'lua_ls', 'zls' })
+vim.lsp.enable({ 'lua_ls', 'zls', 'roslyn_ls' })
 
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('MyLspAttach', {}),
@@ -245,6 +460,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Diagnostics
 -- ----------------------------------------------------------------
 vim.diagnostic.config {
+    virtual_lines = false,
     severity_sort = true,
     float = { source = 'if_many' },
     underline = { severity = vim.diagnostic.severity.ERROR },
@@ -298,18 +514,23 @@ end
 
 local commands = create_commands({
 
+    { name = "Config: Relaod",       exec = 'execute "source " . stdpath("config") . "/init.lua"' },
+
+
     { name = "Build: Make",          exec = ":make", },
 
-    { name = "Edit: Wrap Text",      exec = feedkeys("gw"),              keymap = { "v", "gw" }, },
+    { name = "Edit: Wrap Text",      exec = feedkeys("gw"),                                       keymap = { "v", "gw" }, },
     -- Note 'gq' triggers LSP if it's attached.
 
-    { name = "LSP: Rename",          exec = vim.lsp.buf.rename,          keymap = { "n", "grn" }, silent = true },
-    { name = "LSP: Code Action",     exec = vim.lsp.buf.code_action,     keymap = { "n", "gra" }, silent = true },
-    { name = "LSP: References",      exec = vim.lsp.buf.references,      keymap = { "n", "grr" }, silent = true },
-    { name = "LSP: Implementation",  exec = vim.lsp.buf.implementation,  keymap = { "n", "gri" }, silent = true },
-    { name = "LSP: Type Definition", exec = vim.lsp.buf.type_definition, keymap = { "n", "grt" }, silent = true },
-    { name = "LSP: Hover",           exec = vim.lsp.buf.hover,           keymap = { "n", "K" },   silent = true },
-    { name = "LSP: Document Symbol", exec = vim.lsp.buf.document_symbol, keymap = { "n", "gO" },  silent = true },
+    { name = "Config: Source",       exec = "exe 'source' stdpath('config') .. '/init.lua'" },
+
+    { name = "LSP: Rename",          exec = vim.lsp.buf.rename,                                   keymap = { "n", "grn" }, silent = true },
+    { name = "LSP: Code Action",     exec = vim.lsp.buf.code_action,                              keymap = { "n", "gra" }, silent = true },
+    { name = "LSP: References",      exec = vim.lsp.buf.references,                               keymap = { "n", "grr" }, silent = true },
+    { name = "LSP: Implementation",  exec = vim.lsp.buf.implementation,                           keymap = { "n", "gri" }, silent = true },
+    { name = "LSP: Type Definition", exec = vim.lsp.buf.type_definition,                          keymap = { "n", "grt" }, silent = true },
+    { name = "LSP: Hover",           exec = vim.lsp.buf.hover,                                    keymap = { "n", "K" },   silent = true },
+    { name = "LSP: Document Symbol", exec = vim.lsp.buf.document_symbol,                          keymap = { "n", "gO" },  silent = true },
     {
         name = "LSP: Restart",
         exec = function()
