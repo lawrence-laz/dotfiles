@@ -22,3 +22,5 @@ export LANG=en_US.UTF-8
 
 export EDITOR=nvim
 
+# Add .NET Core SDK tools
+export PATH="$PATH:/Users/llaz/.dotnet/tools"
