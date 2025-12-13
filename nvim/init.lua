@@ -85,6 +85,122 @@ local feedkeys = function(keys)
     end
 end
 
+local path_join = function(a, b)
+    return a:gsub('/$', '') .. '/' .. b
+end
+
+local exists = function(path)
+    return vim.loop.fs_stat(path) ~= nil
+end
+
+local function move_merge(src, dst, overwrite)
+    local stat = vim.loop.fs_stat(src)
+    if not stat then return end
+
+    if stat.type == "file" then
+        if exists(dst) and overwrite then
+            vim.loop.fs_unlink(dst)
+        end
+        vim.loop.fs_rename(src, dst)
+    elseif stat.type == "directory" then
+        if not exists(dst) then
+            vim.loop.fs_mkdir(dst, 493) -- 0755
+        end
+
+        local handle = vim.loop.fs_scandir(src)
+        if handle then
+            while true do
+                local name = vim.loop.fs_scandir_next(handle)
+                if not name then break end
+                move_merge(path_join(src, name), path_join(dst, name), overwrite)
+            end
+        end
+        -- remove empty src dir after merging
+        vim.loop.fs_rmdir(src)
+    end
+end
+
+local function mvout(dir)
+    local stat = vim.loop.fs_stat(dir)
+    if not stat or stat.type ~= "directory" then
+        vim.notify("Not a directory: " .. dir, vim.log.levels.ERROR)
+        return
+    end
+
+    local parent = vim.fn.fnamemodify(dir, ":h")
+    if parent == dir then
+        vim.notify("Cannot move contents of root directory", vim.log.levels.ERROR)
+        return
+    end
+
+    local handle = vim.loop.fs_scandir(dir)
+    if not handle then
+        vim.notify("Failed to read directory: " .. dir, vim.log.levels.ERROR)
+        return
+    end
+
+    local items = {}
+    while true do
+        local name = vim.loop.fs_scandir_next(handle)
+        if not name then break end
+        table.insert(items, name)
+    end
+
+    if #items == 0 then
+        vim.loop.fs_rmdir(dir)
+        vim.notify("Directory was empty, removed")
+        return
+    end
+
+    -- detect conflicts
+    local conflicts = {}
+    for _, name in ipairs(items) do
+        if exists(path_join(parent, name)) then
+            table.insert(conflicts, name)
+        end
+    end
+
+    local overwrite = false
+    if #conflicts > 0 then
+        local msg = "Overwrite existing items?\n\n" .. table.concat(conflicts, "\n")
+        local choice = vim.fn.confirm(msg, "&Yes\n&No\n&Cancel", 3)
+
+        if choice == 3 then
+            vim.notify("Cancelled")
+            return
+        elseif choice == 1 then
+            overwrite = true
+        end
+        -- choice == 2 → skip conflicts, overwrite = false
+    end
+
+    -- move items
+    for _, name in ipairs(items) do
+        local src = path_join(dir, name)
+        local dst = path_join(parent, name)
+
+        if exists(dst) and not overwrite then
+            goto continue
+        end
+
+        move_merge(src, dst, overwrite)
+        ::continue::
+    end
+
+    -- remove the now-empty source directory
+    vim.loop.fs_rmdir(dir)
+    vim.notify("Moved contents up and removed directory")
+end
+
+
+local lowercase_cabbrev = function(cmd)
+    local lower = cmd:lower()
+
+    vim.cmd(string.format([[
+        cnoreabbrev <expr> %s getcmdtype() == ":" && getcmdline() == "%s" ? "%s" : "%s"
+    ]], lower, lower, cmd, lower))
+end
+
 -- Redirect any command to buffer for better pager experience (like less).
 vim.cmd [[com -nargs=1 -complete=command Redir :execute "tabnew | pu=execute(\'" . <q-args> . "\') | setl nomodified"]]
 vim.cmd [[command -bar -nargs=* -complete=file -range=% -bang Write <line1>,<line2>write<bang> <args>]]
@@ -336,7 +452,7 @@ vim.api.nvim_create_autocmd('FileType', {
             end,
             { remap = true, buffer = true })
 
-        -- Move files from absolute paths
+        -- Move files from absolute path
         vim.keymap.set('n', 'gm',
             function()
                 local oil = require 'oil'
@@ -376,6 +492,29 @@ vim.api.nvim_create_autocmd('FileType', {
                 print('Moved ' .. #source_paths .. ' items')
             end,
             { remap = true, buffer = true })
+
+        -- Move out files from directory under cursor and delete the dir
+        vim.api.nvim_create_user_command("MvOut", function()
+            local oil = require("oil")
+
+            local entry = oil.get_cursor_entry()
+            local cwd = oil.get_current_dir()
+
+            if not entry or not cwd then
+                vim.notify("No entry under cursor", vim.log.levels.ERROR)
+                return
+            end
+
+            if entry.type ~= "directory" then
+                vim.notify("Entry is not a directory", vim.log.levels.ERROR)
+                return
+            end
+
+            local dir = cwd:gsub('/$', '') .. '/' .. entry.name
+            mvout(dir)
+            vim.cmd("e!") -- Refresh buffer
+        end, {})
+        lowercase_cabbrev("MvOut")
     end
 })
 
