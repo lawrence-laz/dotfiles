@@ -1,12 +1,28 @@
+local os = vim.loop.os_uname().sysname
+local is_windows = os == "Windows_NT"
+local is_darwin = os == "Darwin"
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
+
+if vim.g.neovide == true then
+    vim.g.neovide_position_animation_length = 0
+    vim.g.neovide_cursor_animation_length = 0.00
+    vim.g.neovide_cursor_trail_size = 0
+    vim.g.neovide_cursor_animate_in_insert_mode = false
+    vim.g.neovide_cursor_animate_command_line = false
+    vim.g.neovide_scroll_animation_far_lines = 1
+    vim.g.neovide_scroll_animation_length = 0.10
+    vim.api.nvim_set_keymap('n', '<F11>', ":let g:neovide_fullscreen = !g:neovide_fullscreen<CR>", {})
+end
 
 -- ----------------------------------------------------------------
 -- Options
 -- ----------------------------------------------------------------
 
-vim.opt.completeopt = { "menuone", "noinsert", "preview", "fuzzy" }
+-- vim.opt.completeopt = { "menuone", "noinsert", "preview", "fuzzy" }
+vim.opt.completeopt = { "menuone", "noselect", "popup", "fuzzy", "preview" }
 vim.opt.pumheight = 10
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
@@ -46,6 +62,8 @@ vim.o.winborder = "rounded" -- Add border around floating windows
 vim.o.conceallevel = 0      -- Don't hide stuff from me
 vim.opt.grepprg = "rg --vimgrep --hidden --smart-case"
 vim.opt.grepformat = "%f:%l:%c:%m"
+vim.g.backup = false
+vim.g.writebackup = false
 
 -- ----------------------------------------------------------------
 -- Helper functions
@@ -131,45 +149,16 @@ vim.keymap.set("n", "<C-a>", "gg^vG$")                                -- Select 
 vim.keymap.set("v", "<C-a>", "<C-a>gv")                               -- Increment numbers in visual mode without losing selection
 vim.keymap.set("v", "*", '"tyq/"tp<CR>')                              -- Search selection
 
--- Marks
-vim.keymap.set("n", "<leader>k1", "mQ")
-vim.keymap.set("n", "<leader>k2", "mW")
-vim.keymap.set("n", "<leader>k3", "mE")
-vim.keymap.set("n", "<leader>k4", "mR")
-vim.keymap.set("n", "<leader>k5", "mT")
-vim.keymap.set("n", "<leader>k6", "mY")
-vim.keymap.set("n", "<leader>k7", "mU")
-vim.keymap.set("n", "<leader>k8", "mI")
-vim.keymap.set("n", "<leader>k9", "mO")
-vim.keymap.set("n", "<leader>k0", "mP")
-vim.keymap.set("n", "<leader>ką", "mQ")
-vim.keymap.set("n", "<leader>kč", "mW")
-vim.keymap.set("n", "<leader>kę", "mE")
-vim.keymap.set("n", "<leader>kė", "mR")
-vim.keymap.set("n", "<leader>kį", "mT")
-vim.keymap.set("n", "<leader>kš", "mY")
-vim.keymap.set("n", "<leader>kų", "mU")
-vim.keymap.set("n", "<leader>kj", "mI")
-vim.keymap.set("n", "<leader>1", "mz'Q'z")
-vim.keymap.set("n", "<leader>2", "mz'W'z")
-vim.keymap.set("n", "<leader>3", "mz'E'z")
-vim.keymap.set("n", "<leader>4", "mz'R'z")
-vim.keymap.set("n", "<leader>5", "mz'T'z")
-vim.keymap.set("n", "<leader>6", "mz'Y'z")
-vim.keymap.set("n", "<leader>7", "mz'U'z")
-vim.keymap.set("n", "<leader>8", "mz'I'z")
-vim.keymap.set("n", "<leader>9", "mz'O'z")
-vim.keymap.set("n", "<leader>0", "mz'P'z")
-vim.keymap.set("n", "<leader>ą", "mz'Q'z")
-vim.keymap.set("n", "<leader>č", "mz'W'z")
-vim.keymap.set("n", "<leader>ę", "mz'E'z")
-vim.keymap.set("n", "<leader>ė", "mz'R'z")
-vim.keymap.set("n", "<leader>į", "mz'T'z")
-vim.keymap.set("n", "<leader>š", "mz'Y'z")
-vim.keymap.set("n", "<leader>ų", "mz'U'z")
-vim.keymap.set("n", "<leader>ū", "mz'I'z")
+vim.keymap.set("i", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", { desc = "Signature help" })
+vim.keymap.set("i", "<C-Space>", "<C-x><C-o>")
 
-vim.keymap.set("i", "<C-Space>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", { desc = "Signature help" })
+-- Paste for non terminal environments
+vim.keymap.set(
+    { 'n', 'v', 's', 'x', 'o', 'i', 'l', 'c', 't' },
+    '<C-S-v>',
+    function() vim.api.nvim_paste(vim.fn.getreg('+'), true, -1) end,
+    { noremap = true, silent = true }
+)
 
 -- Quickfix buffer
 vim.api.nvim_create_autocmd('FileType', {
@@ -199,11 +188,12 @@ vim.pack.add({
     { src = 'https://github.com/NMAC427/guess-indent.nvim' },
     { src = 'https://github.com/stevearc/oil.nvim' },
     { src = 'https://github.com/echasnovski/mini.pick' },
+    { src = 'https://github.com/echasnovski/mini.extra' },
     { src = 'https://github.com/neovim/nvim-lspconfig' },
-    -- { src = 'https://github.com/GustavEikaas/easy-dotnet.nvim' },                            -- Wouldn't be dotnet if it just worked without additional plugins
     { src = 'https://github.com/JanikkinaJ/lazydev.nvim',             version = "ca311b8" }, -- https://github.com/folke/lazydev.nvim/issues/114
     { src = 'https://github.com/lewis6991/gitsigns.nvim' },
-    { src = 'https://github.com/nvim-treesitter/nvim-treesitter.git', branch = 'master' }
+    { src = 'https://github.com/nvim-treesitter/nvim-treesitter.git', branch = 'master' },
+    { src = 'https://github.com/ThePrimeagen/harpoon' },
 })
 
 require('lazydev').setup()
@@ -227,6 +217,11 @@ require('nvim-treesitter.configs').setup(
         },
     }
 )
+require("harpoon").setup()
+for i = 1, 9 do
+    vim.keymap.set("n", "<leader>k" .. i, function() require("harpoon.mark").set_current_at(i) end)
+    vim.keymap.set("n", "<leader>" .. i, function() require("harpoon.ui").nav_file(i) end)
+end
 
 -- ----------------------------------------------------------------
 -- Mini.pick
@@ -234,9 +229,10 @@ require('nvim-treesitter.configs').setup(
 local pick = require('mini.pick')
 pick.setup({
     mappings = {
-        choose_marked = '<C-q>'
-    }
+        choose_marked = '<C-q>',
+    },
 })
+require('mini.extra').setup({})
 -- Temporarily change rg config for a single action
 local with_rg_config = function(config_name, action)
     local rg_env = 'RIPGREP_CONFIG_PATH'
@@ -429,17 +425,26 @@ vim.api.nvim_create_autocmd('FileType', {
 -- ----------------------------------------------------------------
 -- LSP
 -- ----------------------------------------------------------------
-vim.lsp.config('roslyn_ls', {
-    cmd = {
-        "/usr/local/share/dotnet/dotnet",
-        "/Users/llaz/dotnet-sdk/Microsoft.CodeAnalysis.LanguageServer.dll",
-        "--logLevel",
-        "Information",
-        "--extensionLogDirectory",
-        "/Users/llaz/temp/roslyn_ls/logs",
-        "--stdio",
-    }
-})
+if is_darwin then
+    vim.lsp.config('roslyn_ls', {
+        cmd = {
+            "/usr/local/share/dotnet/dotnet",
+            "/Users/llaz/dotnet-sdk/Microsoft.CodeAnalysis.LanguageServer.dll",
+            "--logLevel",
+            "Information",
+            "--extensionLogDirectory",
+            "/Users/llaz/temp/roslyn_ls/logs",
+            "--stdio",
+        }
+    })
+elseif is_windows then
+    vim.lsp.config('roslyn_ls', {
+        cmd = { 'C:/Program Files/dotnet/dotnet.exe',
+            'C:/Users/laurynas.lazauskas/.vscode/extensions/ms-dotnettools.csharp-2.102.30-win32-x64/.roslyn/Microsoft.CodeAnalysis.LanguageServer.dll',
+            '--logLevel',
+            'Information', '--extensionLogDirectory', vim.fs.joinpath(vim.uv.os_tmpdir(), 'roslyn_ls/logs'), '--stdio' }
+    })
+end
 
 vim.lsp.enable({ 'lua_ls', 'zls', 'roslyn_ls' })
 
@@ -514,23 +519,25 @@ end
 
 local commands = create_commands({
 
-    { name = "Config: Relaod",       exec = 'execute "source " . stdpath("config") . "/init.lua"' },
+    { name = "Config: Relaod",         exec = 'execute "source " . stdpath("config") . "/init.lua"' },
 
 
-    { name = "Build: Make",          exec = ":make", },
+    { name = "Build: Make",            exec = ":make", },
 
-    { name = "Edit: Wrap Text",      exec = feedkeys("gw"),                                       keymap = { "v", "gw" }, },
+    { name = "Buffer: Delete (Close)", exec = ":bd" },
+
+    { name = "Edit: Wrap Text",        exec = feedkeys("gw"),                                       keymap = { "v", "gw" }, },
     -- Note 'gq' triggers LSP if it's attached.
 
-    { name = "Config: Source",       exec = "exe 'source' stdpath('config') .. '/init.lua'" },
+    { name = "Config: Source",         exec = "exe 'source' stdpath('config') .. '/init.lua'" },
 
-    { name = "LSP: Rename",          exec = vim.lsp.buf.rename,                                   keymap = { "n", "grn" }, silent = true },
-    { name = "LSP: Code Action",     exec = vim.lsp.buf.code_action,                              keymap = { "n", "gra" }, silent = true },
-    { name = "LSP: References",      exec = vim.lsp.buf.references,                               keymap = { "n", "grr" }, silent = true },
-    { name = "LSP: Implementation",  exec = vim.lsp.buf.implementation,                           keymap = { "n", "gri" }, silent = true },
-    { name = "LSP: Type Definition", exec = vim.lsp.buf.type_definition,                          keymap = { "n", "grt" }, silent = true },
-    { name = "LSP: Hover",           exec = vim.lsp.buf.hover,                                    keymap = { "n", "K" },   silent = true },
-    { name = "LSP: Document Symbol", exec = vim.lsp.buf.document_symbol,                          keymap = { "n", "gO" },  silent = true },
+    { name = "LSP: Rename",            exec = vim.lsp.buf.rename,                                   keymap = { "n", "grn" }, silent = true },
+    { name = "LSP: Code Action",       exec = vim.lsp.buf.code_action,                              keymap = { "n", "gra" }, silent = true },
+    { name = "LSP: References",        exec = vim.lsp.buf.references,                               keymap = { "n", "grr" }, silent = true },
+    { name = "LSP: Implementation",    exec = vim.lsp.buf.implementation,                           keymap = { "n", "gri" }, silent = true },
+    { name = "LSP: Type Definition",   exec = vim.lsp.buf.type_definition,                          keymap = { "n", "grt" }, silent = true },
+    { name = "LSP: Hover",             exec = vim.lsp.buf.hover,                                    keymap = { "n", "K" },   silent = true },
+    { name = "LSP: Document Symbol",   exec = vim.lsp.buf.document_symbol,                          keymap = { "n", "gO" },  silent = true },
     {
         name = "LSP: Restart",
         exec = function()
@@ -562,7 +569,7 @@ local commands = create_commands({
         name = "Quickfix: Clear",
         exec = function() vim.fn.setqflist({}, 'r') end,
     },
-    { name = "Quickfix: Filter",                 exec = feedkeys(":Cfilter "), },
+    { name = "Quickfix: Filter",               exec = feedkeys(":Cfilter "), },
     {
         name = "Quickfix: Copy file paths",
         exec = function()
@@ -582,20 +589,40 @@ local commands = create_commands({
         end
     },
 
-    { name = "Make: Run",                        exec = "make",                               silent = true },
+    { name = "Make: Run",                      exec = "make",                                                               silent = true },
 
-    { name = "File: Info",                       exec = feedkeys("g<C-g>"),                   keymap = { "n", "g<C-g>" },     silent = true },
-    { name = "File: Find",                       exec = pick.registry.hidden_files,           keymap = { "n", "<leader>ff" }, silent = true },
-    { name = "File: Recent",                     exec = pick.builtin.buffers,                 keymap = { "n", "<leader>fr" }, silent = true },
-    { name = "File: Grep",                       exec = pick.builtin.grep_live,               keymap = { "n", "<leader>fg" }, silent = true },
-    { name = "File: Show unsaved changes",       exec = ":w !diff % -", },
-    { name = "File: Type",                       exec = ":set filetype?", },
-    { name = "File: Copy absolute path",         exec = [[:!echo %:p | tr -d '\n' | pbcopy]], silent = true },
-    { name = "File: Reload & Discard Changes",   exec = feedkeys("e!") },
+    { name = "File: Info",                     exec = feedkeys("g<C-g>"),                                                   keymap = { "n", "g<C-g>" },     silent = true },
+    { name = "File: Find",                     exec = pick.registry.hidden_files,                                           keymap = { "n", "<leader>ff" }, silent = true },
+    { name = "File: Recent",                   exec = pick.builtin.buffers,                                                 keymap = { "n", "<leader>fr" }, silent = true },
+    { name = "File: Grep",                     exec = pick.builtin.grep_live,                                               keymap = { "n", "<leader>fg" }, silent = true },
+    { name = "File: Symbols in document",      exec = function() MiniExtra.pickers.lsp({ scope = 'document_symbol' }) end,  keymap = { "n", "<leader>fs" }, silent = true },
+    { name = "File: Symbols in workspace",     exec = function() MiniExtra.pickers.lsp({ scope = 'workspace_symbol' }) end, keymap = { "n", "<leader>fS" }, silent = true },
+    { name = "File: Show unsaved changes",     exec = ":w !diff % -", },
+    { name = "File: Type",                     exec = ":set filetype?", },
+    { name = "File: Copy absolute path",       exec = [[:!echo %:p | tr -d '\n' | pbcopy]],                                 silent = true },
+    { name = "File: Reload & Discard Changes", exec = feedkeys("e!") },
 
-    { name = "Tab: Close all except current",    exec = ":tabonly" },
+    { name = "Tab: Close all except current",  exec = ":tabonly" },
+    {
+        name = "Tab: Next",
+        exec = ":tabnext",
+        keymap = { "n", "gt" },
+        silent = true
+    },
+    {
+        name = "Tab: Previous",
+        exec = ":tabprev",
+        keymap = { "n", "gT" },
+        silent = true
+    },
 
     { name = "Window: Close all except current", exec = ":only" },
+    {
+        name = "Window: Close",
+        exec = feedkeys("<C-w>q"),
+        keymap = { "n", "<C-w>q" },
+        silent = true
+    },
 
     {
         name = "Terminal: Run with output",
@@ -613,16 +640,21 @@ local commands = create_commands({
         silent = true
     },
 
-    { name = "Char: ASCII",         exec = feedkeys("ga"),                    keymap = { "n", "ga" },        silent = true },
-    { name = "Char: Hex",           exec = feedkeys("g8"),                    keymap = { "n", "g8" },        silent = true },
+    { name = "Char: ASCII",                      exec = feedkeys("ga"),                    keymap = { "n", "ga" },        silent = true },
+    { name = "Char: Hex",                        exec = feedkeys("g8"),                    keymap = { "n", "g8" },        silent = true },
 
-    { name = "Git: Blame",          exec = gitsigns.blame_line,               keymap = { "n", "<leader>gb" } },
-    { name = "Git: Diff this",      exec = gitsigns.diffthis, },
-    { name = "Git: Toggle blame",   exec = gitsigns.toggle_current_line_blame },
-    { name = "Git: Toggle deleted", exec = gitsigns.preview_hunk_inline },
-    { name = "Git: Next hunk",      exec = gitsigns.next_hunk,                keymap = { "n", "]g" } },
-    { name = "Git: Previous hunk",  exec = gitsigns.prev_hunk,                keymap = { "n", "[g" } },
-    { name = "Git: Reset hunk",     exec = gitsigns.reset_hunk, },
+
+    { name = "Diff: All windows",                exec = ":windo diffthis", },
+    { name = "Diff: Put",                        exec = ":diffput", },
+    { name = "Diff: Get",                        exec = ":diffget", },
+
+    { name = "Git: Blame",                       exec = gitsigns.blame_line,               keymap = { "n", "<leader>gb" } },
+    { name = "Git: Diff this",                   exec = gitsigns.diffthis, },
+    { name = "Git: Toggle blame",                exec = gitsigns.toggle_current_line_blame },
+    { name = "Git: Toggle deleted",              exec = gitsigns.preview_hunk_inline },
+    { name = "Git: Next hunk",                   exec = gitsigns.next_hunk,                keymap = { "n", "]g" } },
+    { name = "Git: Previous hunk",               exec = gitsigns.prev_hunk,                keymap = { "n", "[g" } },
+    { name = "Git: Reset hunk",                  exec = gitsigns.reset_hunk, },
     {
         name = "GitHub: Open link current repo",
         exec = function()
@@ -634,6 +666,14 @@ local commands = create_commands({
             local path = result.stdout:gsub("\n", "")
             vim.api.nvim_call_function("netrw#BrowseX", { path, 0 })
         end,
+    },
+    {
+        name = "Lazygit: Open",
+        exec = function()
+            vim.cmd [[:term lazygit]]
+            vim.defer_fn(feedkeys("a"), 100)
+        end,
+        keymap = { "n", "<leader>gg" }
     },
 
     { name = "SDL3: Open docs",          exec = "!open https://wiki.libsdl.org/SDL3/CategoryAPI", },
