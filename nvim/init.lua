@@ -192,6 +192,60 @@ local function mvout(dir)
     vim.notify("Moved contents up and removed directory")
 end
 
+local extract_zip = function(zip_path)
+    local stat = vim.loop.fs_stat(zip_path)
+    if not stat or stat.type ~= "file" then
+        vim.notify("Not a file: " .. zip_path, vim.log.levels.ERROR)
+        return
+    end
+
+    if not zip_path:lower():match("%.zip$") then
+        vim.notify("Not a zip file", vim.log.levels.ERROR)
+        return
+    end
+
+    local parent = vim.fn.fnamemodify(zip_path, ":h")
+    local base = vim.fn.fnamemodify(zip_path, ":t:r")
+    local dest = path_join(parent, base)
+
+    if not exists(dest) then
+        vim.loop.fs_mkdir(dest, 493) -- 0755
+    end
+
+    local sys = vim.loop.os_uname().sysname
+
+    if sys == "Darwin" then
+        local handle
+        handle = vim.loop.spawn(
+            "unzip",
+            {
+                args = { "-o", zip_path, "-d", dest },
+                stdio = { nil, nil, nil },
+            },
+            function(code)
+                if handle then handle:close() end
+                vim.schedule(function()
+                    if code == 0 then
+                        vim.notify("Extracted to " .. dest)
+                    else
+                        vim.notify("Zip extraction failed", vim.log.levels.ERROR)
+                    end
+                end)
+            end
+        )
+
+        if not handle then
+            vim.notify("Failed to start unzip", vim.log.levels.ERROR)
+        end
+    elseif sys == "Windows_NT" then
+        vim.notify(
+            "Zip extraction not implemented on Windows yet",
+            vim.log.levels.WARN
+        )
+    else
+        vim.notify("Unsupported OS for zip extraction", vim.log.levels.ERROR)
+    end
+end
 
 local lowercase_cabbrev = function(cmd)
     local lower = cmd:lower()
@@ -378,6 +432,58 @@ require('oil').setup({
 vim.api.nvim_create_autocmd('FileType', {
     pattern = 'oil',
     callback = function()
+        local copy_oil_paths = function(opts)
+            local oil = require("oil")
+            local dir = oil.get_current_dir()
+            if not dir then return end
+
+            local append = opts and opts.append
+            local visual = opts and opts.visual
+
+            local paths = {}
+
+            local bufnr = vim.api.nvim_get_current_buf()
+
+            if visual then
+                -- Exit visual mode so marks get updated (why nvim, why?)
+                vim.cmd([[ execute "normal! \<ESC>" ]])
+                local mode = vim.fn.visualmode()
+                local start_pos = vim.fn.getpos("'<")
+                local end_pos = vim.fn.getpos("'>")
+                local start_line = start_pos[2]
+                local end_line = end_pos[2]
+
+                if start_line > end_line then
+                    start_line, end_line = end_line, start_line
+                end
+
+                for lnum = start_line, end_line do
+                    local entry = oil.get_entry_on_line(bufnr, lnum)
+                    if entry then
+                        table.insert(paths, dir .. entry.name)
+                    end
+                end
+            else
+                local entry = oil.get_cursor_entry()
+                if not entry then return end
+                table.insert(paths, dir .. entry.name)
+            end
+
+            if #paths == 0 then return end
+
+            local text = table.concat(paths, "\n")
+
+            if append then
+                local prev = vim.fn.getreg(vim.v.register)
+                if prev ~= "" then
+                    text = prev .. "\n" .. text
+                end
+            end
+
+            vim.fn.setreg(vim.v.register, text)
+            vim.notify("Copied " .. #paths .. " path(s)" .. (append and " (append)" or ""))
+        end
+
         -- Execute command on target entry
         vim.keymap.set('n', '!', function()
             require 'oil.actions'.open_cmdline.callback()
@@ -386,33 +492,22 @@ vim.api.nvim_create_autocmd('FileType', {
             require 'oil.actions'.preview.callback()
         end, { remap = true, buffer = true })
 
-        -- Yank absolute path to clipboard register.
-        vim.keymap.set('n', 'gy', function()
-            local oil = require 'oil'
-            local entry = oil.get_cursor_entry()
-            local dir = oil.get_current_dir()
-            if not entry or not dir then
-                return
-            end
-            local path = dir .. entry.name
-            vim.fn.setreg(vim.v.register, path)
-            print("Copied path")
+        -- Yank absolute path(s) to clipboard register.
+        -- Use `gp` or `gm` to paste or move respectively.
+        vim.keymap.set("n", "gy", function()
+            copy_oil_paths({ append = false, visual = false })
+        end, { remap = true, buffer = true })
+        vim.keymap.set("v", "gy", function()
+            copy_oil_paths({ append = false, visual = true })
         end, { remap = true, buffer = true })
 
-        -- Append absolute path to clibpoard register.
+        -- Append absolute path(s) to clibpoard register.
         -- Use `gp` or `gm` to paste or move respectively.
-        vim.keymap.set('n', 'gY', function()
-            local oil = require 'oil'
-            local entry = oil.get_cursor_entry()
-            local dir = oil.get_current_dir()
-            if not entry or not dir then
-                return
-            end
-            local path = dir .. entry.name
-            local prev_clipboard = vim.fn.getreg(vim.v.register)
-            prev_clipboard = prev_clipboard .. "\n" .. path
-            vim.fn.setreg(vim.v.register, prev_clipboard)
-            print('Copied path (append)')
+        vim.keymap.set("n", "gY", function()
+            copy_oil_paths({ append = true, visual = false })
+        end, { remap = true, buffer = true })
+        vim.keymap.set("v", "gY", function()
+            copy_oil_paths({ append = true, visual = true })
         end, { remap = true, buffer = true })
 
         -- Paste files from absolute paths.
@@ -519,6 +614,22 @@ vim.api.nvim_create_autocmd('FileType', {
             vim.cmd("e!") -- Refresh buffer
         end, {})
         lowercase_cabbrev("MvOut")
+
+        -- Extract archive file under cursor into new directory under same name
+        vim.api.nvim_create_user_command("Extract", function()
+            local oil = require("oil")
+            local entry = oil.get_cursor_entry()
+            local cwd = oil.get_current_dir()
+
+            if not entry or not cwd or entry.type ~= "file" then
+                vim.notify("Cursor is not on a zip file", vim.log.levels.ERROR)
+                return
+            end
+
+            extract_zip(path_join(cwd, entry.name))
+            vim.cmd("e!")
+        end, {})
+        lowercase_cabbrev("Extract")
     end
 })
 
@@ -608,7 +719,7 @@ elseif is_windows then
     vim.lsp.config('roslyn_ls', {
         cmd = { 'C:/Program Files/dotnet/dotnet.exe',
             resolve_glob(
-            'C:/Users/laurynas.lazauskas/.vscode/extensions/ms-dotnettools.csharp-*/.roslyn/Microsoft.CodeAnalysis.LanguageServer.dll'),
+                'C:/Users/laurynas.lazauskas/.vscode/extensions/ms-dotnettools.csharp-*/.roslyn/Microsoft.CodeAnalysis.LanguageServer.dll'),
             '--logLevel',
             'Information', '--extensionLogDirectory', vim.fs.joinpath(vim.uv.os_tmpdir(), 'roslyn_ls/logs'), '--stdio' }
     })
