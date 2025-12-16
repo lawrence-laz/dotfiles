@@ -346,6 +346,10 @@ local pick = require('mini.pick')
 pick.setup({
     mappings = {
         choose_marked = '<C-q>',
+        -- Default:
+        -- <C-o>      glob pattern
+        -- <C-Space>  pick again from current results
+        -- <C-a>      select all
     },
 })
 require('mini.extra').setup({})
@@ -564,6 +568,30 @@ vim.api.nvim_create_autocmd('FileType', {
 -- ----------------------------------------------------------------
 -- LSP
 -- ----------------------------------------------------------------
+
+
+local function resolve_glob(pat)
+    local uv = vim.uv or vim.loop
+    pat = pat:gsub("\\", "/")
+
+    local matches = vim.fn.glob(pat, true, true)
+    if type(matches) == "string" then
+        matches = { matches }
+    end
+
+    if #matches == 0 then
+        error("resolve_glob: no match for: " .. pat)
+    elseif #matches > 1 then
+        error("resolve_glob: more than one match for: " .. pat .. "\n" .. table.concat(matches, "\n"))
+    end
+
+    local st = uv.fs_stat(matches[1])
+    if not (st and st.type == "file") then
+        error("resolve_glob: match is not a file: " .. matches[1])
+    end
+    return matches[1]
+end
+
 if is_darwin then
     vim.lsp.config('roslyn_ls', {
         cmd = {
@@ -579,7 +607,8 @@ if is_darwin then
 elseif is_windows then
     vim.lsp.config('roslyn_ls', {
         cmd = { 'C:/Program Files/dotnet/dotnet.exe',
-            'C:/Users/laurynas.lazauskas/.vscode/extensions/ms-dotnettools.csharp-2.102.30-win32-x64/.roslyn/Microsoft.CodeAnalysis.LanguageServer.dll',
+            resolve_glob(
+            'C:/Users/laurynas.lazauskas/.vscode/extensions/ms-dotnettools.csharp-*/.roslyn/Microsoft.CodeAnalysis.LanguageServer.dll'),
             '--logLevel',
             'Information', '--extensionLogDirectory', vim.fs.joinpath(vim.uv.os_tmpdir(), 'roslyn_ls/logs'), '--stdio' }
     })
@@ -809,7 +838,7 @@ local commands = create_commands({
     {
         name = "Lazygit: Open",
         exec = function()
-            vim.cmd [[:term lazygit]]
+            vim.cmd [[:tab term lazygit]]
             vim.defer_fn(feedkeys("a"), 100)
         end,
         keymap = { "n", "<leader>gg" }
