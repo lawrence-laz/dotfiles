@@ -192,20 +192,16 @@ local function mvout(dir)
     vim.notify("Moved contents up and removed directory")
 end
 
-local extract_zip = function(zip_path)
-    local stat = vim.loop.fs_stat(zip_path)
+local extract_archive = function(file_path)
+    local stat = vim.loop.fs_stat(file_path)
     if not stat or stat.type ~= "file" then
-        vim.notify("Not a file: " .. zip_path, vim.log.levels.ERROR)
+        vim.notify("Not a file: " .. file_path, vim.log.levels.ERROR)
         return
     end
 
-    if not zip_path:lower():match("%.zip$") then
-        vim.notify("Not a zip file", vim.log.levels.ERROR)
-        return
-    end
-
-    local parent = vim.fn.fnamemodify(zip_path, ":h")
-    local base = vim.fn.fnamemodify(zip_path, ":t:r")
+    local ext = file_path:lower()
+    local parent = vim.fn.fnamemodify(file_path, ":h")
+    local base = vim.fn.fnamemodify(file_path, ":t:r")
     local dest = path_join(parent, base)
 
     if not exists(dest) then
@@ -213,13 +209,54 @@ local extract_zip = function(zip_path)
     end
 
     local sys = vim.loop.os_uname().sysname
+    local handle
 
     if sys == "Darwin" then
+        if ext:match("%.zip$") or ext:match("%.nupkg$") then
+            -- existing ZIP code
+            handle = vim.loop.spawn(
+                "unzip",
+                { args = { "-o", file_path, "-d", dest }, stdio = { nil, nil, nil } },
+                function(code)
+                    if handle then handle:close() end
+                    vim.schedule(function()
+                        if code == 0 then
+                            vim.notify("Extracted to " .. dest)
+                        else
+                            vim.notify("Zip extraction failed", vim.log.levels.ERROR)
+                        end
+                    end)
+                end
+            )
+        elseif ext:match("%.tar%.gz$") or ext:match("%.tgz$") then
+            -- new tar.gz branch
+            handle = vim.loop.spawn(
+                "tar",
+                { args = { "-xzf", file_path, "-C", dest }, stdio = { nil, nil, nil } },
+                function(code)
+                    if handle then handle:close() end
+                    vim.schedule(function()
+                        if code == 0 then
+                            vim.notify("Extracted tar.gz to " .. dest)
+                        else
+                            vim.notify("tar.gz extraction failed", vim.log.levels.ERROR)
+                        end
+                    end)
+                end
+            )
+        else
+            vim.notify("Unsupported archive type", vim.log.levels.ERROR)
+        end
+
+        if not handle then
+            vim.notify("Failed to start extraction command", vim.log.levels.ERROR)
+        end
+    elseif sys == "Windows_NT" then
         local handle
         handle = vim.loop.spawn(
-            "unzip",
+            "tar",
             {
-                args = { "-o", zip_path, "-d", dest },
+                args = { "-xf", zip_path, "-C", dest },
                 stdio = { nil, nil, nil },
             },
             function(code)
@@ -228,22 +265,17 @@ local extract_zip = function(zip_path)
                     if code == 0 then
                         vim.notify("Extracted to " .. dest)
                     else
-                        vim.notify("Zip extraction failed", vim.log.levels.ERROR)
+                        vim.notify("Zip extraction failed (tar)", vim.log.levels.ERROR)
                     end
                 end)
             end
         )
 
         if not handle then
-            vim.notify("Failed to start unzip", vim.log.levels.ERROR)
+            vim.notify("Failed to start tar", vim.log.levels.ERROR)
         end
-    elseif sys == "Windows_NT" then
-        vim.notify(
-            "Zip extraction not implemented on Windows yet",
-            vim.log.levels.WARN
-        )
     else
-        vim.notify("Unsupported OS for zip extraction", vim.log.levels.ERROR)
+        vim.notify("Unsupported OS for extraction", vim.log.levels.ERROR)
     end
 end
 
@@ -253,6 +285,34 @@ local lowercase_cabbrev = function(cmd)
     vim.cmd(string.format([[
         cnoreabbrev <expr> %s getcmdtype() == ":" && getcmdline() == "%s" ? "%s" : "%s"
     ]], lower, lower, cmd, lower))
+end
+
+local open_todo = function()
+    local root = nil
+
+    -- Try to get git repo root
+    local git_root = vim.fn.systemlist({ "git", "rev-parse", "--show-toplevel" })
+    if vim.v.shell_error == 0 and git_root[1] and git_root[1] ~= "" then
+        root = git_root[1]
+    else
+        root = vim.loop.cwd()
+    end
+
+    local todo_path = root .. "/todo.md"
+
+    -- Create file if it doesn't exist
+    if vim.fn.filereadable(todo_path) == 0 then
+        local fd = vim.loop.fs_open(todo_path, "w", 420) -- 0644
+        if fd then
+            vim.loop.fs_close(fd)
+        else
+            vim.notify("Failed to create todo.md", vim.log.levels.ERROR)
+            return
+        end
+    end
+
+    -- Open in new tab
+    vim.cmd.tabedit(vim.fn.fnameescape(todo_path))
 end
 
 -- Redirect any command to buffer for better pager experience (like less).
@@ -626,11 +686,45 @@ vim.api.nvim_create_autocmd('FileType', {
                 return
             end
 
-            extract_zip(path_join(cwd, entry.name))
+            extract_archive(path_join(cwd, entry.name))
             vim.cmd("e!")
         end, {})
         lowercase_cabbrev("Extract")
     end
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'zig',
+    callback = function()
+        -- Move out files from directory under cursor and delete the dir
+        vim.api.nvim_create_user_command("Run", function()
+            vim.cmd [[tab term zig build run -freference-trace=8]]
+        end, {})
+        lowercase_cabbrev("Run")
+    end
+})
+
+vim.api.nvim_create_autocmd("TermOpen", {
+    callback = function(ev)
+        local function jump_from_term()
+            -- When there are more than one tab open I am likely running
+            -- a build/test command in a separate tab and would like for
+            -- `gF` to operate not on this tab, but on previous one.
+            if #vim.api.nvim_list_tabpages() <= 1 then
+                vim.cmd("normal! gF")
+                return
+            end
+            local cword = vim.fn.expand("<cWORD>"):gsub(":$", "") -- remove trailing colon
+            local path, lnum, col = cword:match("^(.-):(%d+):(%d+)$")
+            if not path then path, lnum = cword:match("^(.-):(%d+)$") end
+            if not path then path = cword end
+            vim.cmd("stopinsert|tabclose|edit " .. vim.fn.fnameescape(path))
+            if lnum then vim.api.nvim_win_set_cursor(0, { tonumber(lnum), col and tonumber(col) - 1 or 0 }) end
+        end
+
+        vim.keymap.set("t", "gF", jump_from_term, { buffer = ev.buf, silent = true })
+        vim.keymap.set("n", "gF", jump_from_term, { buffer = ev.buf, silent = true })
+    end,
 })
 
 local gitsigns = require('gitsigns')
@@ -868,7 +962,8 @@ local commands = create_commands({
         end
     },
 
-    { name = "Make: Run",                      exec = "make",                                                               silent = true },
+    -- { name = "Make: Run",                      exec = "make",                                                               silent = true },
+    { name = "Run",                            exec = "Run",                                                                keymap = { "n", "<leader>r" },  silent = true },
 
     { name = "File: Info",                     exec = feedkeys("g<C-g>"),                                                   keymap = { "n", "g<C-g>" },     silent = true },
     { name = "File: Find",                     exec = pick.registry.hidden_files,                                           keymap = { "n", "<leader>ff" }, silent = true },
@@ -880,6 +975,7 @@ local commands = create_commands({
     { name = "File: Type",                     exec = ":set filetype?", },
     { name = "File: Copy absolute path",       exec = [[:!echo %:p | tr -d '\n' | pbcopy]],                                 silent = true },
     { name = "File: Reload & Discard Changes", exec = feedkeys("e!") },
+    { name = "File: Open todo",                exec = open_todo },
 
     { name = "Tab: Close all except current",  exec = ":tabonly" },
     {
@@ -1003,6 +1099,17 @@ vim.api.nvim_create_autocmd('FileType', {
         vim.snippet.add(
             "fn",
             "function ${1:name}($2)\n\t${3:-- content}\nend",
+            { buffer = 0 }
+        )
+    end
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'zig',
+    callback = function()
+        vim.snippet.add(
+            "dlog",
+            "std.debug.print(\"${1:pattern}\\n\", .{${2:args}});",
             { buffer = 0 }
         )
     end
