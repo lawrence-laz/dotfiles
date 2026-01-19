@@ -6,6 +6,9 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
 
+-- So that file watchers would not freak out about deleted files.
+vim.cmd [[set backupcopy=yes]]
+
 if vim.g.neovide == true then
     vim.g.neovide_position_animation_length = 0
     vim.g.neovide_cursor_animation_length = 0.00
@@ -14,8 +17,48 @@ if vim.g.neovide == true then
     vim.g.neovide_cursor_animate_command_line = false
     vim.g.neovide_scroll_animation_far_lines = 1
     vim.g.neovide_scroll_animation_length = 0.10
-    vim.api.nvim_set_keymap('n', '<F11>', ":let g:neovide_fullscreen = !g:neovide_fullscreen<CR>", {})
+    vim.keymap.set({ "n", "v" }, "<F11>", ":let g:neovide_fullscreen = !g:neovide_fullscreen<CR>")
+    vim.keymap.set({ "n", "v" }, "<C-+>", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
+    vim.keymap.set({ "n", "v" }, "<C-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
+    vim.keymap.set({ "n", "v" }, "<C-ScrollWheelUp>",
+        ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1<CR>")
+    vim.keymap.set({ "n", "v" }, "<C-ScrollWheelDown>",
+        ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor - 0.1<CR>")
 end
+
+-- ----------------------------------------------------------------
+-- Colorscheme
+-- ----------------------------------------------------------------
+vim.api.nvim_create_autocmd("ColorScheme", {
+    pattern = "habamax",
+    callback = function()
+        vim.opt.termguicolors = true
+        vim.api.nvim_set_hl(0, "Normal", { fg = "#c0c0c0", bg = "#000000" })                  -- Background black, text whitish
+        vim.api.nvim_set_hl(0, "TabLineFill", { bg = "#000000" })                             -- Filler area
+        vim.api.nvim_set_hl(0, "TabLine", { fg = "#9a9a9a", bg = "#0d0d0d" })                 -- Inactive tabs
+        vim.api.nvim_set_hl(0, "TabLineSel", { fg = "#ffffff", bg = "#1a1a1a", bold = true }) -- Active tab
+        vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#1a1a1a", bg = "#000000" })            -- Window separator (nvim 0.7+)
+        vim.api.nvim_set_hl(0, "VertSplit", { fg = "#1a1a1a", bg = "#000000" })               -- Window separator (older nvim)
+        vim.api.nvim_set_hl(0, "StatusLine", { fg = "#9a9a9a", bg = "#000000" })              -- Active window status line
+        vim.api.nvim_set_hl(0, "StatusLineNC", { fg = "#6f6f6f", bg = "#000000" })            -- Inactive window status line
+        vim.api.nvim_set_hl(0, "Search", { fg = "#eaeaea", bg = "#2a2a2a", })
+        vim.api.nvim_set_hl(0, "CurSearch", { fg = "#000000", bg = "#b0b0b0", bold = true, })
+        vim.api.nvim_set_hl(0, "IncSearch", { fg = "#000000", bg = "#b0b0b0", bold = true, })
+        vim.api.nvim_set_hl(0, "Visual", { bg = "#3a3a3a" })
+        vim.api.nvim_set_hl(0, "VisualNOS", { bg = "#3a3a3a" })
+        vim.api.nvim_set_hl(0, "QuickFixLine", { link = "Visual" })
+        vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#000000" })
+        vim.api.nvim_set_hl(0, "FloatBorder", { bg = "#000000" })
+
+        vim.api.nvim_set_hl(0, "MiniPickNormal", { fg = "#b8b8b8", bg = "#000000" })
+        vim.api.nvim_set_hl(0, "MiniPickMatchRanges", { fg = "#ffffff", bold = true })
+        vim.api.nvim_set_hl(0, "MiniPickBorder", { bg = "#000000" })
+        vim.api.nvim_set_hl(0, "MiniPickBorderText", { bg = "#000000" })
+        vim.api.nvim_set_hl(0, "MiniPickPrompt", { bg = "#000000" })
+        vim.api.nvim_set_hl(0, "MiniPickPromptPrefix", { bg = "#000000" })
+    end,
+})
+vim.cmd.colorscheme("habamax")
 
 -- ----------------------------------------------------------------
 -- Options
@@ -117,6 +160,35 @@ local function move_merge(src, dst, overwrite)
         end
         -- remove empty src dir after merging
         vim.loop.fs_rmdir(src)
+    end
+end
+
+local function copy_path(src, dst)
+    if is_windows then
+        if vim.fn.isdirectory(src) == 1 then
+            -- robocopy copies *contents*; create target dir name explicitly
+            local name = vim.fn.fnamemodify(src, ":t")
+            vim.fn.system({ "robocopy", src, dst .. "\\" .. name, "/E" })
+        else
+            vim.fn.system({ "cmd", "/c", "copy", src, dst })
+        end
+    else
+        vim.fn.system({ "cp", "-R", src, dst })
+    end
+end
+
+local function move_path(src, dst)
+    if is_windows then
+        if vim.fn.isdirectory(src) == 1 then
+            local name = vim.fn.fnamemodify(src, ":t")
+            vim.fn.system({ "robocopy", src, dst .. "\\" .. name, "/E", "/MOVE" })
+            -- robocopy leaves empty dirs sometimes
+            vim.fn.system({ "cmd", "/c", "rmdir", src })
+        else
+            vim.fn.system({ "cmd", "/c", "move", src, dst })
+        end
+    else
+        vim.fn.system({ "mv", src, dst })
     end
 end
 
@@ -424,7 +496,62 @@ vim.pack.add({
     { src = 'https://github.com/lewis6991/gitsigns.nvim' },
     { src = 'https://github.com/nvim-treesitter/nvim-treesitter.git', branch = 'master' },
     { src = 'https://github.com/ThePrimeagen/harpoon' },
+    { src = "https://github.com/seblyng/roslyn.nvim" },
+    { src = "https://github.com/tpope/vim-fugitive" },
+    { src = "https://github.com/mfussenegger/nvim-dap" },
+    { src = "https://github.com/kmiterror/dotnet-debug.nvim" },
+    { src = "https://github.com/theHamsta/nvim-dap-virtual-text" },
 })
+
+
+if is_windows then
+    -- Stub for dotnet-debug
+    if not package.loaded["dapui"] then
+        package.preload["dapui"] = function()
+            return {
+                setup = function(_) end,
+                open = function() end,
+            }
+        end
+    end
+    -- Ensure file exists, othrewise dotnet-debug does not do its thing
+    local script = vim.fn.stdpath("cache") .. "/handshake_signer.js"
+    vim.fn.mkdir(vim.fn.stdpath("cache"), "p")
+    if not vim.loop.fs_stat(script) then vim.fn.writefile({}, script) end
+
+    require("dotnet-debug").setup({
+        signer_path =
+        "C:/Users/laurynas.lazauskas/AppData/Local/Programs/Microsoft VS Code/resources/app/node_modules.asar.unpacked/vsda/build/Release/vsda.node",
+        debugger_path = resolve_glob(
+            "C:/Users/laurynas.lazauskas/.vscode/extensions/ms-dotnettools.csharp-*/.debugger/x86_64/vsdbg-ui.exe"),
+    })
+
+    require("dap").configurations.cs = {
+        {
+            type = 'coreclr',
+            name = 'Attach to .NET process',
+            request = 'attach',
+            processId = require('dap.utils').pick_process,
+            justMyCode = false,
+            stopAtEntry = false,
+            cwd = vim.fn.getcwd(),
+        },
+    }
+
+    vim.api.nvim_set_hl(0, "blue", { fg = "#3d59a1" })
+    vim.api.nvim_set_hl(0, "green", { fg = "#9ece6a" })
+    vim.api.nvim_set_hl(0, "yellow", { fg = "#FFFF00" })
+    vim.api.nvim_set_hl(0, "orange", { fg = "#f09000" })
+    vim.api.nvim_set_hl(0, "red", { fg = "#f38ba8" })
+
+    vim.fn.sign_define('DapBreakpoint', { text = '⬤', texthl = 'DapBreakpoint' })
+    vim.fn.sign_define('DapBreakpointCondition', { text = '⨀', texthl = 'DapBreakpoint' })
+    vim.fn.sign_define('DapBreakpointRejected', { text = '⊘', texthl = 'DapBreakpoint' })
+    vim.fn.sign_define('DapStopped', { text = '→', texthl = 'yellow', })
+    vim.fn.sign_define('DapLogPoint', { text = '', texthl = 'yellow' })
+
+    require("nvim-dap-virtual-text").setup()
+end
 
 require('lazydev').setup()
 require('nvim-treesitter.configs').setup(
@@ -472,12 +599,18 @@ local with_rg_config = function(config_name, action)
     local rg_env = 'RIPGREP_CONFIG_PATH'
     local prev_config = vim.uv.os_getenv(rg_env) or ''
     vim.uv.os_setenv(rg_env, '/Users/llaz/git/dotfiles/rg/' .. config_name)
+    --vim.uv.os_setenv(rg_env, vim.fn.stdpath('config') .. '/' .. config_name)
     action()
     vim.uv.os_setenv(rg_env, prev_config)
 end
 pick.registry.hidden_files = function()
     with_rg_config('hidden', function()
         pick.builtin.files({ tool = 'rg' })
+    end)
+end
+pick.registry.grep_live_max = function()
+    with_rg_config('grep_live.conf', function()
+        pick.builtin.grep_live({ tool = 'rg' })
     end)
 end
 
@@ -603,7 +736,7 @@ vim.api.nvim_create_autocmd('FileType', {
                     end
                 end
                 for _, source_path in ipairs(source_paths) do
-                    vim.fn.system { 'cp', '-R', source_path, target_path }
+                    copy_path(source_path, target_path)
                 end
                 vim.cmd.edit({ bang = true })
                 vim.cmd.nohlsearch()
@@ -643,7 +776,7 @@ vim.api.nvim_create_autocmd('FileType', {
                     end
                 end
                 for _, source_path in ipairs(source_paths) do
-                    vim.fn.system { 'mv', source_path, target_path }
+                    move_path(source_path, target_path)
                 end
                 vim.cmd.edit({ bang = true })
                 vim.cmd.nohlsearch()
@@ -703,6 +836,28 @@ vim.api.nvim_create_autocmd('FileType', {
         lowercase_cabbrev("Run")
     end
 })
+
+vim.api.nvim_create_user_command("DiffUnsaved", function()
+    local file = vim.fn.expand("%:p")
+    if file == "" then
+        file = vim.fn.expand("#:p")
+    end
+
+    vim.cmd("vert new")
+    vim.bo.buftype = "nofile"
+    vim.bo.bufhidden = "wipe"
+    vim.bo.swapfile = false
+    vim.bo.buflisted = false
+
+    if file ~= "" and vim.fn.filereadable(file) == 1 then
+        vim.cmd("silent 0read ++edit " .. vim.fn.fnameescape(file))
+        vim.cmd("silent 1delete _") -- remove the initial empty line from :new
+    end
+
+    vim.cmd("diffthis")
+    vim.cmd("wincmd p")
+    vim.cmd("diffthis")
+end, {})
 
 vim.api.nvim_create_autocmd("TermOpen", {
     callback = function(ev)
@@ -771,6 +926,28 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 -- ----------------------------------------------------------------
+-- C#
+-- ----------------------------------------------------------------
+
+vim.api.nvim_create_autocmd("BufWritePost", {
+    pattern = "*.cs",
+    callback = function(args)
+        if vim.bo[args.buf].modifiable then
+            vim.cmd [[silent! !dotnet-csharpier %]]
+        end
+    end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'cs',
+    callback = function()
+        vim.api.nvim_create_user_command("Run", function()
+            vim.cmd [[tab term dotnet run --project src/sca]]
+        end, {})
+    end
+})
+
+-- ----------------------------------------------------------------
 -- LSP
 -- ----------------------------------------------------------------
 
@@ -798,7 +975,7 @@ local function resolve_glob(pat)
 end
 
 if is_darwin then
-    vim.lsp.config('roslyn_ls', {
+    vim.lsp.config('roslyn', {
         cmd = {
             "/usr/local/share/dotnet/dotnet",
             "/Users/llaz/dotnet-sdk/Microsoft.CodeAnalysis.LanguageServer.dll",
@@ -815,11 +992,56 @@ elseif is_windows then
             resolve_glob(
                 'C:/Users/laurynas.lazauskas/.vscode/extensions/ms-dotnettools.csharp-*/.roslyn/Microsoft.CodeAnalysis.LanguageServer.dll'),
             '--logLevel',
-            'Information', '--extensionLogDirectory', vim.fs.joinpath(vim.uv.os_tmpdir(), 'roslyn_ls/logs'), '--stdio' }
+            'Information',
+            '--extensionLogDirectory',
+            vim.fs.joinpath(vim.uv.os_tmpdir(),
+                'roslyn_ls/logs'), '--stdio' }
     })
 end
 
-vim.lsp.enable({ 'lua_ls', 'zls', 'roslyn_ls' })
+require("roslyn").setup({
+    filewatching = "roslyn",
+})
+
+vim.lsp.config("roslyn", {
+    settings = {
+        ["csharp|background_analysis"] = {
+            dotnet_analyzer_diagnostics_scope = "openFiles",
+            dotnet_compiler_diagnostics_scope = "openFiles"
+        },
+        ["csharp|code_lens"] = {
+            dotnet_enable_references_code_lens = false
+        },
+        ["csharp|completion"] = {
+            dotnet_provide_regex_completions = true,
+            dotnet_show_completion_items_from_unimported_namespaces = true,
+            dotnet_show_name_completion_suggestions = true
+        },
+        ["csharp|inlay_hints"] = {
+            csharp_enable_inlay_hints_for_implicit_object_creation = false,
+            csharp_enable_inlay_hints_for_implicit_variable_types = false,
+            csharp_enable_inlay_hints_for_lambda_parameter_types = false,
+            csharp_enable_inlay_hints_for_types = false,
+            dotnet_enable_inlay_hints_for_indexer_parameters = false,
+            dotnet_enable_inlay_hints_for_literal_parameters = false,
+            dotnet_enable_inlay_hints_for_object_creation_parameters = false,
+            dotnet_enable_inlay_hints_for_other_parameters = false,
+            dotnet_enable_inlay_hints_for_parameters = false,
+            dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
+            dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
+            dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true
+        },
+        ["csharp|symbol_search"] = {
+            dotnet_search_reference_assemblies = true
+        }
+    }
+})
+
+vim.lsp.enable({
+    'lua_ls',
+    'zls',
+    -- 'roslyn_ls',
+})
 
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('MyLspAttach', {}),
@@ -890,27 +1112,201 @@ local create_commands = function(commands)
     return commands
 end
 
+-- DAP
+-- This is a copy/paste from dap repo, because I need for the function below.
+local function dap_eval_expression(expr)
+    local mode = vim.api.nvim_get_mode()
+    if mode.mode == 'v' then
+        -- [bufnum, lnum, col, off]; 1-indexed
+        local start = vim.fn.getpos('v')
+        local end_ = vim.fn.getpos('.')
+
+        local start_row = start[2]
+        local start_col = start[3]
+
+        local end_row = end_[2]
+        local end_col = end_[3]
+
+        if start_row == end_row and end_col < start_col then
+            end_col, start_col = start_col, end_col
+        elseif end_row < start_row then
+            start_row, end_row = end_row, start_row
+            start_col, end_col = end_col, start_col
+        end
+
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<ESC>', true, false, true), 'n', false)
+
+        -- buf_get_text is 0-indexed; end-col is exclusive
+        local lines = vim.api.nvim_buf_get_text(0, start_row - 1, start_col - 1, end_row - 1, end_col, {})
+        return table.concat(lines, '\n')
+    end
+    expr = expr or '<cexpr>'
+    if type(expr) == "function" then
+        return expr()
+    elseif type(expr) == "string" then
+        return vim.fn.expand(expr)
+    end
+end
+
+-- This is a custom function to support LSP like hovering where the first invocation only shows the window, but does not jump to it,
+-- and the second invocation makes it jump inside the floating window.
+-- (It's not very nice, because I had to copy some internal functions to make this work, related issue https://github.com/mfussenegger/nvim-dap/issues/1194
+function Dap_better_hover_old(expr, winopts)
+    local value = dap_eval_expression(expr)
+
+    local bufnr, winid = vim.lsp.util.open_floating_preview({}, "dap-float", {
+        focusable = true,
+        close_events = { 'CursorMoved', 'BufHidden', 'InsertCharPre' },
+        focus_id = 'dappp',
+        focus = true,
+        width = 100,
+        height = 5,
+    })
+
+    local buffer_lines = vim.api.nvim_buf_get_lines(bufnr, 1, 999, false)
+    if (#buffer_lines ~= 0) then
+        -- If buffer already existed, then we just jumped into it and can return early to avoid creating duplicated content.
+        return
+    end
+
+    -- Buffer options
+    vim.bo[bufnr].bufhidden = "wipe"
+    vim.bo[bufnr].filetype = "dap-float"
+    vim.bo[bufnr].modifiable = false
+    vim.bo[bufnr].buftype = "nofile"
+    vim.api.nvim_buf_set_name(bufnr, 'dap-hover-' .. tostring(bufnr) .. ': ' .. value)
+
+    -- Window options
+    vim.wo[winid].scrolloff = 0
+
+    -- Key mappings for the buffer
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "<CR>", "<Cmd>lua require('dap.ui').trigger_actions({ mode = 'first' })<CR>",
+        {})
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "a", "<Cmd>lua require('dap.ui').trigger_actions()<CR>", {})
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "o", "<Cmd>lua require('dap.ui').trigger_actions()<CR>", {})
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "<2-LeftMouse>", "<Cmd>lua require('dap.ui').trigger_actions()<CR>", {})
+
+    local view = require("dap.ui.widgets").builder(require("dap.ui.widgets").expression)
+        .new_buf(function() return bufnr end)
+        .new_win(require("dap.ui.widgets").with_resize(function() return winid end))
+        .build()
+    view.open(value)
+    return view
+end
+
+-- One function for both normal/visual cases.
+function Dap_better_hover(expr, winopts)
+    local dap = require('dap')
+    local session = dap.session()
+    if not session then return vim.notify("DAP: no active session", vim.log.levels.WARN) end
+
+    local mode         = vim.api.nvim_get_mode().mode
+    local label        = dap_eval_expression(expr) or "<cexpr>"
+
+    -- Create (or jump to) a focusable float; first call just opens it.
+    local bufnr, winid = vim.lsp.util.open_floating_preview({}, "dap-float", vim.tbl_deep_extend("force", {
+        focusable    = true,
+        close_events = { 'CursorMoved', 'BufHidden', 'InsertCharPre' },
+        focus_id     = 'dappp',
+        focus        = true,
+        width        = 100,
+        height       = 5,
+    }, winopts or {}))
+
+    -- If buffer already existed we just focused it; keep your “second tap to focus” UX.
+    if #vim.api.nvim_buf_get_lines(bufnr, 1, 999, false) ~= 0 then return end
+
+    -- Common buffer/window setup
+    vim.bo[bufnr].bufhidden = "wipe"
+    vim.bo[bufnr].filetype  = "dap-float"
+    vim.bo[bufnr].buftype   = "nofile"
+    vim.api.nvim_buf_set_name(bufnr, ('dap-hover-%d: %s'):format(bufnr, label))
+    vim.wo[winid].scrolloff = 0
+
+    -- Common actions
+    vim.keymap.set("n", "<CR>", function() require('dap.ui').trigger_actions({ mode = 'first' }) end, { buffer = bufnr })
+    vim.keymap.set("n", "a", function() require('dap.ui').trigger_actions() end, { buffer = bufnr })
+    vim.keymap.set("n", "o", function() require('dap.ui').trigger_actions() end, { buffer = bufnr })
+    vim.keymap.set("n", "<2-LeftMouse>", function() require('dap.ui').trigger_actions() end, { buffer = bufnr })
+
+    -- Branch by mode:
+    if mode == 'v' or mode == 'V' then
+        -- VISUAL: REPL-context evaluation in-frame (avoid global-scope errors)
+        local frame = session.current_frame
+        if not (frame and frame.id) then
+            pcall(vim.api.nvim_win_close, winid, true)
+            return vim.notify("DAP: no current frame. Pause/hit a breakpoint first.", vim.log.levels.WARN)
+        end
+        session:request("evaluate", { expression = label, context = "repl", frameId = frame.id }, function(err, res)
+            if err then
+                pcall(vim.api.nvim_win_close, winid, true)
+                return vim.notify("DAP evaluate error: " .. (err.message or vim.inspect(err)), vim.log.levels.ERROR)
+            end
+            vim.bo[bufnr].modifiable = true
+            local out = {
+                -- "> " .. label,
+                res and res.result or "<no result>"
+            }
+            vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, out)
+            vim.bo[bufnr].modifiable = false
+        end)
+    else
+        -- NORMAL: interactive hover (expandable tree; same “two-tap to focus”)
+        local widgets = require("dap.ui.widgets")
+        widgets.builder(widgets.expression)
+            .new_buf(function() return bufnr end)
+            .new_win(widgets.with_resize(function() return winid end))
+            .build()
+            .open(label)
+    end
+end
+
 local commands = create_commands({
 
-    { name = "Config: Relaod",         exec = 'execute "source " . stdpath("config") . "/init.lua"' },
+    { name = "Config: Relaod",              exec = 'execute "source " . stdpath("config") . "/init.lua"' },
 
 
-    { name = "Build: Make",            exec = ":make", },
+    { name = "Build: Make",                 exec = ":make", },
 
-    { name = "Buffer: Delete (Close)", exec = ":bd" },
+    { name = "Buffer: Delete (Close)",      exec = ":bd" },
 
-    { name = "Edit: Wrap Text",        exec = feedkeys("gw"),                                       keymap = { "v", "gw" }, },
+    { name = "Debug: Run (Continue)",       exec = require 'dap'.continue,                                                keymap = { "n", "dr" } },
+    { name = "Debug: Run last",             exec = require 'dap'.run_last, },
+    { name = "Debug: Stop (Pause)",         exec = require 'dap'.pause,                                                   keymap = { "n", "ds" } },
+    { name = "Debug: Quit",                 exec = require 'dap'.terminate,                                               keymap = { "n", "dq" } },
+    { name = "Debug: Open REPL",            exec = require 'dap'.repl.open, },
+    { name = "Debug: Go to current line",   exec = require 'dap'.focus_frame,                                             keymap = { "n", "<C-S-H>" } },
+    { name = "Debug: Clear breakpoints",    exec = require 'dap'.clear_breakpoints(), },
+    { name = "Debug: Toggle breakpoint",    exec = require 'dap'.toggle_breakpoint,                                       keymap = { "n", "<C-h>" } },
+    { name = "Debug: Break on exception",   exec = require 'dap'.set_exception_breakpoints, },
+    { name = "Debug: Step over",            exec = require 'dap'.step_over,                                               keymap = { "n", "<C-j>" } },
+    { name = "Debug: Run to cursor",        exec = require 'dap'.run_to_cursor,                                           keymap = { "n", "<C-S-J>" } },
+    { name = "Debug: Step out",             exec = require 'dap'.step_out,                                                keymap = { "n", "<C-k>" } },
+    { name = "Debug: Hover",                exec = Dap_better_hover,                                                      keymaps = { { "n", "<C-S-K>" }, { "v", "<C-S-K>" } } },
+    { name = "Debug: Step into",            exec = require 'dap'.step_into,                                               keymap = { "n", "<C-l>" } },
+    { name = "Debug: Go to",                exec = function() require 'dap'.goto_(vim.api.nvim_win_get_cursor(0)[1]) end, keymap = { "n", "<C-S-L>" } },
+    { name = "Debug: Go up in callstack",   exec = require 'dap'.up,                                                      keymap = { "n", "[s" } },
+    { name = "Debug: Go down in callstack", exec = require 'dap'.down,                                                    keymap = { "n", "]s" } },
+    {
+        name = "Debug: Show callstack",
+        exec = function()
+            require 'dap.ui.widgets'.centered_float(require 'dap.ui.widgets'
+                .frames)
+        end
+    },
+
+    { name = "Edit: Wrap Text",      exec = feedkeys("gw"),                                 keymap = { "v", "gw" }, },
     -- Note 'gq' triggers LSP if it's attached.
 
-    { name = "Config: Source",         exec = "exe 'source' stdpath('config') .. '/init.lua'" },
+    { name = "Config: Source",       exec = "exe 'source' stdpath('config') .. '/init.lua'" },
 
-    { name = "LSP: Rename",            exec = vim.lsp.buf.rename,                                   keymap = { "n", "grn" }, silent = true },
-    { name = "LSP: Code Action",       exec = vim.lsp.buf.code_action,                              keymap = { "n", "gra" }, silent = true },
-    { name = "LSP: References",        exec = vim.lsp.buf.references,                               keymap = { "n", "grr" }, silent = true },
-    { name = "LSP: Implementation",    exec = vim.lsp.buf.implementation,                           keymap = { "n", "gri" }, silent = true },
-    { name = "LSP: Type Definition",   exec = vim.lsp.buf.type_definition,                          keymap = { "n", "grt" }, silent = true },
-    { name = "LSP: Hover",             exec = vim.lsp.buf.hover,                                    keymap = { "n", "K" },   silent = true },
-    { name = "LSP: Document Symbol",   exec = vim.lsp.buf.document_symbol,                          keymap = { "n", "gO" },  silent = true },
+    { name = "LSP: Rename",          exec = vim.lsp.buf.rename,                             keymap = { "n", "grn" }, silent = true },
+    { name = "LSP: Code Action",     exec = vim.lsp.buf.code_action,                        keymap = { "n", "gra" }, silent = true },
+    { name = "LSP: References",      exec = vim.lsp.buf.references,                         keymap = { "n", "grr" }, silent = true },
+    { name = "LSP: Implementation",  exec = vim.lsp.buf.implementation,                     keymap = { "n", "gri" }, silent = true },
+    { name = "LSP: Type Definition", exec = vim.lsp.buf.type_definition,                    keymap = { "n", "grt" }, silent = true },
+    { name = "LSP: Hover",           exec = vim.lsp.buf.hover,                              keymap = { "n", "K" },   silent = true },
+    { name = "LSP: Document Symbol", exec = vim.lsp.buf.document_symbol,                    keymap = { "n", "gO" },  silent = true },
     {
         name = "LSP: Restart",
         exec = function()
@@ -930,6 +1326,7 @@ local commands = create_commands({
     { name = "Diagnostic: Open Float",     exec = vim.diagnostic.open_float, keymap = { "n", "<C-w>d" }, silent = true },
     { name = "Diagnostic: Go to Next",     exec = vim.diagnostic.goto_next,  keymap = { "n", "]e" },     silent = true },
     { name = "Diagnostic: Go to Previous", exec = vim.diagnostic.goto_prev,  keymap = { "n", "[e" },     silent = true },
+    { name = "Diagnostic: Reset",          exec = vim.diagnostic.reset },
 
     { name = "Fold: Toggle",               exec = feedkeys("za"),            keymap = { "n", "za" },     silent = true },
     { name = "Fold: Paragraph",            exec = feedkeys("zfip"),          keymap = { "n", "zfip" },   silent = true },
@@ -971,11 +1368,14 @@ local commands = create_commands({
     { name = "File: Grep",                     exec = pick.builtin.grep_live,                                               keymap = { "n", "<leader>fg" }, silent = true },
     { name = "File: Symbols in document",      exec = function() MiniExtra.pickers.lsp({ scope = 'document_symbol' }) end,  keymap = { "n", "<leader>fs" }, silent = true },
     { name = "File: Symbols in workspace",     exec = function() MiniExtra.pickers.lsp({ scope = 'workspace_symbol' }) end, keymap = { "n", "<leader>fS" }, silent = true },
-    { name = "File: Show unsaved changes",     exec = ":w !diff % -", },
+    { name = "File: Show unsaved changes",     exec = ":DiffUnsaved", },
     { name = "File: Type",                     exec = ":set filetype?", },
     { name = "File: Copy absolute path",       exec = [[:!echo %:p | tr -d '\n' | pbcopy]],                                 silent = true },
     { name = "File: Reload & Discard Changes", exec = feedkeys("e!") },
-    { name = "File: Open todo",                exec = open_todo },
+    { name = "File: Show CR",                  exec = ":e ++ff=unix" },
+
+    { name = "Find: Negative lookbehind",      exec = feedkeys([[/\\(NOT_THIS\\)\\@<!THIS]]), },
+    { name = "Find: Negative lookahead",       exec = feedkeys([[/THIS\\(NOT_THIS\\)\\@!]]), },
 
     { name = "Tab: Close all except current",  exec = ":tabonly" },
     {
@@ -1014,17 +1414,30 @@ local commands = create_commands({
         keymap = { "n", "<leader>c" },
         silent = true
     },
+    {
+        name = "Window: Exchange",
+        exec = feedkeys("<C-w>x"),
+        keymap = { "n", "<C-w>x" },
+        silent = true
+    },
+    {
+        name = "Window: Horizontal",
+        exec = feedkeys("<C-w>H"),
+        keymap = { "n", "<C-w>H" },
+        silent = true
+    },
 
     { name = "Char: ASCII",                      exec = feedkeys("ga"),                    keymap = { "n", "ga" },        silent = true },
     { name = "Char: Hex",                        exec = feedkeys("g8"),                    keymap = { "n", "g8" },        silent = true },
 
 
     { name = "Diff: All windows",                exec = ":windo diffthis", },
-    { name = "Diff: Put",                        exec = ":diffput", },
-    { name = "Diff: Get",                        exec = ":diffget", },
+    { name = "Diff: Put",                        exec = ":diffput",                        keymap = { "n", "dp" } },
+    { name = "Diff: Get",                        exec = ":diffget",                        keymap = { "n", "do" } },
 
     { name = "Git: Blame",                       exec = gitsigns.blame_line,               keymap = { "n", "<leader>gb" } },
-    { name = "Git: Diff this",                   exec = gitsigns.diffthis, },
+    -- { name = "Git: Diff this",                   exec = gitsigns.diffthis, },
+    { name = "Git: Diff",                        exec = feedkeys(":Gvdiffsplit HEAD~1"), }, -- @{push} or branchname
     { name = "Git: Toggle blame",                exec = gitsigns.toggle_current_line_blame },
     { name = "Git: Toggle deleted",              exec = gitsigns.preview_hunk_inline },
     { name = "Git: Next hunk",                   exec = gitsigns.next_hunk,                keymap = { "n", "]g" } },
