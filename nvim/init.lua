@@ -30,6 +30,7 @@ end
 -- Colorscheme
 -- ----------------------------------------------------------------
 vim.api.nvim_create_autocmd("ColorScheme", {
+    group = vim.api.nvim_create_augroup("MyColorScheme", { clear = true }),
     pattern = "habamax",
     callback = function()
         vim.opt.termguicolors = true
@@ -56,6 +57,33 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         vim.api.nvim_set_hl(0, "MiniPickBorderText", { bg = "#000000" })
         vim.api.nvim_set_hl(0, "MiniPickPrompt", { bg = "#000000" })
         vim.api.nvim_set_hl(0, "MiniPickPromptPrefix", { bg = "#000000" })
+
+        vim.api.nvim_set_hl(0, "@string", { fg = "#5fdd5f" })
+        vim.api.nvim_set_hl(0, "Constant", { fg = "#ff60af" })
+        vim.api.nvim_set_hl(0, "@constant.builtin", { fg = "#ff60af" })
+        vim.api.nvim_set_hl(0, "Identifier", { fg = "#ffffff" })
+        vim.api.nvim_set_hl(0, "@constructor", { fg = "#ffffff", bg = "#333355" })
+        vim.api.nvim_set_hl(0, "@constructor.lua", { link = "Special", bg = "NONE" })
+
+        vim.api.nvim_set_hl(0, "Type", { fg = "#5487dd" })
+        vim.api.nvim_set_hl(0, "@type.builtin", { link = "Type" })
+
+        vim.api.nvim_set_hl(0, "@keyword.exception", { fg = "#cc4444", bg = "NONE" })
+
+        vim.api.nvim_set_hl(0, "Statement", { fg = "#ffffff" })
+        vim.api.nvim_set_hl(0, "@keyword", { fg = "#cccccc" })
+        vim.api.nvim_set_hl(0, "@keyword.repeat", { fg = "#dcc16d" })
+        vim.api.nvim_set_hl(0, "@keyword.conditional", { fg = "#dcc16d" })
+        vim.api.nvim_set_hl(0, "@keyword.return", { fg = "#dcc16d" })
+        vim.api.nvim_set_hl(0, "@keyword.operator", { fg = "#dcc16d" })
+        vim.api.nvim_set_hl(0, "@keyword.type", { fg = "#ffffff" })
+        vim.api.nvim_set_hl(0, "@keyword.import", { fg = "#cccccc" })
+        vim.api.nvim_set_hl(0, "@keyword.modifier", { fg = "#cccccc" })
+
+        vim.api.nvim_set_hl(0, "@function.call", { fg = "#dcc16d" })
+        vim.api.nvim_set_hl(0, "@method.call", { link = "@function.call" })
+        vim.api.nvim_set_hl(0, "@function.method.call", { link = "@function.call" })
+        vim.api.nvim_set_hl(0, "@function.method", { link = "@function.call" })
     end,
 })
 vim.cmd.colorscheme("habamax")
@@ -386,6 +414,27 @@ local open_todo = function()
     -- Open in new tab
     vim.cmd.tabedit(vim.fn.fnameescape(todo_path))
 end
+local function resolve_glob(pat)
+    local uv = vim.uv or vim.loop
+    pat = pat:gsub("\\", "/")
+
+    local matches = vim.fn.glob(pat, true, true)
+    if type(matches) == "string" then
+        matches = { matches }
+    end
+
+    if #matches == 0 then
+        error("resolve_glob: no match for: " .. pat)
+    elseif #matches > 1 then
+        error("resolve_glob: more than one match for: " .. pat .. "\n" .. table.concat(matches, "\n"))
+    end
+
+    local st = uv.fs_stat(matches[1])
+    if not (st and st.type == "file") then
+        error("resolve_glob: match is not a file: " .. matches[1])
+    end
+    return matches[1]
+end
 
 -- Redirect any command to buffer for better pager experience (like less).
 vim.cmd [[com -nargs=1 -complete=command Redir :execute "tabnew | pu=execute(\'" . <q-args> . "\') | setl nomodified"]]
@@ -436,6 +485,8 @@ vim.cmd [[command -bar -nargs=* -complete=file -range=% -bang Write <line1>,<lin
 -- :cdo :cfdo        Run command on all items or files (end with | update to save)
 -- :g/pattern        Search regex (jump with :123)
 -- <C-r>"            Paste back what was changed in insert mode
+--
+-- :`<,`>write !git apply           Apply selected text as git patch (or provide -R to reverse)
 
 vim.keymap.set('n', '<leader>e', '<cmd>Oil<CR>')                      -- Explore
 vim.keymap.set("v", "<C-a>", "<C-a>gv")                               -- Increment numbers in visual mode without losing selection
@@ -464,6 +515,7 @@ vim.keymap.set(
 
 -- Quickfix buffer
 vim.api.nvim_create_autocmd('FileType', {
+    group = vim.api.nvim_create_augroup("MyQuickFix", { clear = true }),
     pattern = 'qf',
     callback = function()
         vim.keymap.set("n", "<CR>", "<CR><C-w>p", { remap = true, buffer = true }) -- Jump to item under cursor
@@ -490,7 +542,7 @@ vim.pack.add({
     { src = 'https://github.com/NMAC427/guess-indent.nvim' },
     { src = 'https://github.com/stevearc/oil.nvim' },
     { src = 'https://github.com/echasnovski/mini.pick' },
-    { src = 'https://github.com/echasnovski/mini.extra' },
+    { src = 'https://github.com/echasnovski/mini.extra',              version = "7c0a674" },
     { src = 'https://github.com/neovim/nvim-lspconfig' },
     { src = 'https://github.com/JanikkinaJ/lazydev.nvim',             version = "ca311b8" }, -- https://github.com/folke/lazydev.nvim/issues/114
     { src = 'https://github.com/lewis6991/gitsigns.nvim' },
@@ -501,6 +553,7 @@ vim.pack.add({
     { src = "https://github.com/mfussenegger/nvim-dap" },
     { src = "https://github.com/kmiterror/dotnet-debug.nvim" },
     { src = "https://github.com/theHamsta/nvim-dap-virtual-text" },
+    { src = "https://github.com/tpope/vim-abolish" },
 })
 
 
@@ -523,7 +576,7 @@ if is_windows then
         signer_path =
         "C:/Users/laurynas.lazauskas/AppData/Local/Programs/Microsoft VS Code/resources/app/node_modules.asar.unpacked/vsda/build/Release/vsda.node",
         debugger_path = resolve_glob(
-            "C:/Users/laurynas.lazauskas/.vscode/extensions/ms-dotnettools.csharp-*/.debugger/x86_64/vsdbg-ui.exe"),
+        "C:/Users/laurynas.lazauskas/.vscode/extensions/ms-dotnettools.csharp-*/.debugger/x86_64/vsdbg-ui.exe"),
     })
 
     require("dap").configurations.cs = {
@@ -608,6 +661,13 @@ pick.registry.hidden_files = function()
         pick.builtin.files({ tool = 'rg' })
     end)
 end
+
+pick.registry.grep_live_smart_case = function()
+    with_rg_config('grep_live_smart_case', function()
+        pick.builtin.grep_live({ tool = 'rg' })
+    end)
+end
+
 pick.registry.grep_live_max = function()
     with_rg_config('grep_live.conf', function()
         pick.builtin.grep_live({ tool = 'rg' })
@@ -623,6 +683,7 @@ require('oil').setup({
     },
 })
 vim.api.nvim_create_autocmd('FileType', {
+    group = vim.api.nvim_create_augroup("MyOil", { clear = true }),
     pattern = 'oil',
     callback = function()
         local copy_oil_paths = function(opts)
@@ -893,11 +954,11 @@ gitsigns.setup({
     },
 })
 
-
 -- ----------------------------------------------------------------
 -- Markdown
 -- ----------------------------------------------------------------
 vim.api.nvim_create_autocmd('FileType', {
+    group = vim.api.nvim_create_augroup("MyMarkdown", { clear = true }),
     pattern = 'markdown',
     callback = function()
         vim.keymap.set("n", "gf", function()
@@ -939,10 +1000,17 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
+    group = vim.api.nvim_create_augroup("MyDotnetRun", { clear = true }),
     pattern = 'cs',
     callback = function()
         vim.api.nvim_create_user_command("Run", function()
-            vim.cmd [[tab term dotnet run --project src/sca]]
+            vim.cmd [[tab term dotnet run]]
+        end, {})
+        vim.api.nvim_create_user_command("Build", function()
+            vim.cmd [[tab term dotnet build]]
+        end, {})
+        vim.api.nvim_create_user_command("Test", function()
+            vim.cmd [[tab term dotnet test]]
         end, {})
     end
 })
@@ -951,28 +1019,21 @@ vim.api.nvim_create_autocmd('FileType', {
 -- LSP
 -- ----------------------------------------------------------------
 
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities.workspace = capabilities.workspace or {}
+-- capabilities.workspace.didChangeWatchedFiles = {
+--     dynamicRegistration = true,
+-- }
 
-local function resolve_glob(pat)
-    local uv = vim.uv or vim.loop
-    pat = pat:gsub("\\", "/")
-
-    local matches = vim.fn.glob(pat, true, true)
-    if type(matches) == "string" then
-        matches = { matches }
-    end
-
-    if #matches == 0 then
-        error("resolve_glob: no match for: " .. pat)
-    elseif #matches > 1 then
-        error("resolve_glob: more than one match for: " .. pat .. "\n" .. table.concat(matches, "\n"))
-    end
-
-    local st = uv.fs_stat(matches[1])
-    if not (st and st.type == "file") then
-        error("resolve_glob: match is not a file: " .. matches[1])
-    end
-    return matches[1]
-end
+-- Turn off LSP semantic tokens (treesitter FTW?)
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client then
+            client.server_capabilities.semanticTokensProvider = nil
+        end
+    end,
+})
 
 if is_darwin then
     vim.lsp.config('roslyn', {
@@ -987,7 +1048,7 @@ if is_darwin then
         }
     })
 elseif is_windows then
-    vim.lsp.config('roslyn_ls', {
+    vim.lsp.config('roslyn', {
         cmd = { 'C:/Program Files/dotnet/dotnet.exe',
             resolve_glob(
                 'C:/Users/laurynas.lazauskas/.vscode/extensions/ms-dotnettools.csharp-*/.roslyn/Microsoft.CodeAnalysis.LanguageServer.dll'),
@@ -1004,6 +1065,7 @@ require("roslyn").setup({
 })
 
 vim.lsp.config("roslyn", {
+    capabilities = capabilities,
     settings = {
         ["csharp|background_analysis"] = {
             dotnet_analyzer_diagnostics_scope = "openFiles",
@@ -1063,7 +1125,7 @@ vim.diagnostic.config {
     virtual_lines = false,
     severity_sort = true,
     float = { source = 'if_many' },
-    underline = { severity = vim.diagnostic.severity.ERROR },
+    underline = true,
     virtual_text = {
         source = 'if_many',
         spacing = 3,
@@ -1263,30 +1325,32 @@ end
 
 local commands = create_commands({
 
-    { name = "Config: Relaod",              exec = 'execute "source " . stdpath("config") . "/init.lua"' },
+    { name = "Messages: History",                exec = ":new | put =execute('messages')" },
+    { name = "Config: Relaod",                   exec = 'execute "source " . stdpath("config") . "/init.lua"' },
 
 
-    { name = "Build: Make",                 exec = ":make", },
+    { name = "Build: Make",                      exec = ":make", },
 
-    { name = "Buffer: Delete (Close)",      exec = ":bd" },
+    { name = "Buffer: Delete (Close)",           exec = ":bd" },
+    { name = "Buffer: Close all except current", exec = ":%bd|e#" },
 
-    { name = "Debug: Run (Continue)",       exec = require 'dap'.continue,                                                keymap = { "n", "dr" } },
-    { name = "Debug: Run last",             exec = require 'dap'.run_last, },
-    { name = "Debug: Stop (Pause)",         exec = require 'dap'.pause,                                                   keymap = { "n", "ds" } },
-    { name = "Debug: Quit",                 exec = require 'dap'.terminate,                                               keymap = { "n", "dq" } },
-    { name = "Debug: Open REPL",            exec = require 'dap'.repl.open, },
-    { name = "Debug: Go to current line",   exec = require 'dap'.focus_frame,                                             keymap = { "n", "<C-S-H>" } },
-    { name = "Debug: Clear breakpoints",    exec = require 'dap'.clear_breakpoints(), },
-    { name = "Debug: Toggle breakpoint",    exec = require 'dap'.toggle_breakpoint,                                       keymap = { "n", "<C-h>" } },
-    { name = "Debug: Break on exception",   exec = require 'dap'.set_exception_breakpoints, },
-    { name = "Debug: Step over",            exec = require 'dap'.step_over,                                               keymap = { "n", "<C-j>" } },
-    { name = "Debug: Run to cursor",        exec = require 'dap'.run_to_cursor,                                           keymap = { "n", "<C-S-J>" } },
-    { name = "Debug: Step out",             exec = require 'dap'.step_out,                                                keymap = { "n", "<C-k>" } },
-    { name = "Debug: Hover",                exec = Dap_better_hover,                                                      keymaps = { { "n", "<C-S-K>" }, { "v", "<C-S-K>" } } },
-    { name = "Debug: Step into",            exec = require 'dap'.step_into,                                               keymap = { "n", "<C-l>" } },
-    { name = "Debug: Go to",                exec = function() require 'dap'.goto_(vim.api.nvim_win_get_cursor(0)[1]) end, keymap = { "n", "<C-S-L>" } },
-    { name = "Debug: Go up in callstack",   exec = require 'dap'.up,                                                      keymap = { "n", "[s" } },
-    { name = "Debug: Go down in callstack", exec = require 'dap'.down,                                                    keymap = { "n", "]s" } },
+    { name = "Debug: Run (Continue)",            exec = require 'dap'.continue,                                                keymap = { "n", "dr" } },
+    { name = "Debug: Run last",                  exec = require 'dap'.run_last, },
+    { name = "Debug: Stop (Pause)",              exec = require 'dap'.pause,                                                   keymap = { "n", "ds" } },
+    { name = "Debug: Quit",                      exec = require 'dap'.terminate,                                               keymap = { "n", "dq" } },
+    { name = "Debug: Open REPL",                 exec = require 'dap'.repl.open, },
+    { name = "Debug: Go to current line",        exec = require 'dap'.focus_frame,                                             keymap = { "n", "<C-S-H>" } },
+    { name = "Debug: Clear breakpoints",         exec = require 'dap'.clear_breakpoints(), },
+    { name = "Debug: Toggle breakpoint",         exec = require 'dap'.toggle_breakpoint,                                       keymap = { "n", "<C-h>" } },
+    { name = "Debug: Break on exception",        exec = require 'dap'.set_exception_breakpoints, },
+    { name = "Debug: Step over",                 exec = require 'dap'.step_over,                                               keymap = { "n", "<C-j>" } },
+    { name = "Debug: Run to cursor",             exec = require 'dap'.run_to_cursor,                                           keymap = { "n", "<C-S-J>" } },
+    { name = "Debug: Step out",                  exec = require 'dap'.step_out,                                                keymap = { "n", "<C-k>" } },
+    { name = "Debug: Hover",                     exec = Dap_better_hover,                                                      keymaps = { { "n", "<C-S-K>" }, { "v", "<C-S-K>" } } },
+    { name = "Debug: Step into",                 exec = require 'dap'.step_into,                                               keymap = { "n", "<C-l>" } },
+    { name = "Debug: Go to",                     exec = function() require 'dap'.goto_(vim.api.nvim_win_get_cursor(0)[1]) end, keymap = { "n", "<C-S-L>" } },
+    { name = "Debug: Go up in callstack",        exec = require 'dap'.up,                                                      keymap = { "n", "[s" } },
+    { name = "Debug: Go down in callstack",      exec = require 'dap'.down,                                                    keymap = { "n", "]s" } },
     {
         name = "Debug: Show callstack",
         exec = function()
@@ -1310,6 +1374,7 @@ local commands = create_commands({
     {
         name = "LSP: Restart",
         exec = function()
+            vim.diagnostic.reset()
             vim.cmd [[:lua vim.lsp.stop_client(vim.lsp.get_clients())]]
             vim.cmd [[:edit]]
         end,
@@ -1323,18 +1388,25 @@ local commands = create_commands({
 
     { name = "Keymap: Show current",       exec = [[Redir silent map]], },
 
-    { name = "Diagnostic: Open Float",     exec = vim.diagnostic.open_float, keymap = { "n", "<C-w>d" }, silent = true },
-    { name = "Diagnostic: Go to Next",     exec = vim.diagnostic.goto_next,  keymap = { "n", "]e" },     silent = true },
-    { name = "Diagnostic: Go to Previous", exec = vim.diagnostic.goto_prev,  keymap = { "n", "[e" },     silent = true },
+    { name = "Diagnostic: Open Float",     exec = vim.diagnostic.open_float,                                                            keymap = { "n", "<C-w>d" }, silent = true },
+    { name = "Diagnostic: Go to Next",     exec = vim.diagnostic.goto_next,                                                             keymap = { "n", "]e" },     silent = true },
+    { name = "Diagnostic: Go to Previous", exec = vim.diagnostic.goto_prev,                                                             keymap = { "n", "[e" },     silent = true },
     { name = "Diagnostic: Reset",          exec = vim.diagnostic.reset },
 
-    { name = "Fold: Toggle",               exec = feedkeys("za"),            keymap = { "n", "za" },     silent = true },
-    { name = "Fold: Paragraph",            exec = feedkeys("zfip"),          keymap = { "n", "zfip" },   silent = true },
-    { name = "Fold: Match",                exec = feedkeys("zf%"),           keymap = { "n", "zf%" },    silent = true },
+    { name = "Fold: Toggle",               exec = feedkeys("za"),                                                                       keymap = { "n", "za" },     silent = true },
+    { name = "Fold: Paragraph",            exec = feedkeys("zfip"),                                                                     keymap = { "n", "zfip" },   silent = true },
+    { name = "Fold: Match",                exec = feedkeys("zf%"),                                                                      keymap = { "n", "zf%" },    silent = true },
 
-    { name = "Quickfix: Open",             exec = "copen",                   silent = true },
-    { name = "Quickfix: Older",            exec = "colder",                  keymap = { "n", "]Q" }, },
-    { name = "Quickfix: Newer",            exec = "cnewer",                  keymap = { "n", "[Q" }, },
+    { name = "Quickfix: Open",             exec = "copen",                                                                              silent = true },
+    { name = "Quickfix: Older",            exec = "colder",                                                                             keymap = { "n", "]Q" }, },
+    { name = "Quickfix: Newer",            exec = "cnewer",                                                                             keymap = { "n", "[Q" }, },
+    { name = "Quickfix: Errors",           exec = function() vim.diagnostic.setqflist({ severity = vim.diagnostic
+        .severity.ERROR }) end },
+    { name = "Quickfix: Warnings",         exec = function() vim.diagnostic.setqflist({ severity = vim.diagnostic
+        .severity.WARN }) end },
+    { name = "Quickfix: Info",             exec = function() vim.diagnostic.setqflist({ severity = vim.diagnostic
+        .severity.INFO }) end },
+    { name = "Quickfix: Diagnostics",      exec = function() vim.diagnostic.setqflist() end },
     {
         name = "Quickfix: Clear",
         exec = function() vim.fn.setqflist({}, 'r') end,
@@ -1359,13 +1431,15 @@ local commands = create_commands({
         end
     },
 
-    -- { name = "Make: Run",                      exec = "make",                                                               silent = true },
-    { name = "Run",                            exec = "Run",                                                                keymap = { "n", "<leader>r" },  silent = true },
+    { name = "Make: Run",                      exec = "make",                                                               silent = true },
+    { name = "Run",                            exec = ":Run",                                                               keymap = { "n", "<leader>r" },  silent = true },
+    { name = "Build",                          exec = ":Build",                                                             keymap = { "n", "<leader>bb" }, silent = true },
+    { name = "Test",                           exec = ":Test",                                                              keymap = { "n", "<leader>t" },  silent = true },
 
     { name = "File: Info",                     exec = feedkeys("g<C-g>"),                                                   keymap = { "n", "g<C-g>" },     silent = true },
     { name = "File: Find",                     exec = pick.registry.hidden_files,                                           keymap = { "n", "<leader>ff" }, silent = true },
     { name = "File: Recent",                   exec = pick.builtin.buffers,                                                 keymap = { "n", "<leader>fr" }, silent = true },
-    { name = "File: Grep",                     exec = pick.builtin.grep_live,                                               keymap = { "n", "<leader>fg" }, silent = true },
+    { name = "File: Grep",                     exec = pick.registry.grep_live_smart_case,                                   keymap = { "n", "<leader>fg" }, silent = true },
     { name = "File: Symbols in document",      exec = function() MiniExtra.pickers.lsp({ scope = 'document_symbol' }) end,  keymap = { "n", "<leader>fs" }, silent = true },
     { name = "File: Symbols in workspace",     exec = function() MiniExtra.pickers.lsp({ scope = 'workspace_symbol' }) end, keymap = { "n", "<leader>fS" }, silent = true },
     { name = "File: Show unsaved changes",     exec = ":DiffUnsaved", },
@@ -1396,6 +1470,18 @@ local commands = create_commands({
         name = "Window: Close",
         exec = feedkeys("<C-w>q"),
         keymap = { "n", "<C-w>q" },
+        silent = true
+    },
+    {
+        name = "Window: Exchange",
+        exec = feedkeys("<C-w>x"),
+        keymap = { "n", "<C-w>x" },
+        silent = true
+    },
+    {
+        name = "Window: Horizontal",
+        exec = feedkeys("<C-w>H"),
+        keymap = { "n", "<C-w>H" },
         silent = true
     },
 
